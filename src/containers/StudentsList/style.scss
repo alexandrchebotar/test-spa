@@ -1,0 +1,18 @@
+@import "../../common/variables.scss";
+
+.data-table {
+  // position: absolute;
+  // top: 5px;
+  // // left: 5px;
+  // right: 5px;
+  // width: 275px;
+  // width: $match-preview-short;
+  position: fixed;
+  width: 100%;
+
+  &-copyright {
+    position: absolute;
+    right: 5px;
+    border-right: 1px solid gray;
+  }
+}
