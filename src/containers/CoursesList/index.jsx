@@ -3,11 +3,12 @@ import {Table} from 'evergreen-ui';
 
 import './style.scss';
 
-class DataTable extends Component {
+class CoursesList extends Component {
 
   render = () => {
     return (
       <Fragment>
+        This is CoursesList
         <Table>
           
         </Table>
@@ -16,4 +17,4 @@ class DataTable extends Component {
   }
 };
 
-export default DataTable;
+export default CoursesList;
