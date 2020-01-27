@@ -21,10 +21,10 @@ const App = ({initApp}) => {
     <div className="App">
       <Header />
       <Switch>
-        <Redirect from="/" to="/cources" exact/>
-        <Route path="/cources/:courceId" component={CoursesList} exact />
-        <Route path="/cources" component={CoursesList} exact />
-        <Redirect from="/cources" to="/cources"/>
+        <Redirect from="/" to="/courses" exact/>
+        <Route path="/courses/:courseId" component={CoursesList} exact />
+        <Route path="/courses" component={CoursesList} exact />
+        <Redirect from="/courses" to="/courses"/>
 
         <Route path="/students/:studentId" component={StudentsList} exact />
         <Route path="/students" component={StudentsList} exact />

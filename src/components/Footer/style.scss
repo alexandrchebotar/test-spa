@@ -1,18 +1,12 @@
 @import "../../common/variables.scss";
 
 .footer {
-  // position: absolute;
-  // top: 5px;
-  // // left: 5px;
-  // right: 5px;
-  // width: 275px;
-  // width: $match-preview-short;
+  box-sizing: border-box;
   position: fixed;
+  bottom: 0px;
   width: 100%;
-
-  &-copyright {
-    position: absolute;
-    right: 5px;
-    border-right: 1px solid gray;
-  }
+  padding: 10px 25px;
+  text-align: right;
+  background-color: lightgrey;
+  color: gray;
 }

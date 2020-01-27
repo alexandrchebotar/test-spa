@@ -1,18 +1,26 @@
 @import "../../common/variables.scss";
 
 .header {
-  // position: absolute;
-  // top: 5px;
-  // // left: 5px;
-  // right: 5px;
-  // width: 275px;
-  // width: $match-preview-short;
+  box-sizing: border-box;
   position: fixed;
+  top: 0px;
   width: 100%;
+  padding: 10px 25px;
+  text-align: left;
+  background-color: lightgray;
+  color: gray;
 
-  &-copyright {
-    position: absolute;
-    right: 5px;
-    border-right: 1px solid gray;
+  .title {
+    display: inline;
+    color: darkgoldenrod;
+    font-size: 1.4em;
+  }
+
+  .navigation {
+    float: right;
+  }
+
+  a {
+    font-size: 1.2em;
   }
 }
