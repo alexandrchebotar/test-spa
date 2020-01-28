@@ -1,24 +1,27 @@
 import React, {Component, Fragment} from 'react';
-import {Table} from 'evergreen-ui';
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
-import Pagination from '../../components/DataTable/Pagination';
+import { withRouter } from 'react-router-dom';
+import {Heading} from 'evergreen-ui';
+import DataTable from '../../components/DataTable';
 
 import './style.scss';
 
 class CoursesList extends Component {
 
-  render = () => {
+  render() {
+    const {studentId} = this.props.match.params;
     return (
       <Fragment>
-        This is CoursesList
-        <Table>
-          
-        </Table>
-        <Pagination />
+        <Heading size={800}>
+          {studentId ? 
+            'Student (id: ' + studentId + ')'
+            :
+            'Courses'
+          }
+        </Heading>
+        <DataTable />
       </Fragment>
     );
   }
 };
 
-export default CoursesList;
+export default withRouter(CoursesList);

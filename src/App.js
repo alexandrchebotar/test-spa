@@ -20,19 +20,21 @@ const App = ({initApp}) => {
   return (
     <div className="App">
       <Header />
-      <Switch>
-        <Redirect from="/" to="/courses" exact/>
-        <Route path="/courses/:courseId" component={CoursesList} exact />
-        <Route path="/courses" component={CoursesList} exact />
-        <Redirect from="/courses" to="/courses"/>
+      <div className="content">
+        <Switch className="content">
+          <Redirect from="/" to="/courses" exact/>
+          <Route path="/courses/:courseId" component={StudentsList} exact />
+          <Route path="/courses" component={CoursesList} exact />
+          <Redirect from="/courses" to="/courses"/>
 
-        <Route path="/students/:studentId" component={StudentsList} exact />
-        <Route path="/students" component={StudentsList} exact />
-        <Redirect from="/students" to="/students"/>
+          <Route path="/students/:studentId" component={CoursesList} exact />
+          <Route path="/students" component={StudentsList} exact />
+          <Redirect from="/students" to="/students"/>
 
-        <Route path="/404" exact render={() => <p>Error 404: page not found</p>} />
-        <Redirect from="/" to="/404"/>
-      </Switch>
+          <Route path="/404" exact render={() => <p>Error 404: page not found</p>} />
+          <Redirect from="/" to="/404"/>
+        </Switch>
+      </div>
       <Footer />
     </div>
   );
