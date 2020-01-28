@@ -2,12 +2,13 @@
 
 .header {
   box-sizing: border-box;
-  position: fixed;
-  top: 0px;
+  // position: fixed;
+  // top: 0px;
   width: 100%;
   padding: 10px 25px;
   text-align: left;
   background-color: lightgray;
+  outline: 1px solid rgb(168, 168, 168);
   color: gray;
 
   .title {

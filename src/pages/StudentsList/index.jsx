@@ -5,23 +5,23 @@ import DataTable from '../../components/DataTable';
 
 import './style.scss';
 
-class CoursesList extends Component {
+class StudentsList extends Component {
 
   render() {
-    const {studentId} = this.props.match.params;
+    const {courseId} = this.props.match.params;
     return (
       <Fragment>
         <Heading size={800}>
-          {studentId ? 
-            'Student (id: ' + studentId + ')'
+          {courseId ? 
+            'Course (id: ' + courseId + ')'
             :
-            'Courses'
+            'Students'
           }
         </Heading>
-        <DataTable />
+        {/* <DataTable /> */}
       </Fragment>
     );
   }
 };
 
-export default withRouter(CoursesList);
+export default withRouter(StudentsList);

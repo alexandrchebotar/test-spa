@@ -3,8 +3,8 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import CoursesList from './containers/CoursesList';
-import StudentsList from './containers/StudentsList';
+import CoursesList from './pages/CoursesList';
+import StudentsList from './pages/StudentsList';
 import {initApp} from './store/actions';
 
 import './App.scss';

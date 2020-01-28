@@ -1,9 +1,12 @@
 .pagination {
-  margin-top: 50px;
-  margin-left: 20px;
+  margin-top: 5px;
+  // justify-content: flex-end;
   
-  & * {
-    margin: 3px;
+  // & button {
+  //   margin-right: 12px;
+  // }
+  
+  & span {
+    margin: 7px 5px 0px 0px;
   }
-  
 }

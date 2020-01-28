@@ -2,11 +2,13 @@
 
 .footer {
   box-sizing: border-box;
-  position: fixed;
+  position: absolute;
   bottom: 0px;
   width: 100%;
   padding: 10px 25px;
   text-align: right;
   background-color: lightgrey;
+  border-top: 1px solid rgb(168, 168, 168);
   color: gray;
+
 }
