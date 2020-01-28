@@ -1,5 +1,3 @@
-@import "../../common/variables.scss";
-
 .pagination {
   // position: absolute;
   // top: 5px;
@@ -7,12 +5,18 @@
   // right: 5px;
   // width: 275px;
   // width: $match-preview-short;
-  position: fixed;
-  width: 100%;
-
-  &-copyright {
-    position: absolute;
-    right: 5px;
-    border-right: 1px solid gray;
+  // position: fixed;
+  // width: 100%;
+  margin-top: 50px;
+  margin-left: 20px;
+  
+  &:last-child {
+    margin-left: 20px;
   }
+  & * {
+    display: inline-flex;
+    // margin: 2px;
+    margin: 3px;
+  }
+  
 }

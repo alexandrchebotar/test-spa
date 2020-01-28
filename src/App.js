@@ -16,7 +16,7 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const App = ({initApp}) => {
-  useEffect(initApp, []);
+  // useEffect(initApp, []);
   return (
     <div className="App">
       <Header />

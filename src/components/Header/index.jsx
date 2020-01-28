@@ -9,7 +9,7 @@ const Header = () => {
 
   return (
     <header className="header" >
-      <h2 className="title" size={600} marginTop="default" >
+      <h2 className="title" >
         Courses & Students - Siemple SPA
       </h2>
       <TabNavigation className="navigation" >
