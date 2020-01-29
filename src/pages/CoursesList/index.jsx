@@ -31,7 +31,7 @@ class CoursesList extends Component {
     const {data, rowsOnPage, lastId, match, addNewCourse, updateCourse, deleteCourse} = this.props;
     const {dataFilter, showAddNewCourse} = this.state;
     const {studentId} = match.params;
-    const filteredData = data.filter(({name}) => name.toLocaleLowerCase().includes(dataFilter))
+    const filteredData = data.filter(({name}) => name.toLowerCase().includes(dataFilter))
     return (
       <Fragment>
         <Heading size={800} marginBottom={6} >
@@ -42,7 +42,7 @@ class CoursesList extends Component {
           }
         </Heading>
         <IconButton icon="plus" appearance="primary" intent="success" onClick={() => this.setState({showAddNewCourse: true})} />
-        <SearchInput placeholder="Search..." onChange={e => this.setState({filter: e.target.value.toLocaleLowerCase()})} />
+        <SearchInput placeholder="Search..." onChange={e => this.setState({dataFilter: e.target.value.toLowerCase()})} />
         <DataTable
           data={filteredData}
           rowsOnPage={rowsOnPage}
