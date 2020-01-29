@@ -43,16 +43,16 @@ const courses = handleActions(
   },
   {
     data: [
-      {id: 'C1', name: 'JS', students: 21},
-      {id: 'C2', name: 'Python', students: 10},
-      {id: 'C3', name: 'Vue', students: 17},
-      {id: 'C4', name: 'Angular', students: 18},
-      {id: 'C5', name: 'React', students: 17},
-      {id: 'C6', name: 'C', students: 17},
-      {id: 'C7', name: 'C#', students: 17},
-      {id: 'C8', name: 'Django', students: 17},
+      {id: 'c1', name: 'JS', students: 21},
+      {id: 'c2', name: 'Python', students: 10},
+      {id: 'c3', name: 'Vue', students: 17},
+      {id: 'c4', name: 'Angular', students: 18},
+      {id: 'c5', name: 'React', students: 17},
+      {id: 'c6', name: 'C', students: 17},
+      {id: 'c', name: 'C#', students: 17},
+      {id: 'c8', name: 'Django', students: 17},
     ],
-    lastId: 'C8',
+    lastId: 'c8',
     rowsOnPage: 5,
   }
 );
