@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { useHistory } from "react-router-dom";
-import {Table, IconButton} from 'evergreen-ui';
+import {Table, IconButton, Pane, Text, Select} from 'evergreen-ui';
 import Pagination from './Pagination';
 import DeleteDialog from '../DeleteDialog';
 import EditDialog from '../EditDialog';
@@ -10,7 +10,6 @@ import './style.scss';
 const DataTable = ({headers, data, dataType, updateRow, deleteRow, rowsOnPage, setRowsOnPage}) => {
   let history = useHistory();
   const [currentPage, setCurrentPage] = useState(1);
-  // const [rowsOnPage, setRowsOnPage] = useState(5);
   const [deleteRowId, setDeleteRowId] = useState(null);
   const [editRowId, setEditRowId] = useState(null);
   useEffect(() => {setCurrentPage(1)}, [data, rowsOnPage]);
@@ -20,6 +19,17 @@ const DataTable = ({headers, data, dataType, updateRow, deleteRow, rowsOnPage, s
   const headersWithoutName = headers.filter(name => name !== 'name');
   return (
     <div className="data-table">
+      <Pane display="flex">
+        <Pane marginLeft="auto">
+          <Pagination
+            currentPage={currentPage}
+            pageCount={pageCount}
+            rowsOnPage={rowsOnPage}
+            setCurrentPage={setCurrentPage}
+            setRowsOnPage={setRowsOnPage}
+          />
+        </Pane>
+      </Pane>
       <Table border >
         <Table.Head paddingRight={120} >
           <Table.TextHeaderCell> Name </Table.TextHeaderCell>
@@ -53,13 +63,30 @@ const DataTable = ({headers, data, dataType, updateRow, deleteRow, rowsOnPage, s
           ))}
         </Table.Body>
       </Table>
-      <Pagination
-        currentPage={currentPage}
-        pageCount={pageCount}
-        rowsOnPage={rowsOnPage}
-        setCurrentPage={setCurrentPage}
-        setRowsOnPage={setRowsOnPage}
-      />
+      <Pane display="flex" >
+        <Pane className="pagination" >
+          <Text>{`${dataType[0].toUpperCase() + dataType.slice(1)}s on page:`}</Text>
+          <Select value={rowsOnPage} onChange={e => setRowsOnPage(+e.target.value)} flex="none" width={60} height={24}>
+            <option value={5}>5</option>
+            <option value={10}>10</option>
+            <option value={15}>15</option>
+            <option value={20}>20</option>
+            <option value={30}>30</option>
+            <option value={50}>50</option>
+            <option value={100}>100</option>
+          </Select>
+          <Text>{`, total ${dataType}s: ${data.length}.`}</Text>
+        </Pane>
+        <Pane marginLeft="auto">
+          <Pagination
+            currentPage={currentPage}
+            pageCount={pageCount}
+            rowsOnPage={rowsOnPage}
+            setCurrentPage={setCurrentPage}
+            setRowsOnPage={setRowsOnPage}
+          />
+        </Pane>
+      </Pane>
       {editRowId &&
         <EditDialog
         dataType={dataType}

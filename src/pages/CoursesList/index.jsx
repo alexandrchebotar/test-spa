@@ -42,7 +42,7 @@ class CoursesList extends Component {
             'Courses'
           }
         </Heading>
-        <IconButton icon="plus" appearance="primary" intent="success" onClick={() => this.setState({showAddNewCourse: true})} />
+        <IconButton className="add-button" icon="plus" appearance="primary" intent="success" onClick={() => this.setState({showAddNewCourse: true})} />
         <SearchInput placeholder="Search..." onChange={e => this.setState({dataFilter: e.target.value.toLowerCase()})} />
         <DataTable
           data={filteredData}

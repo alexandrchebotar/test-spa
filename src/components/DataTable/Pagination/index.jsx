@@ -32,25 +32,14 @@ const Pagination = (props) => {
       <Pane className="pagination" display="flex">
         <Button disabled={currentPage === firstPage} onClick={() => setCurrentPage(currentPage - 1)} >Previous</Button>
         {firstPage !== 1 &&
-          <Text size={600} >...</Text>
+          <Text>...</Text>
         }
         {pageButtons}
         {lastPage !== pageCount &&
-          <Text  >...</Text>
+          <Text>...</Text>
         }
         <Button disabled={currentPage === lastPage} onClick={() => setCurrentPage(currentPage + 1)} >Next</Button>
-        <Pane marginLeft="auto">
-          <Text>Rows on page:</Text>
-          <Select value={rowsOnPage} onChange={e => setRowsOnPage(e.target.value)}>
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="15">15</option>
-            <option value="20">20</option>
-            <option value="30">30</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
-          </Select>
-        </Pane>
+
       </Pane>
   );
 };
