@@ -5,7 +5,7 @@ const EditDialog = ({dataType, rowData = {}, onCloseComplete, onConfirm}) => {
   let {id, name = `New ${dataType}`} = rowData;
   const [newName, setNewName] = useState(name);
   //change name or create new rowData with name only
-  const courseData = (!rowData.id) ? {...rowData, name: newName} : {name: newName};
+  const courseData = {...rowData, name: newName};
 
   return (
     <Dialog

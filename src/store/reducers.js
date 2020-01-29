@@ -1,5 +1,9 @@
 import {
   ADD_NEW_COURSE,
+  UPDATE_COURSE,
+  DELETE_COURSE,
+
+
   ADD_COURSES_DATA,
   REPLACE_COURSES_DATA,
   // ADD_COURSE,
@@ -18,13 +22,31 @@ const courses = handleActions(
   {
     [ADD_NEW_COURSE]: (state, action) => {
       const lastId = state.lastId[0] + (+state.lastId.slice(1) + 1);
-      const courseData = {...action.payload.courses.data[0], id: lastId, students: 0};
+      const courseData = {...action.payload.courseData, id: lastId, students: 0};
       return ({
         ...state,
         data: [...state.data, courseData],
         lastId,
       });
     },
+    [UPDATE_COURSE]: (state, action) => {
+      const {courseData} = action.payload;
+      const courseId = courseData.id;
+      const data = [...state.data.filter(({id}) => id !== courseId), courseData];
+      return ({
+        ...state,
+        data,
+      });
+    },
+    [DELETE_COURSE]: (state, action) => {
+      const {courseId} = action.payload;
+      const data = state.data.filter(({id}) => id !== courseId);
+      return ({
+        ...state,
+        data,
+      });
+    },
+
     [ADD_COURSES_DATA]: (state, action) => {debugger;return({
       ...state, 
       data: [...state.data, action.payload.courses.data],
