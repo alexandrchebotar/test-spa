@@ -3,6 +3,10 @@ import {
   UPDATE_COURSE,
   DELETE_COURSE,
   CHANGE_COURCES_NUMBER_ON_PAGE,
+  ADD_NEW_STUDENT,
+  UPDATE_STUDENT,
+  DELETE_STUDENT,
+  CHANGE_STUDENTS_NUMBER_ON_PAGE,
 } from '../common/constants';
 import {combineReducers} from 'redux'; 
 import {handleActions, combineActions} from 'redux-actions';
@@ -49,7 +53,7 @@ const courses = handleActions(
       {id: 'c4', name: 'Angular', students: 18},
       {id: 'c5', name: 'React', students: 17},
       {id: 'c6', name: 'C', students: 17},
-      {id: 'c', name: 'C#', students: 17},
+      {id: 'c7', name: 'C#', students: 17},
       {id: 'c8', name: 'Django', students: 17},
     ],
     lastId: 'c8',
@@ -58,21 +62,50 @@ const courses = handleActions(
 );
 const students = handleActions(
   {
-    [combineActions(
-      ADD_NEW_COURSE
-      // END_SEARCH_PLAYERS,
-      // CLEAR_SEARCH,
-      // CLEAR_SEARCH_FILTER,
-      // MARK_NEWS,
-    )]: (state, action) => ({
-      ...state, 
-      ...action.payload.students,
+    [ADD_NEW_STUDENT]: (state, action) => {
+      const lastId = state.lastId[0] + (+state.lastId.slice(1) + 1);
+      const studentData = {...action.payload.studentData, id: lastId, courses: 0};
+      return ({
+        ...state,
+        data: [...state.data, studentData],
+        lastId,
+      });
+    },
+    [UPDATE_STUDENT]: (state, action) => {
+      const {studentData} = action.payload;
+      const studentId = studentData.id;
+      const data = [...state.data.filter(({id}) => id !== studentId), studentData];
+      return ({
+        ...state,
+        data,
+      });
+    },
+    [DELETE_STUDENT]: (state, action) => {
+      const {studentId} = action.payload;
+      const data = state.data.filter(({id}) => id !== studentId);
+      return ({
+        ...state,
+        data,
+      });
+    },
+    [CHANGE_STUDENTS_NUMBER_ON_PAGE]: (state, action) => ({
+        ...state,
+        ...action.payload,
     }),
   },
   {
-    data: [],
-    lastId: 'S0',
-    rowsOnPage: 50,
+    data: [
+      {id: 's1', name: 'Victoria Abril', courses: 21},
+      {id: 's2', name: 'Goodman Ace', courses: 10},
+      {id: 's3', name: 'Johnny Ace', courses: 17},
+      {id: 's4', name: 'Derek Acorah', courses: 18},
+      {id: 's5', name: 'Ross Alexander', courses: 17},
+      {id: 's6', name: 'Johnny Alf', courses: 17},
+      {id: 's7', name: 'Rashied Ali', courses: 17},
+      {id: 's8', name: 'Mary Alice', courses: 17},
+    ],
+    lastId: 's8',
+    rowsOnPage: 5,
   }
 );
 

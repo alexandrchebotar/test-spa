@@ -1,15 +1,13 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {TabNavigation, Tab} from 'evergreen-ui';
-import {withRouter, useHistory, useLocation} from "react-router-dom";
+import {useHistory, useLocation} from "react-router-dom";
 
 import './style.scss';
 
 const Header = () => {
-  const [currentPage, setCurrentPage] = useState(0);
-  useEffect(() => setCurrentPage(window.location.pathname),[]);
   const location = useLocation();
   let history = useHistory();
-  debugger;
+
   return (
     <header className="header" >
       <h2 className="title" >
@@ -33,4 +31,4 @@ const Header = () => {
   );
 };
 
-export default withRouter(Header);
+export default Header;

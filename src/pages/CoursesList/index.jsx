@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import {connect} from 'react-redux';
+import {withRouter} from 'react-router-dom';
 import {Heading, IconButton, SearchInput} from 'evergreen-ui';
 import DataTable from '../../components/DataTable';
 import EditDialog from '../../components/EditDialog';
