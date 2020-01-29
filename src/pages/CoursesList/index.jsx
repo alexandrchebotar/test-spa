@@ -26,13 +26,39 @@ class CoursesList extends Component {
   state = {
     dataFilter: '',
     showAddNewCourse: false,
+    sortingParams: {field: 'name', direction: 'asc'},
   };
+
+  toggleSorting = field => this.setState(({sortingParams}) => ({
+    sortingParams: {
+      field,
+      direction: (field === sortingParams.field && sortingParams.direction === 'asc') ? 'desc' : 'asc',
+    },
+  }));
 
   render() {
     const {data, rowsOnPage, lastId, match, addNewCourse, updateCourse, deleteCourse, changeCourcesNumberOnPage} = this.props;
-    const {dataFilter, showAddNewCourse} = this.state;
+    const {dataFilter, showAddNewCourse, sortingParams} = this.state;
     const {studentId} = match.params;
-    const filteredData = data.filter(({name}) => name.toLowerCase().includes(dataFilter))
+    const processedData = data
+      .filter(({name}) => name.toLowerCase().includes(dataFilter))
+      .sort((courseDataA, courseDataB) => {
+        const {field, direction} = sortingParams;
+        let a, b;
+        if (direction === 'asc') {
+          [b, a] = [courseDataB[field], courseDataA[field]];
+        } else {
+          [a, b] = [courseDataB[field], courseDataA[field]];
+        }
+        if (a > b) {
+          return 1;
+        }
+        if (a < b) {
+          return -1;
+        }
+        return 0;
+      });
+
     return (
       <Fragment>
         <Heading size={800} marginBottom={6} >
@@ -45,13 +71,15 @@ class CoursesList extends Component {
         <IconButton className="add-button" icon="plus" appearance="primary" intent="success" onClick={() => this.setState({showAddNewCourse: true})} />
         <SearchInput className="search-input" placeholder="Search..." onChange={e => this.setState({dataFilter: e.target.value.toLowerCase()})} />
         <DataTable
-          data={filteredData}
+          data={processedData}
           rowsOnPage={rowsOnPage}
           dataType="course"
           headers={headers}
           updateRow={updateCourse}
           deleteRow={deleteCourse}
           setRowsOnPage={changeCourcesNumberOnPage}
+          sortingParams={sortingParams}
+          toggleSorting={this.toggleSorting}
         />
         {showAddNewCourse &&
           <EditDialog

@@ -1,22 +1,24 @@
 import React, {useState, useEffect} from 'react';
 import { useHistory } from "react-router-dom";
-import {Table, IconButton, Pane, Text, Select} from 'evergreen-ui';
+import {Table, TextDropdownButton, IconButton, Pane, Text, Select} from 'evergreen-ui';
 import Pagination from './Pagination';
 import DeleteDialog from '../DeleteDialog';
 import EditDialog from '../EditDialog';
 
 import './style.scss';
 
-const DataTable = ({headers, data, dataType, updateRow, deleteRow, rowsOnPage, setRowsOnPage}) => {
+const DataTable = ({headers, data, dataType, updateRow, deleteRow, rowsOnPage, setRowsOnPage, sortingParams, toggleSorting}) => {
   let history = useHistory();
   const [currentPage, setCurrentPage] = useState(1);
   const [deleteRowId, setDeleteRowId] = useState(null);
+  // const [sortingParams, setSortingParams] = useState({field: 'name', direction: 'asc'});
   const [editRowId, setEditRowId] = useState(null);
   useEffect(() => {setCurrentPage(1)}, [data, rowsOnPage]);
   const pageCount = Math.ceil(data.length / rowsOnPage);
   const startIndex = (currentPage-1)*rowsOnPage;
   const pageData = data.slice(startIndex, startIndex + rowsOnPage);
   const headersWithoutName = headers.filter(name => name !== 'name');
+
   return (
     <div className="data-table">
       <Pane display="flex">
@@ -32,10 +34,28 @@ const DataTable = ({headers, data, dataType, updateRow, deleteRow, rowsOnPage, s
       </Pane>
       <Table border >
         <Table.Head paddingRight={120} >
-          <Table.TextHeaderCell> Name </Table.TextHeaderCell>
+          <Table.TextHeaderCell> 
+            <TextDropdownButton
+              onClick={() => toggleSorting('name')}
+              icon={(sortingParams.field !== 'name') ? 'blank'
+                : (sortingParams.direction === 'asc') ? 'arrow-down'
+                : 'arrow-up'
+              }
+            >
+              {'Name'}
+            </TextDropdownButton>
+          </Table.TextHeaderCell>
           {headersWithoutName.map(name => (
             <Table.TextHeaderCell key={name} flexBasis={120} flexShrink={0} flexGrow={0} textAlign="center" >
-              {name}
+              <TextDropdownButton
+                onClick={() => toggleSorting(name)}
+                icon={(sortingParams.field !== name) ? 'blank'
+                  : (sortingParams.direction === 'asc') ? 'arrow-down'
+                  : 'arrow-up'
+                }
+              >
+                {name[0].toUpperCase() + name.slice(1)}
+              </TextDropdownButton>
             </Table.TextHeaderCell>
           ))}
         </Table.Head>
@@ -46,21 +66,21 @@ const DataTable = ({headers, data, dataType, updateRow, deleteRow, rowsOnPage, s
                 isSelectable
                 onSelect={() => history.push('/' + dataType +'s/' + row.id)}
               >
-                  <Table.TextCell> {row.name} </Table.TextCell>
+                <Table.TextCell> {row.name} </Table.TextCell>
                 {headersWithoutName.map(name => (
                   <Table.TextCell key={name} flexBasis={120} flexShrink={0} flexGrow={0} textAlign="center">
                     {row[name]}
                   </Table.TextCell>
                 ))}
                 <Table.Cell flexBasis={120} flexShrink={0} flexGrow={0} textAlign="center">
-                  <IconButton icon="edit" appearance="minimal" intent="success" onClick={e => {
-                    setEditRowId(row.id);
-                    e.stopPropagation();
-                  }} />
-                  <IconButton icon="trash" appearance="minimal" intent="danger" onClick={e => {
-                    setDeleteRowId(row.id);
-                    e.stopPropagation();
-                  }} />
+                  <IconButton
+                    icon="edit" appearance="minimal" intent="success"
+                    onClick={e => {setEditRowId(row.id); e.stopPropagation();}}
+                  />
+                  <IconButton
+                    icon="trash" appearance="minimal" intent="danger"
+                    onClick={e => {setDeleteRowId(row.id); e.stopPropagation();}}
+                  />
                 </Table.Cell>
               </Table.Row>
           ))}

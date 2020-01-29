@@ -1,33 +1,3 @@
-// import React, {Component, Fragment} from 'react';
-// import { withRouter } from 'react-router-dom';
-// import {Heading} from 'evergreen-ui';
-// import DataTable from '../../components/DataTable';
-
-// import './style.scss';
-
-// class StudentsList extends Component {
-
-//   render() {
-//     const {courseId} = this.props.match.params;
-//     return (
-//       <Fragment>
-//         <Heading size={800}>
-//           {courseId ? 
-//             'Course (id: ' + courseId + ')'
-//             :
-//             'Students'
-//           }
-//         </Heading>
-//         {/* <DataTable /> */}
-//       </Fragment>
-//     );
-//   }
-// };
-
-// export default withRouter(StudentsList);
-
-///////////////////////////
-
 import React, {Component, Fragment} from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
@@ -56,13 +26,39 @@ class StudentsList extends Component {
   state = {
     dataFilter: '',
     showAddNewStudent: false,
+    sortingParams: {field: 'name', direction: 'asc'},
   };
+
+  toggleSorting = field => this.setState(({sortingParams}) => ({
+    sortingParams: {
+      field,
+      direction: (field === sortingParams.field && sortingParams.direction === 'asc') ? 'desc' : 'asc',
+    },
+  }));
 
   render() {
     const {data, rowsOnPage, lastId, match, addNewStudent, updateStudent, deleteStudent, changeStudentsNumberOnPage} = this.props;
-    const {dataFilter, showAddNewStudent} = this.state;
+    const {dataFilter, showAddNewStudent, sortingParams} = this.state;
     const {courseId} = match.params;
-    const filteredData = data.filter(({name}) => name.toLowerCase().includes(dataFilter))
+    const processedData = data
+      .filter(({name}) => name.toLowerCase().includes(dataFilter))
+      .sort((stubentDataA, stubentDataB) => {
+        const {field, direction} = sortingParams;
+        let a, b;
+        if (direction === 'asc') {
+          [b, a] = [stubentDataB[field], stubentDataA[field]];
+        } else {
+          [a, b] = [stubentDataB[field], stubentDataA[field]];
+        }
+        if (a > b) {
+          return 1;
+        }
+        if (a < b) {
+          return -1;
+        }
+        return 0;
+      });
+      
     return (
       <Fragment>
         <Heading size={800} marginBottom={6} >
@@ -75,13 +71,15 @@ class StudentsList extends Component {
         <IconButton className="add-button" icon="plus" appearance="primary" intent="success" onClick={() => this.setState({showAddNewStudent: true})} />
         <SearchInput className="search-input" placeholder="Search..." onChange={e => this.setState({dataFilter: e.target.value.toLowerCase()})} />
         <DataTable
-          data={filteredData}
+          data={processedData}
           rowsOnPage={rowsOnPage}
           dataType="student"
           headers={headers}
           updateRow={updateStudent}
           deleteRow={deleteStudent}
           setRowsOnPage={changeStudentsNumberOnPage}
+          sortingParams={sortingParams}
+          toggleSorting={this.toggleSorting}
         />
         {showAddNewStudent &&
           <EditDialog
