@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {TabNavigation, Tab} from 'evergreen-ui';
-import {useHistory, useLocation} from "react-router-dom";
+import {withRouter, useHistory, useLocation} from "react-router-dom";
 
 import './style.scss';
 
@@ -9,7 +9,7 @@ const Header = () => {
   useEffect(() => setCurrentPage(window.location.pathname),[]);
   const location = useLocation();
   let history = useHistory();
-  // debugger;
+  debugger;
   return (
     <header className="header" >
       <h2 className="title" >
@@ -23,7 +23,7 @@ const Header = () => {
           Courses
         </Tab>
         <Tab
-          isSelected={currentPage === '/students'}
+          isSelected={location.pathname === '/students'}
           onSelect={() => history.push('/students')}
         >
           Students
@@ -33,4 +33,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default withRouter(Header);
