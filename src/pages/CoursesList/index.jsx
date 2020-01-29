@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
-import {Heading, IconButton, SearchInput} from 'evergreen-ui';
+import {Text, Heading, IconButton, SearchInput} from 'evergreen-ui';
 import DataTable from '../../components/DataTable';
 import EditDialog from '../../components/EditDialog';
 import {addNewCourse, updateCourse, deleteCourse, changeCourcesNumberOnPage} from '../../store/actions';
@@ -18,8 +18,8 @@ const mapDispatchToProps = (dispatch) => {
     changeCourcesNumberOnPage: (rowsOnPage) => dispatch(changeCourcesNumberOnPage(rowsOnPage)),
   }
 };
-const mapStateToProps = ({courses}) => {
-  return {...courses};
+const mapStateToProps = ({courses, students}) => {
+  return {...courses, students};
 };
 
 class CoursesList extends Component {
@@ -35,20 +35,20 @@ class CoursesList extends Component {
       direction: (field === sortingParams.field && sortingParams.direction === 'asc') ? 'desc' : 'asc',
     },
   }));
-
-  render() {
-    const {data, rowsOnPage, lastId, match, addNewCourse, updateCourse, deleteCourse, changeCourcesNumberOnPage} = this.props;
-    const {dataFilter, showAddNewCourse, sortingParams} = this.state;
-    const {studentId} = match.params;
-    const processedData = data
+  getProcessedData = () => {
+    const {dataFilter, sortingParams} = this.state;
+    return this.props.data
       .filter(({name}) => name.toLowerCase().includes(dataFilter))
-      .sort((courseDataA, courseDataB) => {
+      .sort((rowDataA, rowDataB) => {
         const {field, direction} = sortingParams;
         let a, b;
         if (direction === 'asc') {
-          [b, a] = [courseDataB[field], courseDataA[field]];
+          [b, a] = [rowDataB[field], rowDataA[field]];
         } else {
-          [a, b] = [courseDataB[field], courseDataA[field]];
+          [a, b] = [rowDataB[field], rowDataA[field]];
+        }
+        if (field === 'id') {
+          [a, b] = [a, b].map(id => +id.slice(1));
         }
         if (a > b) {
           return 1;
@@ -58,20 +58,27 @@ class CoursesList extends Component {
         }
         return 0;
       });
+  };
+
+  render() {
+    const {students, rowsOnPage, lastId, match, addNewCourse, updateCourse, deleteCourse, changeCourcesNumberOnPage} = this.props;
+    const {showAddNewCourse, sortingParams} = this.state;
+    const {studentId} = match.params; 
 
     return (
       <Fragment>
-        <Heading size={800} marginBottom={6} >
-          {studentId ? 
-            'Student (id: ' + studentId + ')'
-            :
-            'Courses'
+        <Heading>
+          {studentId ? students.data.find(({id}) => id === studentId).name : 'Courses'}
+          {studentId &&
+            <Text size={500}>
+              {` (student id - ${studentId})`}
+            </Text>
           }
         </Heading>
         <IconButton className="add-button" icon="plus" appearance="primary" intent="success" onClick={() => this.setState({showAddNewCourse: true})} />
         <SearchInput className="search-input" placeholder="Search..." onChange={e => this.setState({dataFilter: e.target.value.toLowerCase()})} />
         <DataTable
-          data={processedData}
+          data={this.getProcessedData()}
           rowsOnPage={rowsOnPage}
           dataType="course"
           headers={headers}
