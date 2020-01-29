@@ -1,43 +1,37 @@
 import React, {Component, Fragment} from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import {Heading, Button, IconButton, SearchInput} from 'evergreen-ui';
+import {Heading, IconButton, SearchInput} from 'evergreen-ui';
 import DataTable from '../../components/DataTable';
+import EditDialog from '../../components/EditDialog';
+import {addCourse, updateCourse, deleteCourse} from '../../store/actions';
 
 import './style.scss';
 
+const headers = ['name', 'id', 'students']
+
 const mapDispatchToProps = (dispatch) => {
   return {    
-    // addCourse: () => dispatch(addCourse()),
-    // updateCourse: () => dispatch(updateCourse()),
-    // deleteCourse: () => dispatch(deleteCourse()),
+    addCourse: (courceData) => dispatch(addCourse(courceData)),
+    updateCourse: (courceData) => dispatch(updateCourse(courceData)),
+    deleteCourse: (courceData) => dispatch(deleteCourse(courceData)),
   }
 };
 const mapStateToProps = ({courses}) => {
-  return {courses};
+  return {...courses};
 };
 
 class CoursesList extends Component {
   state = {
-    filter: '',
+    dataFilter: '',
+    addNewCourse: false,
   };
 
-  courses = [
-    {id: 1, name: 'JS', students: 21},
-    {id: 2, name: 'Python', students: 10},
-    {id: 3, name: 'Vue', students: 17},
-    {id: 4, name: 'Angular', students: 18},
-    {id: 5, name: 'React', students: 17},
-    {id: 6, name: 'C', students: 17},
-    {id: 7, name: 'C#', students: 17},
-    {id: 8, name: 'Django', students: 17},
-  ]
-  headers = ['name', 'id', 'students']
-
   render() {
-    const {studentId} = this.props.match.params;
-    const filteredData = this.courses.filter(({name}) => name.toLocaleLowerCase().includes(this.state.filter))
-
+    const {data, rowsOnPage, lastId, match, addCourse, updateCourse, deleteCourse} = this.props;
+    const {dataFilter, addNewCourse} = this.state;
+    const {studentId} = match.params;
+    const filteredData = data.filter(({name}) => name.toLocaleLowerCase().includes(dataFilter))
     return (
       <Fragment>
         <Heading size={800} marginBottom={6} >
@@ -47,9 +41,24 @@ class CoursesList extends Component {
             'Courses'
           }
         </Heading>
-        <IconButton icon="plus" appearance="primary" intent="success" />
+        <IconButton icon="plus" appearance="primary" intent="success" onClick={() => this.setState({addNewCourse: true})} />
         <SearchInput placeholder="Search..." onChange={e => this.setState({filter: e.target.value.toLocaleLowerCase()})} />
-        <DataTable data={filteredData} dataType="courses"  headers={this.headers} />
+        <DataTable
+          data={filteredData}
+          rowsOnPage={rowsOnPage}
+          dataType="courses"
+          headers={headers}
+          updateRow={updateCourse}
+          deleteRow={deleteCourse}
+        />
+        {addNewCourse &&
+          <EditDialog
+            dataType="courses"
+            lastId={lastId}
+            onConfirm={addCourse}
+            onCloseComplete={() => this.setState({addNewCourse: false})}
+          />
+        }
       </Fragment>
     );
   }

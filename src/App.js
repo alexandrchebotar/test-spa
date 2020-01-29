@@ -1,19 +1,19 @@
 import React, { useEffect } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
+// import { connect } from 'react-redux';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import CoursesList from './pages/CoursesList';
 import StudentsList from './pages/StudentsList';
-import {initApp} from './store/actions';
+// import {initApp} from './store/actions';
 
 import './App.scss';
 
-const mapDispatchToProps = (dispatch) => {
-  return {    
-    initApp: () => dispatch(initApp()),
-  }
-};
+// const mapDispatchToProps = (dispatch) => {
+//   return {    
+//     initApp: () => dispatch(initApp()),
+//   }
+// };
 
 const App = ({initApp}) => {
   // useEffect(initApp, []);
@@ -40,4 +40,5 @@ const App = ({initApp}) => {
   );
 }
 
-export default connect(null, mapDispatchToProps)(App);
+export default App;
+// export default connect(null, mapDispatchToProps)(App);

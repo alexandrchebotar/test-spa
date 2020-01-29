@@ -2,12 +2,12 @@ import React, {useState, useEffect} from 'react';
 import { useHistory } from "react-router-dom";
 import {Table, IconButton} from 'evergreen-ui';
 import Pagination from './Pagination';
-import DeleteDialog from './DeleteDialog';
-import EditDialog from './EditDialog';
+import DeleteDialog from '../DeleteDialog';
+import EditDialog from '../EditDialog';
 
 import './style.scss';
 
-const DataTable = ({headers, data, dataType
+const DataTable = ({headers, data, dataType, updateRow, deleteRow,
   //currentPage, rowsOnPage
 }) => {
   let history = useHistory();
@@ -42,8 +42,14 @@ const DataTable = ({headers, data, dataType
                   </Table.TextCell>
                 ))}
                 <Table.Cell flexBasis={120} flexShrink={0} flexGrow={0} textAlign="center">
-                  <IconButton icon="edit" appearance="minimal" intent="success" onClick={e=>{setEditRowId(row.id);e.stopPropagation()}} />
-                  <IconButton icon="trash" appearance="minimal" intent="danger" onClick={e=>{setDeleteRowId(row.id);e.stopPropagation()}} />
+                  <IconButton icon="edit" appearance="minimal" intent="success" onClick={e => {
+                    setEditRowId(row.id);
+                    e.stopPropagation();
+                  }} />
+                  <IconButton icon="trash" appearance="minimal" intent="danger" onClick={e => {
+                    setDeleteRowId(row.id);
+                    e.stopPropagation();
+                  }} />
                 </Table.Cell>
               </Table.Row>
           ))}
@@ -56,18 +62,20 @@ const DataTable = ({headers, data, dataType
         setCurrentPage={setCurrentPage}
         setRowsOnPage={setRowsOnPage}
       />
+      {editRowId &&
+        <EditDialog
+        dataType={dataType}
+        row={data.find(row => row.id === editRowId)}
+        onConfirm={updateRow}
+        onCloseComplete={() => setEditRowId(null)}
+        />
+      }
       {deleteRowId &&
         <DeleteDialog
           dataType={dataType}
           row={data.find(row => row.id === deleteRowId)}
+          onConfirm={deleteRow}
           onCloseComplete={() => setDeleteRowId(null)}
-        />
-      }
-      {editRowId &&
-        <EditDialog
-          dataType={dataType}
-          row={data.find(row => row.id === editRowId)}
-          onCloseComplete={() => setEditRowId(null)}
         />
       }
     </div>

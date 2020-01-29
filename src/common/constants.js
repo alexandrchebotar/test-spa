@@ -1,4 +1,6 @@
-export const GET_INIT_DATA = ' GET_INIT_DATA';
+export const ADD_COURSE = 'ADD_COURSE';
+export const EDIT_COURSE = 'EDIT_COURSE';
+export const DELETE_COURSE = 'DELETE_COURSE';
 
 // export const START_FETCH_PLAYERS = ' START_FETCH_PLAYERS';
 // export const END_FETCH_PLAYERS = ' END_FETCH_PLAYERS';

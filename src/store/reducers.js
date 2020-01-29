@@ -1,5 +1,7 @@
 import {
-  GET_INIT_DATA,
+  ADD_COURSE,
+  EDIT_COURSE,
+  DELETE_COURSE,
   // END_SEARCH_PLAYERS,
   // CLEAR_SEARCH,
   // CLEAR_SEARCH_FILTER,
@@ -12,34 +14,50 @@ import {handleActions, combineActions} from 'redux-actions';
 const courses = handleActions(
   {
     [combineActions(
-      GET_INIT_DATA,
+      ADD_COURSE,
       // END_SEARCH_PLAYERS,
       // CLEAR_SEARCH,
       // CLEAR_SEARCH_FILTER,
       // MARK_NEWS,
     )]: (state, action) => ({
       ...state, 
-      ...action.payload.loading,
+      data: [...state.data, ...action.payload.courses.data],
+      lastId: action.payload.courses.lastId,
     }),
   },
-  []
-  // defaultState.loading
+  {
+    data: [
+      {id: 'C1', name: 'JS', students: 21},
+      {id: 'C2', name: 'Python', students: 10},
+      {id: 'C3', name: 'Vue', students: 17},
+      {id: 'C4', name: 'Angular', students: 18},
+      {id: 'C5', name: 'React', students: 17},
+      {id: 'C6', name: 'C', students: 17},
+      {id: 'C7', name: 'C#', students: 17},
+      {id: 'C8', name: 'Django', students: 17},
+    ],
+    lastId: 'C8',
+    rowsOnPage: 5,
+  }
 );
 const students = handleActions(
   {
     [combineActions(
-      GET_INIT_DATA,
+      ADD_COURSE,
       // END_SEARCH_PLAYERS,
       // CLEAR_SEARCH,
       // CLEAR_SEARCH_FILTER,
       // MARK_NEWS,
     )]: (state, action) => ({
       ...state, 
-      ...action.payload.loading,
+      ...action.payload.students,
     }),
   },
-  []
-  // defaultState.loading
+  {
+    data: [],
+    lastId: 'S0',
+    rowsOnPage: 50,
+  }
 );
 
 export const appState = combineReducers({
