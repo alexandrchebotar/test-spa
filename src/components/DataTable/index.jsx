@@ -7,7 +7,7 @@ import EditDialog from '../EditDialog';
 
 import './style.scss';
 
-const DataTable = ({headers, data, dataType, updateRow, deleteRow,
+const DataTable = ({headers, data, dataType, updateRow, deleteRow, lastId,
   //currentPage, rowsOnPage
 }) => {
   let history = useHistory();
@@ -65,7 +65,7 @@ const DataTable = ({headers, data, dataType, updateRow, deleteRow,
       {editRowId &&
         <EditDialog
         dataType={dataType}
-        row={data.find(row => row.id === editRowId)}
+        rowData={data.find(row => row.id === editRowId)}
         onConfirm={updateRow}
         onCloseComplete={() => setEditRowId(null)}
         />
@@ -73,7 +73,7 @@ const DataTable = ({headers, data, dataType, updateRow, deleteRow,
       {deleteRowId &&
         <DeleteDialog
           dataType={dataType}
-          row={data.find(row => row.id === deleteRowId)}
+          rowData={data.find(row => row.id === deleteRowId)}
           onConfirm={deleteRow}
           onCloseComplete={() => setDeleteRowId(null)}
         />

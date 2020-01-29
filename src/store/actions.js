@@ -1,4 +1,7 @@
 import {
+  ADD_NEW_COURSE,
+  ADD_COURSES_DATA,
+  REPLACE_COURSES_DATA,
   ADD_COURSE,
   EDIT_COURSE,
   DELETE_COURSE,
@@ -11,7 +14,12 @@ import {createAction} from 'redux-actions';
 // import coursesJSON from './courses.json';
 // import studentsJSON from './students.json';
 
-// export const getInitData = createAction(GET_INIT_DATA);
+export const addNewCourse = createAction(ADD_NEW_COURSE, courseData => ({courses: {data: [courseData]}}));
+
+
+export const addCoursesData = createAction(ADD_COURSES_DATA, courses => ({courses}));
+export const replaceCoursesData = createAction(REPLACE_COURSES_DATA, courses => ({courses}));
+
 
 export const addCourse = createAction(ADD_COURSE, ({data, lastId}) => ({
   courses: {
@@ -19,13 +27,13 @@ export const addCourse = createAction(ADD_COURSE, ({data, lastId}) => ({
     lastId,
   },
 }));
-export const updateCourse = createAction(EDIT_COURSE, (courceData) => ({
-  cources: {
-    data: [courceData],
+export const updateCourse = createAction(EDIT_COURSE, ({data}) => ({
+  courses: {
+    data,
   },
 }));
 export const deleteCourse = createAction(DELETE_COURSE, (courceData) => ({
-  cources: {
+  courses: {
     data: [courceData],
   },
 }));

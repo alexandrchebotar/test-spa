@@ -1,7 +1,10 @@
 import {
-  ADD_COURSE,
-  EDIT_COURSE,
-  DELETE_COURSE,
+  ADD_NEW_COURSE,
+  ADD_COURSES_DATA,
+  REPLACE_COURSES_DATA,
+  // ADD_COURSE,
+  // EDIT_COURSE,
+  // DELETE_COURSE,
   // END_SEARCH_PLAYERS,
   // CLEAR_SEARCH,
   // CLEAR_SEARCH_FILTER,
@@ -13,17 +16,23 @@ import {handleActions, combineActions} from 'redux-actions';
 
 const courses = handleActions(
   {
-    [combineActions(
-      ADD_COURSE,
-      // END_SEARCH_PLAYERS,
-      // CLEAR_SEARCH,
-      // CLEAR_SEARCH_FILTER,
-      // MARK_NEWS,
-    )]: (state, action) => ({
+    [ADD_NEW_COURSE]: (state, action) => {
+      const lastId = state.lastId[0] + (+state.lastId.slice(1) + 1);
+      const courseData = {...action.payload.courses.data[0], id: lastId, students: 0};
+      return ({
+        ...state,
+        data: [...state.data, courseData],
+        lastId,
+      });
+    },
+    [ADD_COURSES_DATA]: (state, action) => {debugger;return({
       ...state, 
-      data: [...state.data, ...action.payload.courses.data],
+      data: [...state.data, action.payload.courses.data],
       lastId: action.payload.courses.lastId,
-    }),
+    })},
+    [REPLACE_COURSES_DATA]: (state, action) => {debugger;return({ 
+      ...action.payload.courses,
+    })},
   },
   {
     data: [
@@ -43,7 +52,7 @@ const courses = handleActions(
 const students = handleActions(
   {
     [combineActions(
-      ADD_COURSE,
+      ADD_COURSES_DATA
       // END_SEARCH_PLAYERS,
       // CLEAR_SEARCH,
       // CLEAR_SEARCH_FILTER,

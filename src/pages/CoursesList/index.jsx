@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import {Heading, IconButton, SearchInput} from 'evergreen-ui';
 import DataTable from '../../components/DataTable';
 import EditDialog from '../../components/EditDialog';
-import {addCourse, updateCourse, deleteCourse} from '../../store/actions';
+import {addNewCourse, updateCourse, deleteCourse} from '../../store/actions';
 
 import './style.scss';
 
@@ -12,9 +12,9 @@ const headers = ['name', 'id', 'students']
 
 const mapDispatchToProps = (dispatch) => {
   return {    
-    addCourse: (courceData) => dispatch(addCourse(courceData)),
-    updateCourse: (courceData) => dispatch(updateCourse(courceData)),
-    deleteCourse: (courceData) => dispatch(deleteCourse(courceData)),
+    addNewCourse: (courseData) => dispatch(addNewCourse(courseData)),
+    updateCourse: (courseData) => dispatch(updateCourse(courseData)),
+    deleteCourse: (courseId) => dispatch(deleteCourse(courseId)),
   }
 };
 const mapStateToProps = ({courses}) => {
@@ -24,12 +24,12 @@ const mapStateToProps = ({courses}) => {
 class CoursesList extends Component {
   state = {
     dataFilter: '',
-    addNewCourse: false,
+    showAddNewCourse: false,
   };
 
   render() {
-    const {data, rowsOnPage, lastId, match, addCourse, updateCourse, deleteCourse} = this.props;
-    const {dataFilter, addNewCourse} = this.state;
+    const {data, rowsOnPage, lastId, match, addNewCourse, updateCourse, deleteCourse} = this.props;
+    const {dataFilter, showAddNewCourse} = this.state;
     const {studentId} = match.params;
     const filteredData = data.filter(({name}) => name.toLocaleLowerCase().includes(dataFilter))
     return (
@@ -41,7 +41,7 @@ class CoursesList extends Component {
             'Courses'
           }
         </Heading>
-        <IconButton icon="plus" appearance="primary" intent="success" onClick={() => this.setState({addNewCourse: true})} />
+        <IconButton icon="plus" appearance="primary" intent="success" onClick={() => this.setState({showAddNewCourse: true})} />
         <SearchInput placeholder="Search..." onChange={e => this.setState({filter: e.target.value.toLocaleLowerCase()})} />
         <DataTable
           data={filteredData}
@@ -51,12 +51,12 @@ class CoursesList extends Component {
           updateRow={updateCourse}
           deleteRow={deleteCourse}
         />
-        {addNewCourse &&
+        {showAddNewCourse &&
           <EditDialog
-            dataType="courses"
+            dataType="course"
             lastId={lastId}
-            onConfirm={addCourse}
-            onCloseComplete={() => this.setState({addNewCourse: false})}
+            onConfirm={addNewCourse}
+            onCloseComplete={() => this.setState({showAddNewCourse: false})}
           />
         }
       </Fragment>
