@@ -36,9 +36,18 @@ class StudentsList extends Component {
     },
   }));
   getProcessedData = () => {
+    const {courseId} = this.props.match.params;
     const {dataFilter, sortingParams} = this.state;
     return this.props.data
-      .filter(({name}) => name.toLowerCase().includes(dataFilter))
+      .filter(({name, courses}) => {
+        if (courseId && !courses.includes(courseId)) {
+          return false;
+        }
+        if (name.toLowerCase().includes(dataFilter)) {
+          return true;
+        }
+        return false;
+      })
       .sort((rowDataA, rowDataB) => {
         const {field, direction} = sortingParams;
         let a, b;

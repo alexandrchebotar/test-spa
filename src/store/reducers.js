@@ -7,6 +7,10 @@ import {
   UPDATE_STUDENT,
   DELETE_STUDENT,
   CHANGE_STUDENTS_NUMBER_ON_PAGE,
+  ADD_COURSE_TO_STUDENT,
+  ADD_STUDENT_TO_COURSE,
+  DELETE_STUDENT_FROM_COURSE,
+  DELETE_COURSE_FROM_STUDENT,
 } from '../common/constants';
 import {combineReducers} from 'redux'; 
 import {handleActions, combineActions} from 'redux-actions';
@@ -44,17 +48,60 @@ const courses = handleActions(
         ...state,
         ...action.payload,
     }),
+    [combineActions(
+      ADD_COURSE_TO_STUDENT,
+      ADD_STUDENT_TO_COURSE
+    )]: (state, action) => {
+      const {courseId, studentId} = action.payload;
+      const data = state.data.map(courseData => {
+        if (courseData.id === courseId) {
+          courseData.students.push(studentId);
+        }
+        return courseData;
+      });
+      return ({
+        ...state,
+        data,
+      });
+    },
+    [combineActions(
+      DELETE_STUDENT_FROM_COURSE,
+      DELETE_COURSE_FROM_STUDENT
+    )]: (state, action) => {
+      const {courseId, studentId} = action.payload;
+      const data = state.data.map(courseData => {
+        if (courseData.id === courseId) {
+          courseData.courses.filter(({id}) => id !== studentId);
+        }
+        return courseData;
+      });
+      return ({
+        ...state,
+        data,
+      });
+    },
+    [UPDATE_STUDENT]: (state, action) => {
+      const {studentId} = action.payload;
+      const data = state.data.map((courseData) => ({
+        ...courseData,
+        courses: courseData.students.filter(({id}) => id !== studentId)
+      }));
+      return ({
+        ...state,
+        data,
+      });
+    },
   },
   {
     data: [
-      {id: 'c1', name: 'JS', students: 21},
-      {id: 'c2', name: 'Python', students: 10},
-      {id: 'c3', name: 'Vue', students: 17},
-      {id: 'c4', name: 'Angular', students: 18},
-      {id: 'c5', name: 'React', students: 17},
-      {id: 'c6', name: 'C', students: 17},
-      {id: 'c7', name: 'C#', students: 17},
-      {id: 'c8', name: 'Django', students: 17},
+      {id: 'c1', name: 'JS', students: ['s1', 's2', 's3' ,'s4', 's5', 's6', 's7', 's8', 's9', 's10', 's11', 's12', 's13', 's14', 's15', 's16']},
+      {id: 'c2', name: 'Python', students: ['s1', 's2', 's3' ,'s4', 's5', 's6', 's7', 's8', 's9', 's10']},
+      {id: 'c3', name: 'Vue', students: ['s1', 's2', 's3' ,'s4', 's5', 's6', 's7', 's8', 's9', 's10']},
+      {id: 'c4', name: 'Angular', students: ['s1', 's2', 's3' ,'s4', 's5', 's6', 's7', 's8', 's9', 's10']},
+      {id: 'c5', name: 'React', students: ['s1', 's2', 's3' ,'s4', 's5', 's6', 's7', 's8', 's9', 's10']},
+      {id: 'c6', name: 'C', students: ['s1', 's11', 's12', 's13', 's14', 's15', 's16']},
+      {id: 'c7', name: 'C#', students: ['s1', 's11', 's12', 's13', 's14', 's15', 's16']},
+      {id: 'c8', name: 'Django', students: ['s1', 's14', 's15', 's16']},
     ],
     lastId: 'c8',
     rowsOnPage: 5,
@@ -92,20 +139,71 @@ const students = handleActions(
         ...state,
         ...action.payload,
     }),
+    [combineActions(
+      ADD_COURSE_TO_STUDENT,
+      ADD_STUDENT_TO_COURSE
+    )]: (state, action) => {
+      const {courseId, studentId} = action.payload;
+      const data = state.data.map(studentData => {
+        if (studentData.id === studentId) {
+          studentData.courses.push(courseId);
+        }
+        return studentData;
+      });
+      return ({
+        ...state,
+        data,
+      });
+    },
+    [combineActions(
+      DELETE_STUDENT_FROM_COURSE,
+      DELETE_COURSE_FROM_STUDENT
+    )]: (state, action) => {
+      const {courseId, studentId} = action.payload;
+      const data = state.data.map(studentData => {
+        if (studentData.id === studentId) {
+          studentData.courses.filter(({id}) => id !== courseId);
+        }
+        return studentData;
+      });
+      return ({
+        ...state,
+        data,
+      });
+    },
+    [DELETE_COURSE]: (state, action) => {
+      const {courseId} = action.payload;
+      const data = state.data.map((studentData) => ({
+        ...studentData,
+        courses: studentData.courses.filter(({id}) => id !== courseId)
+      }));
+      return ({
+        ...state,
+        data,
+      });
+    },
   },
   {
     data: [
-      {id: 's1', name: 'Victoria Abril', courses: 21},
-      {id: 's2', name: 'Goodman Ace', courses: 10},
-      {id: 's3', name: 'Johnny Ace', courses: 17},
-      {id: 's4', name: 'Derek Acorah', courses: 18},
-      {id: 's5', name: 'Ross Alexander', courses: 17},
-      {id: 's6', name: 'Johnny Alf', courses: 17},
-      {id: 's7', name: 'Rashied Ali', courses: 17},
-      {id: 's8', name: 'Mary Alice', courses: 17},
+      {id: 's1', name: 'Victoria Abril', courses: ['c1', 'c2', 'c3' ,'c4', 'c5', 'c6', 'c7', 'c8']},
+      {id: 's2', name: 'Goodman Ace', courses: ['c1', 'c2', 'c3' ,'c4', 'c5']},
+      {id: 's3', name: 'Johnny Ace', courses: ['c1', 'c2', 'c3' ,'c4', 'c5']},
+      {id: 's4', name: 'Derek Acorah', courses: ['c1', 'c2', 'c3' ,'c4', 'c5']},
+      {id: 's5', name: 'Ross Alexander', courses: ['c1', 'c2', 'c3' ,'c4', 'c5']},
+      {id: 's6', name: 'Johnny Alf', courses: ['c1', 'c2', 'c3' ,'c4', 'c5']},
+      {id: 's7', name: 'Rashied Ali', courses: ['c1', 'c2', 'c3' ,'c4', 'c5']},
+      {id: 's8', name: 'Mary Alice', courses: ['c1', 'c2', 'c3' ,'c4', 'c5']},
+      {id: 's9', name: 'Victoria Abril', courses: ['c1', 'c2', 'c3' ,'c4', 'c5']},
+      {id: 's10', name: 'Goodman Ace', courses: ['c1', 'c2', 'c3' ,'c4', 'c5']},
+      {id: 's11', name: 'Johnny Ace', courses: ['c1', 'c6', 'c7']},
+      {id: 's12', name: 'Derek Acorah', courses: ['c1', 'c6', 'c7']},
+      {id: 's13', name: 'Ross Alexander', courses: ['c1', 'c6', 'c7']},
+      {id: 's14', name: 'Johnny Alf', courses: ['c1', 'c6', 'c7', 'c8']},
+      {id: 's15', name: 'Rashied Ali', courses: ['c1', 'c6', 'c7', 'c8']},
+      {id: 's16', name: 'Mary Alice', courses: ['c1', 'c6', 'c7', 'c8']},
     ],
     lastId: 's8',
-    rowsOnPage: 5,
+    rowsOnPage: 10,
   }
 );
 

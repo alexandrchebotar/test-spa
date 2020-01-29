@@ -7,6 +7,10 @@ import {
   UPDATE_STUDENT,
   DELETE_STUDENT,
   CHANGE_STUDENTS_NUMBER_ON_PAGE,
+  ADD_COURSE_TO_STUDENT,
+  ADD_STUDENT_TO_COURSE,
+  DELETE_STUDENT_FROM_COURSE,
+  DELETE_COURSE_FROM_STUDENT,
 } from '../common/constants';
 import {createAction} from 'redux-actions';
 // import coursesJSON from './courses.json';
@@ -21,26 +25,11 @@ export const updateStudent = createAction(UPDATE_STUDENT, studentData => ({stude
 export const deleteStudent = createAction(DELETE_STUDENT, studentId => ({studentId}));
 export const changeStudentsNumberOnPage = createAction(CHANGE_STUDENTS_NUMBER_ON_PAGE, rowsOnPage => ({rowsOnPage}));
 
+export const addCourseToStudent = createAction(ADD_COURSE_TO_STUDENT);
+export const addStudentToCourse = createAction(ADD_STUDENT_TO_COURSE);
+export const deleteStudentFromCourse = createAction(DELETE_STUDENT_FROM_COURSE);
+export const deleteCourseFromStudent = createAction(DELETE_COURSE_FROM_STUDENT);
 
-// export const updateCourse = createAction(EDIT_COURSE, ({data}) => ({
-//   courses: {
-//     data,
-//   },
-// }));
-// export const deleteCourse = createAction(DELETE_COURSE, (courceData) => ({
-//   courses: {
-//     data: [courceData],
-//   },
-// }));
-// export const clearSearch = createAction(CLEAR_SEARCH, () => ({
-//   search: {clubs: [], players: []},
-// }));
-// export const clearSearchFilter = createAction(CLEAR_SEARCH_FILTER, () => ({
-//   search: {filter: []},
-// }));
-// export const markNews = createAction(MARK_NEWS, (news) => ({
-//   currentClub: {news},
-// }));
 
 // export const initApp = () => {
 //   return (dispatch, getState) => {
