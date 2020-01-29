@@ -43,7 +43,7 @@ class CoursesList extends Component {
           }
         </Heading>
         <IconButton className="add-button" icon="plus" appearance="primary" intent="success" onClick={() => this.setState({showAddNewCourse: true})} />
-        <SearchInput placeholder="Search..." onChange={e => this.setState({dataFilter: e.target.value.toLowerCase()})} />
+        <SearchInput className="search-input" placeholder="Search..." onChange={e => this.setState({dataFilter: e.target.value.toLowerCase()})} />
         <DataTable
           data={filteredData}
           rowsOnPage={rowsOnPage}
