@@ -46,7 +46,7 @@ class CoursesList extends Component {
         <DataTable
           data={filteredData}
           rowsOnPage={rowsOnPage}
-          dataType="courses"
+          dataType="course"
           headers={headers}
           updateRow={updateCourse}
           deleteRow={deleteCourse}

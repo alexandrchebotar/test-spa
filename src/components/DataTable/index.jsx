@@ -7,7 +7,7 @@ import EditDialog from '../EditDialog';
 
 import './style.scss';
 
-const DataTable = ({headers, data, dataType, updateRow, deleteRow, lastId,
+const DataTable = ({headers, data, dataType, updateRow, deleteRow,
   //currentPage, rowsOnPage
 }) => {
   let history = useHistory();
