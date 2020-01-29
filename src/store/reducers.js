@@ -2,17 +2,7 @@ import {
   ADD_NEW_COURSE,
   UPDATE_COURSE,
   DELETE_COURSE,
-
-
-  ADD_COURSES_DATA,
-  REPLACE_COURSES_DATA,
-  // ADD_COURSE,
-  // EDIT_COURSE,
-  // DELETE_COURSE,
-  // END_SEARCH_PLAYERS,
-  // CLEAR_SEARCH,
-  // CLEAR_SEARCH_FILTER,
-  // MARK_NEWS,
+  CHANGE_COURCES_NUMBER_ON_PAGE,
 } from '../common/constants';
 import {combineReducers} from 'redux'; 
 import {handleActions, combineActions} from 'redux-actions';
@@ -46,15 +36,10 @@ const courses = handleActions(
         data,
       });
     },
-
-    [ADD_COURSES_DATA]: (state, action) => {debugger;return({
-      ...state, 
-      data: [...state.data, action.payload.courses.data],
-      lastId: action.payload.courses.lastId,
-    })},
-    [REPLACE_COURSES_DATA]: (state, action) => {debugger;return({ 
-      ...action.payload.courses,
-    })},
+    [CHANGE_COURCES_NUMBER_ON_PAGE]: (state, action) => ({
+        ...state,
+        ...action.payload,
+    }),
   },
   {
     data: [
@@ -74,7 +59,7 @@ const courses = handleActions(
 const students = handleActions(
   {
     [combineActions(
-      ADD_COURSES_DATA
+      ADD_NEW_COURSE
       // END_SEARCH_PLAYERS,
       // CLEAR_SEARCH,
       // CLEAR_SEARCH_FILTER,

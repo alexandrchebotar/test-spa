@@ -7,12 +7,10 @@ import EditDialog from '../EditDialog';
 
 import './style.scss';
 
-const DataTable = ({headers, data, dataType, updateRow, deleteRow,
-  //currentPage, rowsOnPage
-}) => {
+const DataTable = ({headers, data, dataType, updateRow, deleteRow, rowsOnPage, setRowsOnPage}) => {
   let history = useHistory();
   const [currentPage, setCurrentPage] = useState(1);
-  const [rowsOnPage, setRowsOnPage] = useState(5);
+  // const [rowsOnPage, setRowsOnPage] = useState(5);
   const [deleteRowId, setDeleteRowId] = useState(null);
   const [editRowId, setEditRowId] = useState(null);
   useEffect(() => {setCurrentPage(1)}, [data, rowsOnPage]);

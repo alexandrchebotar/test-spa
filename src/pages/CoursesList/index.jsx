@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import {Heading, IconButton, SearchInput} from 'evergreen-ui';
 import DataTable from '../../components/DataTable';
 import EditDialog from '../../components/EditDialog';
-import {addNewCourse, updateCourse, deleteCourse} from '../../store/actions';
+import {addNewCourse, updateCourse, deleteCourse, changeCourcesNumberOnPage} from '../../store/actions';
 
 import './style.scss';
 
@@ -15,6 +15,7 @@ const mapDispatchToProps = (dispatch) => {
     addNewCourse: (courseData) => dispatch(addNewCourse(courseData)),
     updateCourse: (courseData) => dispatch(updateCourse(courseData)),
     deleteCourse: (courseId) => dispatch(deleteCourse(courseId)),
+    changeCourcesNumberOnPage: (rowsOnPage) => dispatch(changeCourcesNumberOnPage(rowsOnPage)),
   }
 };
 const mapStateToProps = ({courses}) => {
@@ -28,7 +29,7 @@ class CoursesList extends Component {
   };
 
   render() {
-    const {data, rowsOnPage, lastId, match, addNewCourse, updateCourse, deleteCourse} = this.props;
+    const {data, rowsOnPage, lastId, match, addNewCourse, updateCourse, deleteCourse, changeCourcesNumberOnPage} = this.props;
     const {dataFilter, showAddNewCourse} = this.state;
     const {studentId} = match.params;
     const filteredData = data.filter(({name}) => name.toLowerCase().includes(dataFilter))
@@ -50,6 +51,7 @@ class CoursesList extends Component {
           headers={headers}
           updateRow={updateCourse}
           deleteRow={deleteCourse}
+          setRowsOnPage={changeCourcesNumberOnPage}
         />
         {showAddNewCourse &&
           <EditDialog

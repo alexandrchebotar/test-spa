@@ -2,14 +2,7 @@ import {
   ADD_NEW_COURSE,
   UPDATE_COURSE,
   DELETE_COURSE,
-
-  ADD_COURSES_DATA,
-  REPLACE_COURSES_DATA,
-  ADD_COURSE,
-  // END_SEARCH_PLAYERS,
-  // CLEAR_SEARCH,
-  // CLEAR_SEARCH_FILTER,
-  // MARK_NEWS,
+  CHANGE_COURCES_NUMBER_ON_PAGE,
 } from '../common/constants';
 import {createAction} from 'redux-actions';
 // import coursesJSON from './courses.json';
@@ -18,18 +11,10 @@ import {createAction} from 'redux-actions';
 export const addNewCourse = createAction(ADD_NEW_COURSE, courseData => ({courseData}));
 export const updateCourse = createAction(UPDATE_COURSE, courseData => ({courseData}));
 export const deleteCourse = createAction(DELETE_COURSE, courseId => ({courseId}));
+export const changeCourcesNumberOnPage = createAction(CHANGE_COURCES_NUMBER_ON_PAGE, rowsOnPage => ({rowsOnPage}));
 
 
-export const addCoursesData = createAction(ADD_COURSES_DATA, courses => ({courses}));
-export const replaceCoursesData = createAction(REPLACE_COURSES_DATA, courses => ({courses}));
 
-
-export const addCourse = createAction(ADD_COURSE, ({data, lastId}) => ({
-  courses: {
-    data,
-    lastId,
-  },
-}));
 // export const updateCourse = createAction(EDIT_COURSE, ({data}) => ({
 //   courses: {
 //     data,
