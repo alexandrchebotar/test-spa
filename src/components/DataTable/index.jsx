@@ -41,7 +41,10 @@ const DataTable = ({headers, data, dataType, updateRow, deleteRow, rowsOnPage, s
         </Table.Head>
         <Table.Body>
           {pageData.map(row => (
-              <Table.Row key={row.id} isSelectable onSelect={() => history.push('/' + dataType +'/' + row.id)}
+              <Table.Row
+                key={row.id}
+                isSelectable
+                onSelect={() => history.push('/' + dataType +'s/' + row.id)}
               >
                   <Table.TextCell> {row.name} </Table.TextCell>
                 {headersWithoutName.map(name => (
