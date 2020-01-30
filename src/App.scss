@@ -1,5 +1,4 @@
 .App {
-  // text-align: center;
   position: relative;
 	min-height: 100%;
 
@@ -19,7 +18,11 @@
     margin-right: 5px;
   }
 
-  .add-button, .search-input {
-    z-index: 10;
-  }
+  // .add-button, .search-input {
+  //   z-index: 10;
+
+  //   svg {
+  //     z-index: 11;
+  //   }
+  // }
 }
