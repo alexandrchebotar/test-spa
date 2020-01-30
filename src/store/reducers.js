@@ -71,7 +71,7 @@ const courses = handleActions(
       const {courseId, studentId} = action.payload;
       const data = state.data.map(courseData => {
         if (courseData.id === courseId) {
-          courseData.courses.filter(({id}) => id !== studentId);
+          courseData.students = courseData.students.filter((id) => id !== studentId);
         }
         return courseData;
       });
@@ -84,7 +84,7 @@ const courses = handleActions(
       const {studentId} = action.payload;
       const data = state.data.map((courseData) => ({
         ...courseData,
-        courses: courseData.students.filter(({id}) => id !== studentId)
+        courses: courseData.students.filter((id) => id !== studentId)
       }));
       return ({
         ...state,
@@ -162,7 +162,7 @@ const students = handleActions(
       const {courseId, studentId} = action.payload;
       const data = state.data.map(studentData => {
         if (studentData.id === studentId) {
-          studentData.courses.filter(({id}) => id !== courseId);
+          studentData.courses = studentData.courses.filter((id) => id !== courseId);
         }
         return studentData;
       });
@@ -175,7 +175,7 @@ const students = handleActions(
       const {courseId} = action.payload;
       const data = state.data.map((studentData) => ({
         ...studentData,
-        courses: studentData.courses.filter(({id}) => id !== courseId)
+        courses: studentData.courses.filter((id) => id !== courseId)
       }));
       return ({
         ...state,
@@ -193,14 +193,14 @@ const students = handleActions(
       {id: 's6', name: 'Johnny Alf', courses: ['c1', 'c2', 'c3' ,'c4', 'c5']},
       {id: 's7', name: 'Rashied Ali', courses: ['c1', 'c2', 'c3' ,'c4', 'c5']},
       {id: 's8', name: 'Mary Alice', courses: ['c1', 'c2', 'c3' ,'c4', 'c5']},
-      {id: 's9', name: 'Victoria Abril', courses: ['c1', 'c2', 'c3' ,'c4', 'c5']},
-      {id: 's10', name: 'Goodman Ace', courses: ['c1', 'c2', 'c3' ,'c4', 'c5']},
-      {id: 's11', name: 'Johnny Ace', courses: ['c1', 'c6', 'c7']},
-      {id: 's12', name: 'Derek Acorah', courses: ['c1', 'c6', 'c7']},
-      {id: 's13', name: 'Ross Alexander', courses: ['c1', 'c6', 'c7']},
-      {id: 's14', name: 'Johnny Alf', courses: ['c1', 'c6', 'c7', 'c8']},
-      {id: 's15', name: 'Rashied Ali', courses: ['c1', 'c6', 'c7', 'c8']},
-      {id: 's16', name: 'Mary Alice', courses: ['c1', 'c6', 'c7', 'c8']},
+      {id: 's9', name: 'Leslie Banks', courses: ['c1', 'c2', 'c3' ,'c4', 'c5']},
+      {id: 's10', name: 'Harold Bennett', courses: ['c1', 'c2', 'c3' ,'c4', 'c5']},
+      {id: 's11', name: 'Ivy Close', courses: ['c1', 'c6', 'c7']},
+      {id: 's12', name: 'Noël Coward', courses: ['c1', 'c6', 'c7']},
+      {id: 's13', name: 'Cedric Hardwicke', courses: ['c1', 'c6', 'c7']},
+      {id: 's14', name: 'Kathleen Harrison', courses: ['c1', 'c6', 'c7', 'c8']},
+      {id: 's15', name: 'Leslie Howard', courses: ['c1', 'c6', 'c7', 'c8']},
+      {id: 's16', name: 'Jack Lambert', courses: ['c1', 'c6', 'c7', 'c8']},
     ],
     lastId: 's8',
     rowsOnPage: 10,

@@ -4,7 +4,14 @@ import {withRouter} from 'react-router-dom';
 import {Text, Heading, IconButton, SearchInput} from 'evergreen-ui';
 import DataTable from '../../components/DataTable';
 import EditDialog from '../../components/EditDialog';
-import {addNewCourse, updateCourse, deleteCourse, changeCourcesNumberOnPage} from '../../store/actions';
+import {
+  addNewCourse,
+  updateCourse,
+  deleteCourse,
+  addCourseToStudent,
+  deleteCourseFromStudent,
+  changeCourcesNumberOnPage,
+} from '../../store/actions';
 
 import './style.scss';
 
@@ -13,8 +20,10 @@ const headers = ['name', 'id', 'students']
 const mapDispatchToProps = (dispatch) => {
   return {    
     addNewCourse: (courseData) => dispatch(addNewCourse(courseData)),
+    addCourseToStudent: ({courseId, studentId}) => dispatch(addCourseToStudent({courseId, studentId})),
     updateCourse: (courseData) => dispatch(updateCourse(courseData)),
     deleteCourse: (courseId) => dispatch(deleteCourse(courseId)),
+    deleteCourseFromStudent: ({courseId, studentId}) => dispatch(deleteCourseFromStudent({courseId, studentId})),
     changeCourcesNumberOnPage: (rowsOnPage) => dispatch(changeCourcesNumberOnPage(rowsOnPage)),
   }
 };
@@ -93,9 +102,11 @@ class CoursesList extends Component {
           headers={headers}
           updateRow={updateCourse}
           deleteRow={deleteCourse}
+          removeRow={(courseId) => deleteCourseFromStudent({courseId, studentId})}
           setRowsOnPage={changeCourcesNumberOnPage}
           sortingParams={sortingParams}
           toggleSorting={this.toggleSorting}
+          removeMode={!!studentId}
         />
         {showAddNewCourse &&
           <EditDialog

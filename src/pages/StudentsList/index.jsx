@@ -4,7 +4,14 @@ import {withRouter} from 'react-router-dom';
 import {Text, Heading, IconButton, SearchInput} from 'evergreen-ui';
 import DataTable from '../../components/DataTable';
 import EditDialog from '../../components/EditDialog';
-import {addNewStudent, updateStudent, deleteStudent, changeStudentsNumberOnPage} from '../../store/actions';
+import {
+  addNewStudent,
+  updateStudent,
+  deleteStudent,
+  addStudentToCourse,
+  deleteStudentFromCourse,
+  changeStudentsNumberOnPage
+} from '../../store/actions';
 
 import './style.scss';
 
@@ -13,8 +20,10 @@ const headers = ['name', 'id', 'courses']
 const mapDispatchToProps = (dispatch) => {
   return {    
     addNewStudent: (studentData) => dispatch(addNewStudent(studentData)),
+    addStudentToCourse: ({courseId, studentId}) => dispatch(addStudentToCourse({courseId, studentId})),
     updateStudent: (studentData) => dispatch(updateStudent(studentData)),
     deleteStudent: (studentId) => dispatch(deleteStudent(studentId)),
+    deleteStudentFromCourse: ({courseId, studentId}) => dispatch(deleteStudentFromCourse({courseId, studentId})),
     changeStudentsNumberOnPage: (rowsOnPage) => dispatch(changeStudentsNumberOnPage(rowsOnPage)),
   }
 };
@@ -70,7 +79,7 @@ class StudentsList extends Component {
   };
 
   render() {
-    const {courses, rowsOnPage, lastId, match, addNewStudent, updateStudent, deleteStudent, changeStudentsNumberOnPage} = this.props;
+    const {courses, rowsOnPage, lastId, match, addNewStudent, updateStudent, deleteStudent, deleteStudentFromCourse, changeStudentsNumberOnPage} = this.props;
     const {showAddNewStudent, sortingParams} = this.state;
     const {courseId} = match.params;
 
@@ -93,9 +102,11 @@ class StudentsList extends Component {
           headers={headers}
           updateRow={updateStudent}
           deleteRow={deleteStudent}
+          removeRow={(studentId) => deleteStudentFromCourse({studentId, courseId})}
           setRowsOnPage={changeStudentsNumberOnPage}
           sortingParams={sortingParams}
           toggleSorting={this.toggleSorting}
+          removeMode={!!courseId}
         />
         {showAddNewStudent &&
           <EditDialog

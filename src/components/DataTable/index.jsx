@@ -1,17 +1,18 @@
-import React, {useState, useEffect} from 'react';
+import React, {Fragment, useState, useEffect} from 'react';
 import { useHistory } from "react-router-dom";
 import {Table, TextDropdownButton, IconButton, Pane, Text, Select} from 'evergreen-ui';
 import Pagination from './Pagination';
 import DeleteDialog from '../DeleteDialog';
 import EditDialog from '../EditDialog';
+import RemoveDialog from '../RemoveDialog';
 
 import './style.scss';
 
-const DataTable = ({headers, data, dataType, updateRow, deleteRow, rowsOnPage, setRowsOnPage, sortingParams, toggleSorting}) => {
+const DataTable = ({headers, data, dataType, updateRow, deleteRow, removeRow, rowsOnPage, setRowsOnPage, sortingParams, toggleSorting, removeMode}) => {
   let history = useHistory();
   const [currentPage, setCurrentPage] = useState(1);
   const [deleteRowId, setDeleteRowId] = useState(null);
-  // const [sortingParams, setSortingParams] = useState({field: 'name', direction: 'asc'});
+  const [removeRowId, setRemoveRowId] = useState(null);
   const [editRowId, setEditRowId] = useState(null);
   useEffect(() => {setCurrentPage(1)}, [data, rowsOnPage]);
   const pageCount = Math.ceil(data.length / rowsOnPage);
@@ -33,7 +34,7 @@ const DataTable = ({headers, data, dataType, updateRow, deleteRow, rowsOnPage, s
         </Pane>
       </Pane>
       <Table border >
-        <Table.Head paddingRight={120} >
+        <Table.Head paddingRight={60} >
           <Table.TextHeaderCell> 
             <TextDropdownButton
               onClick={() => toggleSorting('name')}
@@ -72,15 +73,24 @@ const DataTable = ({headers, data, dataType, updateRow, deleteRow, rowsOnPage, s
                     {row[name]}
                   </Table.TextCell>
                 ))}
-                <Table.Cell flexBasis={120} flexShrink={0} flexGrow={0} textAlign="center">
-                  <IconButton
-                    icon="edit" appearance="minimal" intent="success"
-                    onClick={e => {setEditRowId(row.id); e.stopPropagation();}}
-                  />
-                  <IconButton
-                    icon="trash" appearance="minimal" intent="danger"
-                    onClick={e => {setDeleteRowId(row.id); e.stopPropagation();}}
-                  />
+                <Table.Cell flexBasis={60} flexShrink={0} flexGrow={0} textAlign="center">
+                  {removeMode ?
+                      <IconButton
+                        icon="remove" appearance="minimal" intent="danger"
+                        onClick={e => {setRemoveRowId(row.id); e.stopPropagation();}}
+                      />
+                    :
+                      <Fragment>
+                        <IconButton
+                          icon="edit" appearance="minimal" intent="success"
+                          onClick={e => {setEditRowId(row.id); e.stopPropagation();}}
+                        />
+                        <IconButton
+                          icon="trash" appearance="minimal" intent="danger"
+                          onClick={e => {setDeleteRowId(row.id); e.stopPropagation();}}
+                        />
+                      </Fragment>
+                  }
                 </Table.Cell>
               </Table.Row>
           ))}
@@ -124,6 +134,14 @@ const DataTable = ({headers, data, dataType, updateRow, deleteRow, rowsOnPage, s
           rowData={data.find(row => row.id === deleteRowId)}
           onConfirm={deleteRow}
           onCloseComplete={() => setDeleteRowId(null)}
+        />
+      }
+      {removeRowId &&
+        <RemoveDialog
+          dataType={dataType}
+          rowData={data.find(row => row.id === removeRowId)}
+          onConfirm={removeRow}
+          onCloseComplete={() => setRemoveRowId(null)}
         />
       }
     </div>
