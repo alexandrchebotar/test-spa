@@ -7,8 +7,8 @@ import {
   UPDATE_STUDENT,
   DELETE_STUDENT,
   CHANGE_STUDENTS_NUMBER_ON_PAGE,
-  ADD_COURSE_TO_STUDENT,
-  ADD_STUDENT_TO_COURSE,
+  ADD_COURSES_TO_STUDENT,
+  ADD_STUDENTS_TO_COURSE,
   DELETE_STUDENT_FROM_COURSE,
   DELETE_COURSE_FROM_STUDENT,
 } from '../common/constants';
@@ -49,15 +49,16 @@ const courses = handleActions(
         ...action.payload,
     }),
     [combineActions(
-      ADD_COURSE_TO_STUDENT,
-      ADD_STUDENT_TO_COURSE
+      ADD_COURSES_TO_STUDENT,
+      ADD_STUDENTS_TO_COURSE
     )]: (state, action) => {
-      const {courseId, studentId} = action.payload;
+      const {coursesId, studentsId} = action.payload;
       const data = state.data.map(courseData => {
-        if (courseData.id === courseId) {
-          courseData.students.push(studentId);
-        }
-        return courseData;
+        const {id, students} = courseData;
+        return ({
+          ...courseData,
+          students: (coursesId.includes(id)) ? [...students, ...studentsId] : students,
+        });
       });
       return ({
         ...state,
@@ -70,10 +71,11 @@ const courses = handleActions(
     )]: (state, action) => {
       const {courseId, studentId} = action.payload;
       const data = state.data.map(courseData => {
-        if (courseData.id === courseId) {
-          courseData.students = courseData.students.filter((id) => id !== studentId);
-        }
-        return courseData;
+        const {id, students} = courseData;
+        return ({
+          ...courseData,
+          students: (id === courseId) ? students.filter((id) => id !== studentId) : students,
+        });
       });
       return ({
         ...state,
@@ -82,7 +84,7 @@ const courses = handleActions(
     },
     [UPDATE_STUDENT]: (state, action) => {
       const {studentId} = action.payload;
-      const data = state.data.map((courseData) => ({
+      const data = state.data.map(courseData => ({
         ...courseData,
         courses: courseData.students.filter((id) => id !== studentId)
       }));
@@ -140,15 +142,16 @@ const students = handleActions(
         ...action.payload,
     }),
     [combineActions(
-      ADD_COURSE_TO_STUDENT,
-      ADD_STUDENT_TO_COURSE
+      ADD_COURSES_TO_STUDENT,
+      ADD_STUDENTS_TO_COURSE
     )]: (state, action) => {
-      const {courseId, studentId} = action.payload;
+      const {coursesId, studentsId} = action.payload;
       const data = state.data.map(studentData => {
-        if (studentData.id === studentId) {
-          studentData.courses.push(courseId);
-        }
-        return studentData;
+        const {id, courses} = studentData;
+        return ({
+          ...studentData,
+          courses: (studentsId.includes(id)) ? [...courses, ...coursesId] : courses,
+        });
       });
       return ({
         ...state,
@@ -161,10 +164,11 @@ const students = handleActions(
     )]: (state, action) => {
       const {courseId, studentId} = action.payload;
       const data = state.data.map(studentData => {
-        if (studentData.id === studentId) {
-          studentData.courses = studentData.courses.filter((id) => id !== courseId);
-        }
-        return studentData;
+        const {id, courses} = studentData;
+        return ({
+          ...studentData,
+          courses: (id === studentId) ? courses.filter((id) => id !== courseId) : courses,
+        });
       });
       return ({
         ...state,
@@ -173,7 +177,7 @@ const students = handleActions(
     },
     [DELETE_COURSE]: (state, action) => {
       const {courseId} = action.payload;
-      const data = state.data.map((studentData) => ({
+      const data = state.data.map(studentData => ({
         ...studentData,
         courses: studentData.courses.filter((id) => id !== courseId)
       }));

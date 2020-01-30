@@ -4,6 +4,7 @@ import {withRouter} from 'react-router-dom';
 import {Text, Heading, IconButton, SearchInput} from 'evergreen-ui';
 import DataTable from '../../components/DataTable';
 import EditDialog from '../../components/EditDialog';
+import AppendDialog from '../../components/AppendDialog';
 import {
   addNewCourse,
   updateCourse,
@@ -20,7 +21,7 @@ const headers = ['name', 'id', 'students']
 const mapDispatchToProps = (dispatch) => {
   return {    
     addNewCourse: (courseData) => dispatch(addNewCourse(courseData)),
-    addCourseToStudent: ({courseId, studentId}) => dispatch(addCourseToStudent({courseId, studentId})),
+    addCoursesToStudent: ({coursesId, studentsId}) => dispatch(addCourseToStudent({coursesId, studentsId})),
     updateCourse: (courseData) => dispatch(updateCourse(courseData)),
     deleteCourse: (courseId) => dispatch(deleteCourse(courseId)),
     deleteCourseFromStudent: ({courseId, studentId}) => dispatch(deleteCourseFromStudent({courseId, studentId})),
@@ -35,6 +36,7 @@ class CoursesList extends Component {
   state = {
     dataFilter: '',
     showAddNewCourse: false,
+    showAppendCourses: false,
     sortingParams: {field: 'name', direction: 'asc'},
   };
 
@@ -44,7 +46,7 @@ class CoursesList extends Component {
       direction: (field === sortingParams.field && sortingParams.direction === 'asc') ? 'desc' : 'asc',
     },
   }));
-  getProcessedData = () => {
+  getProcessedData() {
     const {studentId} = this.props.match.params;
     const {dataFilter, sortingParams} = this.state;
     return this.props.data
@@ -68,6 +70,9 @@ class CoursesList extends Component {
         if (field === 'id') {
           [a, b] = [a, b].map(id => +id.slice(1));
         }
+        if (field === 'students') {
+          [a, b] = [a, b].map(students => students.length);
+        }
         if (a > b) {
           return 1;
         }
@@ -77,11 +82,18 @@ class CoursesList extends Component {
         return 0;
       });
   };
+  getVacantCourses() {
+    const {studentId} = this.props.match.params;
+    return this.props.data.filter(({students}) => !students.includes(studentId));
+  };
 
   render() {
-    const {students, rowsOnPage, lastId, match, addNewCourse, updateCourse, deleteCourse, changeCourcesNumberOnPage} = this.props;
-    const {showAddNewCourse, sortingParams} = this.state;
-    const {studentId} = match.params; 
+    const {students, rowsOnPage, lastId, match, addNewCourse, addCoursesToStudent,
+      updateCourse, deleteCourse, deleteCourseFromStudent, changeCourcesNumberOnPage} = this.props;
+    const {showAddNewCourse, showAppendCourses, sortingParams} = this.state;
+    const {studentId} = match.params;
+    const processedData = this.getProcessedData();
+    const vacantCourses = studentId && this.getVacantCourses();
 
     return (
       <Fragment>
@@ -93,10 +105,17 @@ class CoursesList extends Component {
             </Text>
           }
         </Heading>
-        <IconButton className="add-button" icon="plus" appearance="primary" intent="success" onClick={() => this.setState({showAddNewCourse: true})} />
-        <SearchInput className="search-input" placeholder="Search..." onChange={e => this.setState({dataFilter: e.target.value.toLowerCase()})} />
+        <IconButton
+          className="add-button" icon="plus" appearance="primary" intent="success"
+          onClick={() => this.setState({[studentId ? 'showAppendCourses' : 'showAddNewCourse']: true})}
+          disabled={studentId && !vacantCourses.length}
+        />
+        <SearchInput 
+          className="search-input" placeholder="Search..."
+          onChange={e => this.setState({dataFilter: e.target.value.toLowerCase()})}
+        />
         <DataTable
-          data={this.getProcessedData()}
+          data={processedData}
           rowsOnPage={rowsOnPage}
           dataType="course"
           headers={headers}
@@ -114,6 +133,14 @@ class CoursesList extends Component {
             lastId={lastId}
             onConfirm={addNewCourse}
             onCloseComplete={() => this.setState({showAddNewCourse: false})}
+          />
+        }
+        {showAppendCourses &&
+          <AppendDialog
+            dataType="students"
+            itemList={vacantCourses}
+            onConfirm={(coursesId) => addCoursesToStudent({coursesId, studentsId: [studentId]})}
+            onCloseComplete={() => this.setState({showAppendCourses: false})}
           />
         }
       </Fragment>

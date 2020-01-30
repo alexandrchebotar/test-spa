@@ -70,7 +70,7 @@ const DataTable = ({headers, data, dataType, updateRow, deleteRow, removeRow, ro
                 <Table.TextCell> {row.name} </Table.TextCell>
                 {headersWithoutName.map(name => (
                   <Table.TextCell key={name} flexBasis={120} flexShrink={0} flexGrow={0} textAlign="center">
-                    {row[name]}
+                    {(name === 'students' || name === 'courses') ? row[name].length : row[name]}
                   </Table.TextCell>
                 ))}
                 <Table.Cell flexBasis={60} flexShrink={0} flexGrow={0} textAlign="center">

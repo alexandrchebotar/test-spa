@@ -7,8 +7,8 @@ import {
   UPDATE_STUDENT,
   DELETE_STUDENT,
   CHANGE_STUDENTS_NUMBER_ON_PAGE,
-  ADD_COURSE_TO_STUDENT,
-  ADD_STUDENT_TO_COURSE,
+  ADD_COURSES_TO_STUDENT,
+  ADD_STUDENTS_TO_COURSE,
   DELETE_STUDENT_FROM_COURSE,
   DELETE_COURSE_FROM_STUDENT,
 } from '../common/constants';
@@ -25,8 +25,8 @@ export const updateStudent = createAction(UPDATE_STUDENT, studentData => ({stude
 export const deleteStudent = createAction(DELETE_STUDENT, studentId => ({studentId}));
 export const changeStudentsNumberOnPage = createAction(CHANGE_STUDENTS_NUMBER_ON_PAGE, rowsOnPage => ({rowsOnPage}));
 
-export const addCourseToStudent = createAction(ADD_COURSE_TO_STUDENT);
-export const addStudentToCourse = createAction(ADD_STUDENT_TO_COURSE);
+export const addCourseToStudent = createAction(ADD_COURSES_TO_STUDENT);
+export const addStudentToCourse = createAction(ADD_STUDENTS_TO_COURSE);
 export const deleteStudentFromCourse = createAction(DELETE_STUDENT_FROM_COURSE);
 export const deleteCourseFromStudent = createAction(DELETE_COURSE_FROM_STUDENT);
 
