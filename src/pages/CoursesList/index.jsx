@@ -144,7 +144,7 @@ class CoursesList extends Component {
         }
         {showAppendCourses &&
           <AppendDialog
-            dataType="students"
+            dataType="course"
             itemList={vacantCourses}
             onConfirm={(coursesId) => addCoursesToStudent({coursesId, studentsId: [studentId]})}
             onCloseComplete={() => this.setState({showAppendCourses: false})}
