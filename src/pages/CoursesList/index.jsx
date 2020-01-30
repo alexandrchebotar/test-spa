@@ -110,15 +110,17 @@ class CoursesList extends Component {
             </Text>
           }
         </Heading>
-        <IconButton
-          className="add-button" icon="plus" appearance="primary" intent="success"
-          onClick={() => this.setState({[studentId ? 'showAppendCourses' : 'showAddNewCourse']: true})}
-          disabled={studentId && !vacantCourses.length}
-        />
-        <SearchInput 
-          className="search-input" placeholder="Search..."
-          onChange={e => this.setState({dataFilter: e.target.value.toLowerCase()})}
-        />
+        <div className="controls">
+          <IconButton
+            className="add-button" icon="plus" appearance="primary" intent="success"
+            onClick={() => this.setState({[studentId ? 'showAppendCourses' : 'showAddNewCourse']: true})}
+            disabled={studentId && !vacantCourses.length}
+          />
+          <SearchInput 
+            className="search-input" placeholder="Search..."
+            onChange={e => this.setState({dataFilter: e.target.value.toLowerCase()})}
+          />
+        </div>
         <DataTable
           data={processedData}
           rowsOnPage={rowsOnPage}

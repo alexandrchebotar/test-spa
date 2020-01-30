@@ -1,6 +1,7 @@
 .App {
   position: relative;
-	min-height: 100%;
+  min-height: 100%;
+  
 
   .content {
     padding: 15px 25px 50px 25px;
@@ -18,11 +19,11 @@
     margin-right: 5px;
   }
 
-  // .add-button, .search-input {
-  //   z-index: 10;
+  .add-button, .search-input {
+    z-index: 2;
 
-  //   svg {
-  //     z-index: 11;
-  //   }
-  // }
+    // .controls {
+    //   z-index: 11;
+    // }
+  }
 }
