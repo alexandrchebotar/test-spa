@@ -11,16 +11,15 @@ import {
   ADD_STUDENTS_TO_COURSE,
   DELETE_STUDENT_FROM_COURSE,
   DELETE_COURSE_FROM_STUDENT,
-} from '../common/constants';
+} from '../constants';
 import {combineReducers} from 'redux'; 
 import {handleActions, combineActions} from 'redux-actions';
-// import defaultState from './defaultState';
 
 const courses = handleActions(
   {
     [ADD_NEW_COURSE]: (state, action) => {
       const lastId = state.lastId[0] + (+state.lastId.slice(1) + 1);
-      const courseData = {...action.payload.courseData, id: lastId, students: 0};
+      const courseData = {...action.payload.courseData, id: lastId, students: []};
       return ({
         ...state,
         data: [...state.data, courseData],
@@ -82,7 +81,7 @@ const courses = handleActions(
         data,
       });
     },
-    [UPDATE_STUDENT]: (state, action) => {
+    [DELETE_STUDENT]: (state, action) => {
       const {studentId} = action.payload;
       const data = state.data.map(courseData => ({
         ...courseData,
@@ -113,7 +112,7 @@ const students = handleActions(
   {
     [ADD_NEW_STUDENT]: (state, action) => {
       const lastId = state.lastId[0] + (+state.lastId.slice(1) + 1);
-      const studentData = {...action.payload.studentData, id: lastId, courses: 0};
+      const studentData = {...action.payload.studentData, id: lastId, courses: []};
       return ({
         ...state,
         data: [...state.data, studentData],
@@ -206,7 +205,7 @@ const students = handleActions(
       {id: 's15', name: 'Leslie Howard', courses: ['c1', 'c6', 'c7', 'c8']},
       {id: 's16', name: 'Jack Lambert', courses: ['c1', 'c6', 'c7', 'c8']},
     ],
-    lastId: 's8',
+    lastId: 's16',
     rowsOnPage: 10,
   }
 );
