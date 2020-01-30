@@ -2,6 +2,7 @@ import React, {Component, Fragment} from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import {Text, Heading, IconButton, SearchInput} from 'evergreen-ui';
+import {Helmet} from 'react-helmet-async';
 import DataTable from '../../components/DataTable';
 import EditDialog from '../../components/EditDialog';
 import AppendDialog from '../../components/AppendDialog';
@@ -92,13 +93,17 @@ class CoursesList extends Component {
       updateCourse, deleteCourse, deleteCourseFromStudent, changeCourcesNumberOnPage} = this.props;
     const {showAddNewCourse, showAppendCourses, sortingParams} = this.state;
     const {studentId} = match.params;
+    const title = studentId ? students.data.find(({id}) => id === studentId).name : 'Courses';
     const processedData = this.getProcessedData();
     const vacantCourses = studentId && this.getVacantCourses();
 
     return (
       <Fragment>
+        <Helmet>
+          <title>{title}</title>
+        </Helmet>
         <Heading>
-          {studentId ? students.data.find(({id}) => id === studentId).name : 'Courses'}
+          {title}
           {studentId &&
             <Text size={500}>
               {` (student id - ${studentId})`}
