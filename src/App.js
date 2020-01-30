@@ -1,24 +1,19 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
-// import { connect } from 'react-redux';
+import {Helmet} from 'react-helmet-async';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import CoursesList from './pages/CoursesList';
 import StudentsList from './pages/StudentsList';
-// import {initApp} from './store/actions';
 
 import './App.scss';
 
-// const mapDispatchToProps = (dispatch) => {
-//   return {    
-//     initApp: () => dispatch(initApp()),
-//   }
-// };
-
-const App = ({initApp}) => {
-  // useEffect(initApp, []);
+const App = () => {
   return (
     <div className="App">
+      <Helmet>
+        <title>Courses & Students - Simple SPA</title>
+      </Helmet>
       <Header />
       <div className="content">
         <Switch className="content">
@@ -41,4 +36,3 @@ const App = ({initApp}) => {
 }
 
 export default App;
-// export default connect(null, mapDispatchToProps)(App);

@@ -1,5 +1,4 @@
-import React, {Component, Fragment} from 'react';
-import {Pane, Text} from 'evergreen-ui';
+import React from 'react';
 
 import './style.scss';
 

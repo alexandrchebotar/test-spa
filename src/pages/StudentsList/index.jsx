@@ -15,8 +15,6 @@ import {
   changeStudentsNumberOnPage
 } from '../../store/actions';
 
-import './style.scss';
-
 const headers = ['name', 'id', 'courses']
 
 const mapDispatchToProps = (dispatch) => {

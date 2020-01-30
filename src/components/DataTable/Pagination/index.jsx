@@ -1,14 +1,10 @@
-import React, {Component, Fragment, useState} from 'react';
-import {Pane, Text, Button, Select} from 'evergreen-ui';
+import React from 'react';
+import {Pane, Text, Button} from 'evergreen-ui';
 
 import './style.scss';
 
 const Pagination = (props) => {
-  // const pageCount = 12;
-  const {pageCount, currentPage, rowsOnPage, setCurrentPage, setRowsOnPage} = props;
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const [rowsOnPage, setRowsOnPage] = useState(15);
-
+  const {pageCount, currentPage, setCurrentPage} = props;
   const firstPage = (currentPage < 4) ? 1 
     : (pageCount - currentPage > 2) ? currentPage - 3 
     : (pageCount - 6 < 1) ? 1
@@ -17,8 +13,7 @@ const Pagination = (props) => {
     : (firstPage + 6 > pageCount) ? pageCount
     : (currentPage + 3 > pageCount) ? pageCount
     : (currentPage < 4) ? firstPage + 6
-    : currentPage + 3
-
+    : currentPage + 3;
   let pageButtons = [];
   for (let i = firstPage; i <= lastPage; i++) {
     pageButtons.push(
@@ -39,7 +34,6 @@ const Pagination = (props) => {
           <Text>...</Text>
         }
         <Button disabled={currentPage === lastPage} onClick={() => setCurrentPage(currentPage + 1)} >Next</Button>
-
       </Pane>
   );
 };

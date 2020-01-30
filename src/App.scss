@@ -2,7 +2,6 @@
   position: relative;
   min-height: 100%;
   
-
   .content {
     padding: 15px 25px 50px 25px;
 
@@ -21,9 +20,5 @@
 
   .add-button, .search-input {
     z-index: 2;
-
-    // .controls {
-    //   z-index: 11;
-    // }
   }
 }
