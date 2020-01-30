@@ -86,14 +86,16 @@ class CoursesList extends Component {
     return this.props.data.filter(({students}) => !students.includes(studentId));
   };
 
+
   render() {
     const {students, rowsOnPage, lastId, match, addNewCourse, addCoursesToStudent,
       updateCourse, deleteCourse, deleteCourseFromStudent, changeCourcesNumberOnPage} = this.props;
     const {showAddNewCourse, showAppendCourses, sortingParams} = this.state;
     const {studentId} = match.params;
-    const title = studentId ? students.data.find(({id}) => id === studentId).name : 'Courses';
-    const processedData = this.getProcessedData();
-    const vacantCourses = studentId && this.getVacantCourses();
+    const studentData = students.data.find(({id}) => id === studentId);
+    const title = studentData ? studentData.name
+      : studentId ? `Error: student not exists!`
+      : 'Courses';
 
     return (
       <Fragment>
@@ -112,7 +114,7 @@ class CoursesList extends Component {
           <IconButton
             className="add-button" icon="plus" appearance="primary" intent="success"
             onClick={() => this.setState({[studentId ? 'showAppendCourses' : 'showAddNewCourse']: true})}
-            disabled={studentId && !vacantCourses.length}
+            disabled={studentId && !this.getVacantCourses().length}
           />
           <SearchInput 
             className="search-input" placeholder="Search..."
@@ -120,7 +122,7 @@ class CoursesList extends Component {
           />
         </div>
         <DataTable
-          data={processedData}
+          data={this.getProcessedData()}
           rowsOnPage={rowsOnPage}
           dataType="course"
           headers={headers}
@@ -143,7 +145,7 @@ class CoursesList extends Component {
         {showAppendCourses &&
           <AppendDialog
             dataType="course"
-            itemList={vacantCourses}
+            itemList={this.getVacantCourses()}
             onConfirm={(coursesId) => addCoursesToStudent({coursesId, studentsId: [studentId]})}
             onCloseComplete={() => this.setState({showAppendCourses: false})}
           />

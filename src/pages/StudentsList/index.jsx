@@ -91,9 +91,10 @@ class StudentsList extends Component {
       updateStudent, deleteStudent, deleteStudentFromCourse, changeStudentsNumberOnPage} = this.props;
     const {showAddNewStudent, showAppendStudents, sortingParams} = this.state;
     const {courseId} = match.params;
-    const title = courseId ? courses.data.find(({id}) => id === courseId).name : 'Students';
-    const processedData = this.getProcessedData();
-    const vacantStudents = courseId && this.getVacantStudents();
+    const courseData = courses.data.find(({id}) => id === courseId);
+    const title = courseData ? courseData.name
+      : courseId ? `Error: student not exists!`
+      : 'Students';
 
     return (
       <Fragment>
@@ -111,14 +112,14 @@ class StudentsList extends Component {
         <IconButton
           className="add-button" icon="plus" appearance="primary" intent="success"
           onClick={() => this.setState({[courseId ? 'showAppendStudents' : 'showAddNewStudent']: true})}
-          disabled={courseId && !vacantStudents.length}
+          disabled={courseId && !this.getVacantStudents().length}
         />
         <SearchInput 
           className="search-input" placeholder="Search..." 
           onChange={e => this.setState({dataFilter: e.target.value.toLowerCase()})}
         />
         <DataTable
-          data={processedData}
+          data={this.getProcessedData()}
           rowsOnPage={rowsOnPage}
           dataType="student"
           headers={headers}
@@ -141,7 +142,7 @@ class StudentsList extends Component {
         {showAppendStudents &&
           <AppendDialog
             dataType="student"
-            itemList={vacantStudents}
+            itemList={this.getVacantStudents()}
             onConfirm={(studentsId) => addStudentsToCourse({studentsId, coursesId: [courseId]})}
             onCloseComplete={() => this.setState({showAppendStudents: false})}
           />

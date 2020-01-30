@@ -14,7 +14,7 @@ ReactDOM.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <HelmetProvider>
-        <BrowserRouter basename={'process.env.PUBLIC_URL'}>
+        <BrowserRouter basename={process.env.PUBLIC_URL}>
           <App />
         </BrowserRouter>
       </HelmetProvider>
