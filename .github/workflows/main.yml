@@ -19,12 +19,17 @@ jobs:
           reaction-type: "eyes"
       - name: Show parsed command and arguments
         run: echo "The command was '${{ steps.command.outputs.command-name }}' with arguments '${{ steps.command.outputs.command-arguments }}'"
+      
+      - uses: xt0rted/pull-request-comment-branch@v1
+        id: comment-branch
+
       - name: Run integration tests
         if: ${{steps.command.outputs.command-arguments == 'cypress' || steps.command.outputs.command-arguments == 'integration-tests'}}
         run: |
           echo "Starting integration tests..."
           echo "PR #${{ github.event.issue.number }}"
-          echo ${{ github.event.issue.pull_request.head }}
+          echo "Ref - ${{ github.event.issue.pull_request.head.ref }}"
+
       - name: Unknown command
         if: ${{steps.command.outputs.command-arguments != 'cypress' && steps.command.outputs.command-arguments != 'integration-tests'}}
         run: echo "Unknown command"
@@ -33,4 +38,5 @@ jobs:
         with:
           workflow: Post message in PR
           token: ${{ secrets.PERSONAL_TOKEN }}
+          ref: ${{ steps.comment-branch.outputs.head_ref }}
 #           ref: ${{ github.event.issue.pull_request.head.ref }}
