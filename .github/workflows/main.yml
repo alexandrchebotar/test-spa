@@ -18,7 +18,7 @@ jobs:
       - name: Show parsed command and arguments
         run: echo "The command was '${{ steps.command.outputs.command-name }}' with arguments '${{ steps.command.outputs.command-arguments }}'"
       - name: Run integration tests
-        if: ${{steps.command.outputs.command-arguments == ['cypress', 'integration-tests']}}
+        if: ${{steps.command.outputs.command-arguments == 'cypress' || steps.command.outputs.command-arguments == 'integration-tests'}}
         run: echo "Starting integration tests..."
       - name: Unknown command
         if: ${{!steps.command.outputs.command-arguments == 'cypress'}}
