@@ -19,4 +19,4 @@ jobs:
         run: echo "The command was '${{ steps.command.outputs.command-name }}' with arguments '${{ steps.command.outputs.command-arguments }}'"
       - name: Check for Command
         if: ${{ steps.command.outputs.command-arguments }}' === "cypress"
-        run: starting integration tests...
+        run: echo "Starting integration tests..."
