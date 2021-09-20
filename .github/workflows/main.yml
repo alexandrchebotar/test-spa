@@ -7,7 +7,7 @@ on:
 jobs:
   check_comments:
     name: Run integration tests on /ci
-    if: github.event.issue.pull_request && startWith(github.event.comment.body, '/')
+    if: github.event.issue.pull_request && startsWith(github.event.comment.body, '/')
     runs-on: ubuntu-latest
     steps:
       - name: Check for Command
