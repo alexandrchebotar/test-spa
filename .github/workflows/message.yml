@@ -14,3 +14,4 @@ jobs:
         with:
           message: "Hello world"
           github_token: ${{ secrets.PERSONAL_TOKEN }}
+          single_comment: false
