@@ -1,12 +1,13 @@
 name: Slash commands
 
 on:
-  issue_comment
+  issue_comment:
+    types: [created, deleted]
 
 jobs:
   check_comments:
     name: Run integration tests on /ci
-    if: ${{ github.event.issue.pull_request }}
+    if: github.event.issue.pull_request && startWith(github.event.comment.body, '/')
     runs-on: ubuntu-latest
     steps:
       - name: Check for Command
