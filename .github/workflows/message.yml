@@ -3,7 +3,7 @@ name: Post message in PR
 on:
   pull_request:
   workflow_dispatch:
-  issue_comment:
+#   issue_comment:
 
 jobs:
   post_message:
