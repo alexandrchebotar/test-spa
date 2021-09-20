@@ -21,16 +21,12 @@ jobs:
         run: echo "The command was '${{ steps.command.outputs.command-name }}' with arguments '${{ steps.command.outputs.command-arguments }}'"
       - uses: xt0rted/pull-request-comment-branch@v1
         id: comment-branch
-      - name: Checkout
-        uses: actions/checkout@v2
-        if: success()
-        with:
-          ref: ${{ steps.comment-branch.outputs.head_ref }}
       - name: Run integration tests
         if: ${{steps.command.outputs.command-arguments == 'cypress' || steps.command.outputs.command-arguments == 'integration-tests'}}
         run: |
           echo "Starting integration tests..."
           echo "PR #${{ github.event.issue.number }}"
+          echo "SHA - ${{ steps.comment-branch.outputs.head_sha }}"
           echo "Ref - ${{ steps.comment-branch.outputs.head_ref }}"
           echo "Ref1 - ${{ github.event.issue.pull_request.head.ref }}"
       - name: Unknown command
