@@ -1,0 +1,11 @@
+# context(justinvdm, 1 September 2021): In order for us to ensure a PR cannot be merged unless it is up to date with `develop`, GH requires at least one status check. For this reason, we're using a no-op status check.
+name: noop
+
+on:
+  push
+
+jobs:
+  noop:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ''
