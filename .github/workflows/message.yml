@@ -2,9 +2,9 @@ name: Post message in PR
 
 on:
   push:
-    branches: [ master ]
+    branches: [ opened ]
   workflow_dispatch:
-  issue_comment:
+#   issue_comment:
 
 jobs:
   post_message:
