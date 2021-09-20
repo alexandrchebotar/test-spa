@@ -1,8 +1,7 @@
 name: Post message in PR
 
 on:
-  push:
-    branches: [ opened ]
+  pull_request:
   workflow_dispatch:
 #   issue_comment:
 
