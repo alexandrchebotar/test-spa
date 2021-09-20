@@ -15,8 +15,11 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           command: ci
           reaction-type: "eyes"
-      - name: Act on the command
+      - name: Show parsed command and arguments
         run: echo "The command was '${{ steps.command.outputs.command-name }}' with arguments '${{ steps.command.outputs.command-arguments }}'"
-      - name: Check for Command
-        if: ${{steps.command.outputs.command-arguments === "cypress"}}
+      - name: Run integration tests
+        if: ${{steps.command.outputs.command-arguments == "cypress"}}
         run: echo "Starting integration tests..."
+      - name: Unknown command
+        if: ${{!steps.command.outputs.command-arguments == "cypress"}}
+        run: echo "Unknown command"
