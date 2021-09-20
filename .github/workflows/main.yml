@@ -5,7 +5,7 @@ on:
 
 jobs:
   check_comments:
-    name: Run integration tests on /cy-ci
+    name: Run integration tests on /ci
     runs-on: ubuntu-latest
     steps:
       - name: Check for Command
@@ -13,7 +13,7 @@ jobs:
         uses: xt0rted/slash-command-action@v1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          command: "cy-ci"
+          command: ci
           reaction-type: "eyes"
       - name: Act on the command
         run: echo "The command was '${{ steps.command.outputs.command-name }}' with arguments '${{ steps.command.outputs.command-arguments }}'"
