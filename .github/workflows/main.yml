@@ -6,6 +6,7 @@ on:
 jobs:
   check_comments:
     name: Run integration tests on /ci
+    if: ${{ github.event.issue.pull_request }}
     runs-on: ubuntu-latest
     steps:
       - name: Check for Command
@@ -23,3 +24,9 @@ jobs:
       - name: Unknown command
         if: ${{steps.command.outputs.command-arguments != 'cypress' && steps.command.outputs.command-arguments != 'integration-tests'}}
         run: echo "Unknown command"
+      - name: Run workflow
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: Post message in PR
+          token: ${{ secrets.PERSONAL_TOKEN }}
+          ref: ${{ github.event.pull_request.head.ref }}
