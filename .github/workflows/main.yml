@@ -1,0 +1,19 @@
+name: Slash commands
+
+on:
+  issue_comment
+
+jobs:
+  check_comments:
+    name: Run integration tests on /cy-ci
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for Command
+        id: command
+        uses: xt0rted/slash-command-action@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          command: cy-ci
+          reaction-type: "eyes"
+      - name: Act on the command
+        run: echo "The command was '${{ steps.command.outputs.command-name }}' with arguments '${{ steps.command.outputs.command-arguments }}'"
