@@ -21,5 +21,5 @@ jobs:
         if: ${{steps.command.outputs.command-arguments == 'cypress' || steps.command.outputs.command-arguments == 'integration-tests'}}
         run: echo "Starting integration tests..."
       - name: Unknown command
-        if: ${{!steps.command.outputs.command-arguments == 'cypress'}}
+        if: ${{steps.command.outputs.command-arguments != 'cypress' && steps.command.outputs.command-arguments != 'integration-tests'}}
         run: echo "Unknown command"
