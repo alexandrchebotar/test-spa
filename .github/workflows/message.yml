@@ -10,7 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Post message in PR 
-        uses: github-actions-up-and-running/pr-comment@v1.0.0
+        uses: NejcZdovc/comment-pr@v1
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          message: Nice PR!👍
+          message: "Hello world"
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
