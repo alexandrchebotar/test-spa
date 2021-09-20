@@ -18,5 +18,5 @@ jobs:
       - name: Act on the command
         run: echo "The command was '${{ steps.command.outputs.command-name }}' with arguments '${{ steps.command.outputs.command-arguments }}'"
       - name: Check for Command
-        if: ${{ steps.command.outputs.command-arguments }}' === "cypress"
+        if: ${{steps.command.outputs.command-arguments === "cypress"}}
         run: echo "Starting integration tests..."
