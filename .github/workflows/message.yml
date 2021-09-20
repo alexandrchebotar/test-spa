@@ -1,8 +1,9 @@
-name: Post message in PR
+name: Post_message
 
 on:
-  pull_request:
   workflow_dispatch:
+  pull_request:
+  
 #   issue_comment:
 
 jobs:
