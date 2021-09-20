@@ -35,7 +35,7 @@ jobs:
       - name: Run workflow
         uses: benc-uk/workflow-dispatch@v1
         with:
-          workflow: Post message in PR
+          workflow: Post_message
           token: ${{ secrets.PERSONAL_TOKEN }}
           ref: ${{ steps.comment-branch.outputs.head_ref }}
 #           ref: ${{ steps.comment-branch.outputs.head_sha }}
