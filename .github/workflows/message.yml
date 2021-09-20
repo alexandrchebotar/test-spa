@@ -1,8 +1,9 @@
 name: Post_message
 
 on:
-  workflow_dispatch:
   pull_request:
+  workflow_dispatch:
+  
   
 #   issue_comment:
 
@@ -10,6 +11,11 @@ jobs:
   post_message:
     runs-on: ubuntu-latest
     steps:
+      - name: Run integration tests
+        if: ${{steps.command.outputs.command-arguments == 'cypress' || steps.command.outputs.command-arguments == 'integration-tests'}}
+        run: |
+          echo "PR #${{ github.event.pull_request.issue.number }}"
+          echo "Ref1 - ${{ github.event.pull_request.head.ref }}"
       - name: Post message in PR 
         uses: NejcZdovc/comment-pr@v1
         with:
