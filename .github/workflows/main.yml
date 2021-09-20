@@ -28,5 +28,5 @@ jobs:
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: Post message in PR
-          token: ${{ secrets.PERSONAL_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           ref: ${{ github.event.pull_request.head.ref }}
