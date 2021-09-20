@@ -24,7 +24,7 @@ jobs:
         run: |
           echo "Starting integration tests..."
           echo "PR #${{ github.event.issue.number }}"
-          echo ${{ github.event.issue.pull_request }}
+          echo ${{ github.event.issue.pull_request.head }}
       - name: Unknown command
         if: ${{steps.command.outputs.command-arguments != 'cypress' && steps.command.outputs.command-arguments != 'integration-tests'}}
         run: echo "Unknown command"
