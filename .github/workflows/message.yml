@@ -4,6 +4,7 @@ on:
   push:
     branches: [ master ]
   workflow_dispatch:
+  issue_comment:
 
 jobs:
   post_message:
