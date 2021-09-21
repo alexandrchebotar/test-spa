@@ -32,11 +32,14 @@ jobs:
       - name: Unknown command
         if: ${{steps.command.outputs.command-arguments != 'cypress' && steps.command.outputs.command-arguments != 'integration-tests'}}
         run: echo "Unknown command"
+        
       - name: Run workflow
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: Post_message
           token: ${{ secrets.PERSONAL_TOKEN }}
           ref: ${{ steps.comment-branch.outputs.head_ref }}
+          inputs: '{ "ref": "blah blah"}'
+          
 #           ref: ${{ steps.comment-branch.outputs.head_sha }}
 #           ref: ${{ github.event.issue.pull_request.head.ref }}
