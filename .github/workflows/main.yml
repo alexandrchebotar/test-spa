@@ -87,6 +87,6 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'Test finished with' + context.steps.trigger-step.outputs.workflow-conclusion + 'status
+              body: "Test finished with ${{context.steps.trigger-step.outputs.workflow-conclusion}} status"
             })
 
