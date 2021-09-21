@@ -3,7 +3,9 @@ name: Post_message
 on:
   pull_request:
   workflow_dispatch:
-  
+    inputs:
+      ref:
+        default: 'location'
   
 #   issue_comment:
 
@@ -15,6 +17,7 @@ jobs:
         run: |
           echo "PR #${{ github.event.pull_request.issue.number }}"
           echo "Ref1 - ${{ github.event.pull_request.head.ref }}"
+          echo "Ref Inputs - ${{ github.event.inputs.ref }}"
       - name: Post message in PR 
         uses: NejcZdovc/comment-pr@v1
         with:
