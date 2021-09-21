@@ -67,6 +67,7 @@ jobs:
         run: |
           echo "${{steps.add-comment.outputs.result.id}}"
           echo "${{steps.add-comment.outputs.result.body}}"
+          echo "${{steps.add-comment.outputs.result}}"
             
       - name: Invoke workflow and handle result
         id: trigger-step
