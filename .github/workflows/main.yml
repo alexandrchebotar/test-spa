@@ -61,13 +61,15 @@ jobs:
       - name: View context attributes
         uses: actions/github-script@v4
         with:
-          script: console.log(context)
+          script: |
+            console.log(context)
+            console.log(github)
           
       - name: Get add-comments result
         run: |
           echo "${{steps.add-comment.outputs.result.id}}"
           echo "${{steps.add-comment.outputs.result.body}}"
-          echo "${{steps.add-comment.outputs.result}}"
+          echo "${{steps.add-comment.outputs.result.response}}"
             
       - name: Invoke workflow and handle result
         id: trigger-step
