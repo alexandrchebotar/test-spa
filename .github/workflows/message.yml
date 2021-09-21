@@ -3,35 +3,24 @@ name: Post_message
 on:
   pull_request:
   workflow_dispatch:
+    inputs:
+      isuue_number:
+      runId:
 
 jobs:
   post_message:
     runs-on: ubuntu-latest
     steps:
-    
       - name: View context attributes
         uses: actions/github-script@v4
         with:
           script: console.log(context)
-          
-      - name: View context attributes
+             
+      - name: Post a comment
         uses: actions/github-script@v4
         with:
-          script: console.log(context.runId)
-    
-      - name: Run integration tests
-        run: |
-          echo "PR #${{ github.event.pull_request.issue.number }}"
-          echo "Ref1 - ${{ github.event.pull_request.head.ref }}"
-          echo "Ref Inputs - ${{ github.event.inputs.ref }}"
-          echo "Inputs #${{ github.event.inputs }}"
-          echo "Pull reguest #${{ github.event.pull_request }}"
-          echo "Issue #${{ github.event.issue }}"
-          echo "Type #${{ github.event.type }}"
-          echo "RunId #${{ github.event.runId }}"
-      - name: Post message in PR 
-        uses: NejcZdovc/comment-pr@v1
-        with:
-          message: "Hello world"
-          github_token: ${{ secrets.PERSONAL_TOKEN }}
-          single_comment: false
+          script: |
+            github.issues.createComment({
+              issue_number: context.inputs.isuue_number,
+              body: 'Starting integration tests...\nNext row ~~MARKDOWN~~'
+            })
