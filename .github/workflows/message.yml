@@ -20,7 +20,7 @@ jobs:
              
       - name: Post a comment
         uses: actions/github-script@v4
-        env: |
+        env:
           runId: ${{ github.event.inputs.runId }}
           isuue_number: ${{ github.event.inputs.isuue_number }}
         with:
