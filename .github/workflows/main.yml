@@ -47,14 +47,14 @@ jobs:
       - name: View context attributes
         uses: actions/github-script@v4
         with:
-          script: console.log(context)
+          script: console.log(context.repo)
           
       - uses: actions/github-script@v4
         with:
           script: |
             github.issues.createComment({
               issue_number: context.issue.number,
-              owner: context.repository.owner,
-              repo: context.repository.repo,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
               body: 'Starting integration tests...'
             })
