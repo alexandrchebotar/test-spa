@@ -62,7 +62,9 @@ jobs:
             })
             
       - name: Get add-comments result
-        run: echo "${{steps.add-comment.outputs.result.body.id}}"
+        run: /
+          echo "${{steps.add-comment.outputs.result.id}}"
+          echo "${{steps.add-comment.outputs.result.body}}"
             
       - name: Invoke workflow and handle result
         id: trigger-step
