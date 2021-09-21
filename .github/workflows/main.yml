@@ -57,7 +57,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: ' if: ${{steps.command.outputs.command-arguments == 'cypress' || steps.command.outputs.command-arguments == 'integration-tests'}}'
+              body: '## Starting tests... \n\n ~~MARKDOWN~~'
             })
             
       - name: Invoke workflow and handle result
