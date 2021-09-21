@@ -75,7 +75,7 @@ jobs:
           inputs: '{ "issue_number": "${{github.event.issue.number}}", "runId": "${{github.event.runId}}"}'
       
       - name: Get workflow result
-        run: echo "${{steps.trigger-step.outputs.workflow-conclusion}}"
+        run: echo "${{steps.trigger-step.outputs.output1}}"
         
       - name: Post a result comment
         if: always()
