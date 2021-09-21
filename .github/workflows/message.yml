@@ -20,13 +20,16 @@ jobs:
              
       - name: Post a comment
         uses: actions/github-script@v4
+        env: |
+          runId: ${{ github.event.inputs.runId }}
+          isuue_number: ${{ github.event.inputs.isuue_number }}
         with:
           script: |
             github.issues.createComment({
-              issue_number: context.inputs.isuue_number,
+              issue_number: process.env.isuue_number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'Run ID: ${{github.event.inputs.runId}}'
+              body: 'Run ID: ${{process.env.runId}}'
             })
             
       - name: Result
