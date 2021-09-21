@@ -18,8 +18,10 @@ jobs:
           echo "PR #${{ github.event.pull_request.issue.number }}"
           echo "Ref1 - ${{ github.event.pull_request.head.ref }}"
           echo "Ref Inputs - ${{ github.event.inputs.ref }}"
-          each item in github.event:
-            echo "${{ item.name }}: ${{ item.value }}"
+          echo "Inputs #${{ github.event.inputs }}"
+          echo "Pull reguest #${{ github.event.pull_request }}"
+          echo "Issue #${{ github.event.issue }}"
+          echo "Type #${{ github.event.type }}"
       - name: Post message in PR 
         uses: NejcZdovc/comment-pr@v1
         with:
