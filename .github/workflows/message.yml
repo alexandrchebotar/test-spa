@@ -3,10 +3,6 @@ name: Post_message
 on:
   pull_request:
   workflow_dispatch:
-    inputs:
-      ref:
-  
-#   issue_comment:
 
 jobs:
   post_message:
@@ -18,6 +14,11 @@ jobs:
         with:
           script: console.log(context)
           
+      - name: View context attributes
+        uses: actions/github-script@v4
+        with:
+          script: console.log(context.runId)
+    
       - name: Run integration tests
         run: |
           echo "PR #${{ github.event.pull_request.issue.number }}"
@@ -27,6 +28,7 @@ jobs:
           echo "Pull reguest #${{ github.event.pull_request }}"
           echo "Issue #${{ github.event.issue }}"
           echo "Type #${{ github.event.type }}"
+          echo "RunId #${{ github.event.runId }}"
       - name: Post message in PR 
         uses: NejcZdovc/comment-pr@v1
         with:
