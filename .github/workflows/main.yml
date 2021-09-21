@@ -33,12 +33,12 @@ jobs:
         if: ${{steps.command.outputs.command-arguments != 'cypress' && steps.command.outputs.command-arguments != 'integration-tests'}}
         run: echo "Unknown command"
         
-      - name: Run workflow
-        uses: benc-uk/workflow-dispatch@v1
-        with:
-          workflow: Post_message
-          token: ${{ secrets.PERSONAL_TOKEN }}
-          ref: ${{ steps.comment-branch.outputs.head_ref }}
+#       - name: Run workflow
+#         uses: benc-uk/workflow-dispatch@v1
+#         with:
+#           workflow: Post_message
+#           token: ${{ secrets.PERSONAL_TOKEN }}
+#           ref: ${{ steps.comment-branch.outputs.head_ref }}
 #           inputs: '{ "ref": "blah blah"}'
           
 #           ref: ${{ steps.comment-branch.outputs.head_sha }}
@@ -58,3 +58,22 @@ jobs:
               repo: context.repo.repo,
               body: 'Starting integration tests...'
             })
+            
+      - name: Invoke workflow and handle result
+        id: trigger-step
+        uses: aurelien-baudet/workflow-dispatch@v2
+        with:
+          workflow: Post_message
+          token: ${{ secrets.PERSONAL_TOKEN }}
+          inputs: '{ "issue_number": ${{github.event.issue.number}}, "runId": ${{github.event.runId}}}'
+      
+      - name: Post a result comment
+        if: always()
+        uses: actions/github-script@v4
+        with:
+          script: |
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              body: 'Test finished with ${{steps.trigger-step.outputs.workflow-conclusion}} status'
+            })
+
