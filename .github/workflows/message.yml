@@ -10,6 +10,8 @@ on:
 jobs:
   post_message:
     runs-on: ubuntu-latest
+    outputs:
+      output1: ${{ steps.step3.outputs.test }}
     steps:
       - name: View context attributes
         uses: actions/github-script@v4
@@ -26,3 +28,6 @@ jobs:
               repo: context.repo.repo,
               body: 'Run ID: ${{context.inputs.runId}}'
             })
+            
+      - name: Result
+        run: echo "${{github.event.inputs.runId}}"
