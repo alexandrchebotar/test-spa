@@ -64,7 +64,7 @@ jobs:
           script: console.log(context)
           
       - name: Get add-comments result
-        run: /
+        run: |
           echo "${{steps.add-comment.outputs.result.id}}"
           echo "${{steps.add-comment.outputs.result.body}}"
             
