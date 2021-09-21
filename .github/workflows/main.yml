@@ -43,10 +43,7 @@ jobs:
 #           ref: ${{ steps.comment-branch.outputs.head_sha }}
 #           ref: ${{ github.event.issue.pull_request.head.ref }}
 
-      - name: View context attributes
-        uses: actions/github-script@v4
-        with:
-          script: console.log(context.repo)
+
           
       - name: Starting test comment
         if: ${{steps.command.outputs.command-arguments == 'cypress' || steps.command.outputs.command-arguments == 'integration-tests'}}
@@ -61,6 +58,11 @@ jobs:
               body: '#### Starting tests... \n\n *This comment will be updated when the test finishes*'
             })
             
+      - name: View context attributes
+        uses: actions/github-script@v4
+        with:
+          script: console.log(context)
+          
       - name: Get add-comments result
         run: /
           echo "${{steps.add-comment.outputs.result.id}}"
