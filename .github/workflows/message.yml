@@ -22,5 +22,7 @@ jobs:
           script: |
             github.issues.createComment({
               issue_number: context.inputs.isuue_number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
               body: 'Starting integration tests...\nNext row ~~MARKDOWN~~'
             })
