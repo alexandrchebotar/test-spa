@@ -38,7 +38,7 @@ jobs:
         with:
           workflow: Post_message
           token: ${{ secrets.PERSONAL_TOKEN }}
-#           ref: ${{ steps.comment-branch.outputs.head_ref }}
+          ref: ${{ steps.comment-branch.outputs.head_ref }}
 #           inputs: '{ "ref": "blah blah"}'
           
 #           ref: ${{ steps.comment-branch.outputs.head_sha }}
