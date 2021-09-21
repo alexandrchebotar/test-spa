@@ -12,6 +12,12 @@ jobs:
   post_message:
     runs-on: ubuntu-latest
     steps:
+    
+      - name: View context attributes
+        uses: actions/github-script@v4
+        with:
+          script: console.log(context)
+          
       - name: Run integration tests
         run: |
           echo "PR #${{ github.event.pull_request.issue.number }}"
