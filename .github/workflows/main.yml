@@ -28,7 +28,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '#### Starting tests...\n\n>*This comment will be updated when testing is complete*'
+              body: '#### Starting tests...\n\n>This comment will be updated when testing is completed'
             })
             return result.data.id
             
