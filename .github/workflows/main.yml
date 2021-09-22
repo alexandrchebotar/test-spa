@@ -71,28 +71,42 @@ jobs:
           echo "${{steps.add-comment.outputs.result.body}}"
           echo "${{steps.add-comment.outputs.result.response}}"
             
-      - name: Invoke workflow and handle result
-        id: trigger-step
+      - name: Run tests
+        id: run-tests
         uses: aurelien-baudet/workflow-dispatch@v2
         with:
           workflow: Post_message
           token: ${{ secrets.PERSONAL_TOKEN }}
           ref: ${{ steps.comment-branch.outputs.head_ref }}
+          propagate_failure: false
           inputs: '{ "issue_number": "${{github.event.issue.number}}", "run_id": "${{github.run_id}}"}'
       
       - name: Get workflow result
         if: always()
-        run: echo "${{steps.trigger-step.outputs.output1}}"
+        uses: actions/github-script@v4
+        env:
+          RESULT: ${{ github.steps.run-tests.outputs.workflow-conclusion }}
+          URL: ${{ github.steps.run-tests.outputs.workflow-url }}
+        with:
+          script: |
+            const result = process.env.RESULT
+            const log = process.env.URL
+            return github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '#### Tests completed... \n\n Result: ${result} \n\n Log: ${log}'
+            })
         
       - name: Post a result comment
         if: always()
         uses: actions/github-script@v4
         with:
           script: |
-            github.issues.createComment({
+            github.issues.gi({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: "Test finished with ${{github.steps.trigger-step.outputs.workflow-conclusion}} status"
+              body: "Test finished with ${{github.steps.invoke-workflow.outputs.run-tests}} status"
             })
 
