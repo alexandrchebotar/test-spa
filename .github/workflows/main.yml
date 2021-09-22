@@ -6,8 +6,8 @@ on:
 
 jobs:
   check_comments:
-    name: Run integration tests on /ci
-    if: github.event.issue.pull_request && startsWith(github.event.comment.body, '/')
+    name: Run integration tests on "/ci cypress" or "/ci integration-tests" 
+    if: github.event.issue.pull_request && startsWith(github.event.comment.body, '/ci cypress') || startsWith(github.event.comment.body, '/ci integration-tests')
     runs-on: ubuntu-latest
     steps:
       - name: Check for Command
@@ -64,4 +64,3 @@ jobs:
                 ? `#### Tests completed! :tada:\n\n>Result: ${RESULT}\n>Log: ${URL}`
                 : `#### Tests failed! :angry:\n\n>Result: ${RESULT}\n>Log: ${URL}`
             })
-
