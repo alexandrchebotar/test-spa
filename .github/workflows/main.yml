@@ -17,11 +17,6 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           command: ci
           reaction-type: "eyes"
-          
-      - name: Show parsed command and arguments
-        run: echo "The command was '${{ steps.command.outputs.command-name }}' with arguments '${{ steps.command.outputs.command-arguments }}'"
-      - uses: xt0rted/pull-request-comment-branch@v1
-        id: comment-branch
         
       - name: Starting test comment
         if: ${{steps.command.outputs.command-arguments == 'cypress' || steps.command.outputs.command-arguments == 'integration-tests'}}
@@ -43,6 +38,10 @@ jobs:
           echo "${{steps.add-comment.outputs.result.body}}"
           echo "${{steps.add-comment.outputs.result.response}}"
             
+      - name: Get brunch ref
+        uses: xt0rted/pull-request-comment-branch@v1
+        id: comment-branch
+        
       - name: Run tests
         id: run-tests
         uses: aurelien-baudet/workflow-dispatch@v2
@@ -57,16 +56,17 @@ jobs:
         if: always()
         uses: actions/github-script@v4
         env:
+          COMMENT_ID: ${{ steps.add-comment.outputs.result }}
           RESULT: ${{ steps.run-tests.outputs.workflow-conclusion }}
           URL: ${{ steps.run-tests.outputs.workflow-url }}
         with:
           script: |
-            const { RESULT, URL } = process.env
+            const { COMMENT_ID, RESULT, URL } = process.env
             github.issues.updateComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              comment_id: steps.add-comment.outputs.result,
+              comment_id: COMMENT_ID,
               body: `#### Tests completed! :tada:\n\nResult: ${RESULT}\n\nLog: ${URL}`
             })
 
