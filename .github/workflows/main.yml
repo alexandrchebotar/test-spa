@@ -17,41 +17,19 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           command: ci
           reaction-type: "eyes"
+          
       - name: Show parsed command and arguments
         run: echo "The command was '${{ steps.command.outputs.command-name }}' with arguments '${{ steps.command.outputs.command-arguments }}'"
       - uses: xt0rted/pull-request-comment-branch@v1
         id: comment-branch
-#       - name: Run integration tests
-#         run: |
-#           echo "Starting integration tests..."
-#           echo "PR #${{ github.event.issue.number }}"
-#           echo "SHA - ${{ steps.comment-branch.outputs.head_sha }}"
-#           echo "Ref - ${{ steps.comment-branch.outputs.head_ref }}"
-#           echo "Ref1 - ${{ github.event.issue.pull_request.head.ref }}"
-#       - name: Unknown command
-#         if: ${{steps.command.outputs.command-arguments != 'cypress' && steps.command.outputs.command-arguments != 'integration-tests'}}
-#         run: echo "Unknown command"
         
-#       - name: Run workflow
-#         uses: benc-uk/workflow-dispatch@v1
-#         with:
-#           workflow: Post_message
-#           token: ${{ secrets.PERSONAL_TOKEN }}
-#           ref: ${{ steps.comment-branch.outputs.head_ref }}
-#           inputs: '{ "ref": "blah blah"}'
-          
-#           ref: ${{ steps.comment-branch.outputs.head_sha }}
-#           ref: ${{ github.event.issue.pull_request.head.ref }}
-
-
-          
       - name: Starting test comment
         if: ${{steps.command.outputs.command-arguments == 'cypress' || steps.command.outputs.command-arguments == 'integration-tests'}}
         id: add-comment
         uses: actions/github-script@v4
         with:
           script: |
-            const github.issues.createComment({
+            const result = github.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -96,10 +74,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 
-                `#### Tests completed...
-                Result: ${RESULT}
-                Log: ${URL}`
+              body: `#### :+1: Tests completed! \n\nResult: ${RESULT}\n\nLog: ${URL}`
             })
         
       - name: Post a result comment
