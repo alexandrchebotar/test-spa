@@ -10,8 +10,9 @@ on:
 jobs:
   post_message:
     runs-on: ubuntu-latest
-    outputs:
+    outputs: |
       output1: ${{ steps.step3.outputs.test }}
+      output2: "123"
     steps:
       - name: View context attributes
         uses: actions/github-script@v4
