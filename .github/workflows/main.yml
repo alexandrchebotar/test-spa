@@ -35,8 +35,7 @@ jobs:
               repo: context.repo.repo,
               body: '#### Starting tests... \n\n *This comment will be updated when the test finishes*'
             })
-            console.log(result)
-            return {result}
+            return result.data.id
           
       - name: Get add-comments result
         run: |
