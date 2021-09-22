@@ -18,7 +18,7 @@ jobs:
           command: ci
           reaction-type: "eyes"
         
-      - name: Starting test comment
+      - name: Add comment
         if: ${{steps.command.outputs.command-arguments == 'cypress' || steps.command.outputs.command-arguments == 'integration-tests'}}
         id: add-comment
         uses: actions/github-script@v4
@@ -31,12 +31,6 @@ jobs:
               body: '#### Starting tests... \n\n *This comment will be updated when the test finishes*'
             })
             return result.data.id
-          
-      - name: Get add-comments result
-        run: |
-          echo "${{steps.add-comment.outputs.result}}"
-          echo "${{steps.add-comment.outputs.result.body}}"
-          echo "${{steps.add-comment.outputs.result.response}}"
             
       - name: Get brunch ref
         uses: xt0rted/pull-request-comment-branch@v1
@@ -52,13 +46,14 @@ jobs:
           propagate_failure: false
           inputs: '{ "issue_number": "${{github.event.issue.number}}", "run_id": "${{github.run_id}}"}'
 
-      - name: Post a result comment
+      - name: Edit comment
         if: always()
         uses: actions/github-script@v4
         env:
           COMMENT_ID: ${{ steps.add-comment.outputs.result }}
           RESULT: ${{ steps.run-tests.outputs.workflow-conclusion }}
           URL: ${{ steps.run-tests.outputs.workflow-url }}
+          STATUS: ${{ job.status }}
         with:
           script: |
             const { COMMENT_ID, RESULT, URL } = process.env
@@ -67,6 +62,8 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               comment_id: COMMENT_ID,
-              body: `#### Tests completed! :tada:\n\nResult: ${RESULT}\n\nLog: ${URL}`
+              body: STATUS === 'success'
+                ? `#### Tests completed! :tada:\n\n>Result: ${RESULT}\n>Log: ${URL}`
+                : `#### Tests failed! :angry:\n\n>Result: ${RESULT}\n>Log: ${URL}`
             })
 
