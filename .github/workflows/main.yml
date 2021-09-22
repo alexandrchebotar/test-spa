@@ -67,7 +67,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `#### :+1: Tests completed! \n\nResult: ${RESULT}\n\nLog: ${URL}`
+              body: `#### <span style="color:blue">:hooray: Tests completed!</span>\n\nResult: ${RESULT}\n\nLog: ${URL}`
             })
         
       - name: Post a result comment
