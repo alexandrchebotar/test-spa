@@ -89,13 +89,11 @@ jobs:
           URL: ${{ github.steps.run-tests.outputs.workflow-url }}
         with:
           script: |
-            const result = process.env.RESULT
-            const log = process.env.URL
             return github.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '#### Tests completed... \n\n Result: ${{result}} \n\n Log: ${{log}}'
+              body: '#### Tests completed... \n\n Result: ${{process.env.RESULT}} \n\n Log: ${{process.env.URL}}'
             })
         
       - name: Post a result comment
