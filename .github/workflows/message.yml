@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       issue_number:
-      runId:
+      run_id:
 
 jobs:
   post_message:
@@ -21,8 +21,8 @@ jobs:
       - name: Post a comment
         uses: actions/github-script@v4
         env:
-          RUN_ID: ${{ github.event.inputs.runId }}
-          ISSUE_NUMBER: ${{ github.event.inputs.isuue_number }}
+          RUN_ID: ${{ github.event.inputs.run_id }}
+          ISSUE_NUMBER: ${{ github.event.inputs.issue_number }}
         with:
           script: |
             github.issues.createComment({
