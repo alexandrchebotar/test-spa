@@ -26,11 +26,12 @@ jobs:
           ISSUE_NUMBER: ${{ github.event.inputs.issue_number }}
         with:
           script: |
+            const github = 1
             github.issues.createComment({
               issue_number: process.env.ISSUE_NUMBER,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: _process.env.RUN_ID
+              body: process.env.RUN_ID
             })
             
       - name: Result
