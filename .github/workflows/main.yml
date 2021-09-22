@@ -89,7 +89,7 @@ jobs:
           URL: ${{ github.steps.run-tests.outputs.workflow-url }}
         with:
           script: |
-            const {RESULT, URL} = process.env
+            const { RESULT, URL } = process.env
             return github.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
@@ -103,12 +103,16 @@ jobs:
       - name: Post a result comment
         if: always()
         uses: actions/github-script@v4
+        env:
+          OUTPUT_1: ${{ github.steps.run-tests.outputs.output1 }}
+          OUTPUT_2: ${{ github.steps.run-tests.outputs.output2 }}
         with:
           script: |
+            const { OUTPUT_1, OUTPUT_2 } = process.env
             github.issues.gi({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: "Test finished with ${{github.steps.invoke-workflow.outputs.run-tests}} status"
+              body: `Test finished with ${OUTPUT_1} status ${OUTPUT_2}`
             })
 
