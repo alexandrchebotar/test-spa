@@ -63,7 +63,7 @@ jobs:
               repo: context.repo.repo,
               comment_id: COMMENT_ID,
               body: STATUS === 'success'
-                ? `#### Tests completed! :tada:\n\n>*Result: ${RESULT}*\n>*Log: ${URL}*`
-                : `#### Tests failed! :angry:\n\n>*Result: ${RESULT}\*n>*Log: ${URL}*`
+                ? `#### Tests completed! :tada:\n\n>Result: ${RESULT}*\n>*Log: ${URL}`
+                : `#### Tests failed! :angry:\n\n>Result: ${RESULT}\*n>*Log: ${URL}`
             })
 
