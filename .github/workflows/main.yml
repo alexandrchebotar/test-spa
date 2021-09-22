@@ -39,7 +39,7 @@ jobs:
           
       - name: Get add-comments result
         run: |
-          echo "${{steps.add-comment.outputs.result.id}}"
+          echo "${{steps.add-comment.outputs.result}}"
           echo "${{steps.add-comment.outputs.result.body}}"
           echo "${{steps.add-comment.outputs.result.response}}"
             
@@ -53,7 +53,23 @@ jobs:
           propagate_failure: false
           inputs: '{ "issue_number": "${{github.event.issue.number}}", "run_id": "${{github.run_id}}"}'
 
-      - name: Get workflow result
+#       - name: Get workflow result
+#         if: always()
+#         uses: actions/github-script@v4
+#         env:
+#           RESULT: ${{ steps.run-tests.outputs.workflow-conclusion }}
+#           URL: ${{ steps.run-tests.outputs.workflow-url }}
+#         with:
+#           script: |
+#             const { RESULT, URL } = process.env
+#             return github.issues.createComment({
+#               issue_number: context.issue.number,
+#               owner: context.repo.owner,
+#               repo: context.repo.repo,
+#               body: `#### <span style="color:blue">:hooray: Tests completed!</span>\n\nResult: ${RESULT}\n\nLog: ${URL}`
+#             })
+        
+      - name: Post a result comment
         if: always()
         uses: actions/github-script@v4
         env:
@@ -62,27 +78,11 @@ jobs:
         with:
           script: |
             const { RESULT, URL } = process.env
-            return github.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: `#### <span style="color:blue">:hooray: Tests completed!</span>\n\nResult: ${RESULT}\n\nLog: ${URL}`
-            })
-        
-      - name: Post a result comment
-        if: always()
-        uses: actions/github-script@v4
-        env:
-          OUTPUT_1: ${{ steps.run-tests.outputs.output1 }}
-          OUTPUT_2: ${{ steps.run-tests.outputs.output2 }}
-        with:
-          script: |
-            const { OUTPUT_1, OUTPUT_2 } = process.env
             github.issues.updateComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              comment_id:
-              body: `Test finished with ${OUTPUT_1} status ${OUTPUT_2}`
+              comment_id: steps.add-comment.outputs.result,
+              body: `#### <span style="color:blue">:hooray: Tests completed!</span>\n\nResult: ${RESULT}\n\nLog: ${URL}`
             })
 
