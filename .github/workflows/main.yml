@@ -77,7 +77,7 @@ jobs:
         with:
           workflow: Post_message
           token: ${{ secrets.PERSONAL_TOKEN }}
-          inputs: '{ "issue_number": "${{github.event.issue.number}}", "run_id": "${{github.event.run_id}}"}'
+          inputs: '{ "issue_number": "${{github.event.issue.number}}", "run_id": "${{github.run_id}}"}'
       
       - name: Get workflow result
         if: always()
