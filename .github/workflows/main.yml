@@ -37,13 +37,6 @@ jobs:
             })
             console.log(result)
             return {result}
-            
-      - name: View context attributes
-        uses: actions/github-script@v4
-        with:
-          script: |
-            console.log(context)
-            console.log(github)
           
       - name: Get add-comments result
         run: |
