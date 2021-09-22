@@ -96,8 +96,8 @@ jobs:
               repo: context.repo.repo,
               body: 
                 `#### Tests completed...
-                Result: ${{RESULT}}
-                Log: ${{URL}}`
+                Result: ${RESULT}
+                Log: ${URL}`
             })
         
       - name: Post a result comment
