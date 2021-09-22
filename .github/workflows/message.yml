@@ -31,4 +31,4 @@ jobs:
 #             })
 
       - name: Do nothing
-        run: echo _dsfds
+        run: echo ${{sdcs}}
