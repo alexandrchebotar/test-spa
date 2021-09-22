@@ -2,7 +2,7 @@ name: Slash commands
 
 on:
   issue_comment:
-    types: [created, deleted]
+    types: [created]
 
 jobs:
   check_comments:
@@ -43,7 +43,6 @@ jobs:
           workflow: Post_message
           token: ${{ secrets.PERSONAL_TOKEN }}
           ref: ${{ steps.comment-branch.outputs.head_ref }}
-          propagate_failure: false
           inputs: '{ "issue_number": "${{github.event.issue.number}}", "run_id": "${{github.run_id}}"}'
 
       - name: Edit comment
@@ -63,7 +62,7 @@ jobs:
               repo: context.repo.repo,
               comment_id: COMMENT_ID,
               body: STATUS === 'success'
-                ? `#### Tests completed! :tada:\n\n>Result: ${RESULT}*\n>*Log: ${URL}`
-                : `#### Tests failed! :angry:\n\n>Result: ${RESULT}\*n>*Log: ${URL}`
+                ? `#### Tests completed! :tada:\n\n>Result: ${RESULT}\n>Log: ${URL}`
+                : `#### Tests failed! :angry:\n\n>Result: ${RESULT}\n>Log: ${URL}`
             })
 
