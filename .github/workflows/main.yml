@@ -46,13 +46,12 @@ jobs:
           inputs: '{ "issue_number": "${{github.event.issue.number}}", "run_id": "${{github.run_id}}"}'
 
       - name: Edit comment
-        if: success()
+        if: always()
         uses: actions/github-script@v4
         env:
           COMMENT_ID: ${{ steps.add-comment.outputs.result }}
           RESULT: ${{ steps.run-tests.outputs.workflow-conclusion }}
           URL: ${{ steps.run-tests.outputs.workflow-url }}
-          STATUS: ${{ job.status }}
         with:
           script: |
             const { COMMENT_ID, RESULT, URL, STATUS } = process.env
@@ -61,7 +60,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               comment_id: COMMENT_ID,
-              body: STATUS === 'success'
+              body: RESULT === 'success'
                 ? `#### Tests completed! :tada:\n\n>Result: ${RESULT}\n>Log: ${URL}`
                 : `#### Tests failed! :angry:\n\n>Result: ${RESULT}\n>Log: ${URL}`
             })
