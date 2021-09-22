@@ -46,7 +46,7 @@ jobs:
           inputs: '{ "issue_number": "${{github.event.issue.number}}", "run_id": "${{github.run_id}}"}'
 
       - name: Edit comment
-        if: always()
+        if: success()
         uses: actions/github-script@v4
         env:
           COMMENT_ID: ${{ steps.add-comment.outputs.result }}
