@@ -28,7 +28,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '#### Starting tests... \n\n *This comment will be updated when the test finishes*'
+              body: '#### Starting tests...\n\n>*This comment will be updated when testing is complete*'
             })
             return result.data.id
             
@@ -63,7 +63,7 @@ jobs:
               repo: context.repo.repo,
               comment_id: COMMENT_ID,
               body: STATUS === 'success'
-                ? `#### Tests completed! :tada:\n\n>Result: ${RESULT}\n>Log: ${URL}`
-                : `#### Tests failed! :angry:\n\n>Result: ${RESULT}\n>Log: ${URL}`
+                ? `#### Tests completed! :tada:\n\n>*Result: ${RESULT}*\n>*Log: ${URL}*`
+                : `#### Tests failed! :angry:\n\n>*Result: ${RESULT}\*n>*Log: ${URL}*`
             })
 
