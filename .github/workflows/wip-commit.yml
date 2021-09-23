@@ -2,7 +2,8 @@ name: WIP commits
 
 on:
   pull_request:
-    types: [opened, ready_for_review]
+
+    
 
 
 jobs:
@@ -18,7 +19,7 @@ jobs:
               owner: context.issue.owner,
               repo: context.issue.repo,
               pull_number: context.issue.number,
-            }).then(({data}) => data.filter(({commit}) => commit.message === 'WIP').map(({commit}) => commit.url));
+            }).then(({data}) => data.filter(({commit}) => commit.message === 'WIP').map(({commit}) => commit.html_url));
             console.log(wipCommits)
             
     #    console.log(context)
