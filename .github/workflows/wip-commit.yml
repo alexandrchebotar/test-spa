@@ -40,16 +40,16 @@ jobs:
          uses: actions/github-script@v4
          with:
           script: |
-            const { WIP_COMMITS } = process.env    
+            const commits = JSON.parse(process.env.WIP_COMMITS)
             console.log("+++++++")
-            console.log(WIP_COMMITS)
+            console.log(commits)
             console.log("=======")
-            console.log(WIP_COMMITS[0])
+            console.log(commits[0])
             github.issues.createComment({
               issue_number: context.issue.number,
               owner: context.issue.owner,
               repo: context.issue.repo,
-              body: `#### WIP commits:${JSON.parse(WIP_COMMITS).forEach(({sha, html_url}) => `\n\n- [${sha}](${html_url})`)}`
+              body: `#### WIP commits:${commits.forEach(({sha, html_url}) => `\n\n- [${sha}](${html_url})`)}`
             })
             
       #.map(({commit}) => commit.html_url));
