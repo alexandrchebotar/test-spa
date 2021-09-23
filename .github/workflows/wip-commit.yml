@@ -23,7 +23,7 @@ jobs:
               owner: context.issue.owner,
               repo: context.issue.repo,
               pull_number: context.issue.number,
-            }).then(({data}) => data.filter(({commit}) => commit.message === 'WIP'))
+            }).then(({data}) => data.filter(({commit}) => commit.message === 'WIP').map(({html_url}) => html_url))
   
             console.log(wipCommits)
             
