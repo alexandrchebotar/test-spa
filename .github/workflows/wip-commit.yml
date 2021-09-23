@@ -41,8 +41,8 @@ jobs:
               repo: context.issue.repo,
             }).then(({data}) => data.filter(({body}) => body.includes("#### WIP-commits are found")))
               
-            console.log("oldComment")
-            console.log(oldComment)
+            console.log("oldComments")
+            console.log(oldComments)
             
             for (let i = 0; i < oldComments.length; i++) {
               await github.issues.deleteComment({
