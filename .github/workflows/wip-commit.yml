@@ -2,20 +2,18 @@ name: WIP commits
 
 on:
   pull_request:
-
-    
-
+    types: [opened, reopened, ready_for_review, synchronize]
 
 jobs:
   wip-commits:
     runs-on: ubuntu-latest
     steps:
-       - name: Convert to Draft
-         run: |
-          echo ${{github.event.action}}
-          echo ${{github.event.type}}
-          echo ${{github.pull_request.action}}
-          echo ${{github.pull_request.type}}
+#        - name: Convert to Draft
+#          run: |
+#           echo ${{github.event.action}}
+#           echo ${{github.event.type}}
+#           echo ${{github.pull_request.action}}
+#           echo ${{github.pull_request.type}}
        - name: Convert to Draft
          if: ${{!github.event.pull_request.draft}}
          uses: actions/github-script@v4
@@ -25,7 +23,7 @@ jobs:
               owner: context.issue.owner,
               repo: context.issue.repo,
               pull_number: context.issue.number,
-            }).then(({data}) => data.filter(({commit}) => commit.message === 'WIP')
+            }).then(({data}) => data.filter(({commit}) => commit.message === 'WIP'))
   
             console.log(wipCommits)
             
