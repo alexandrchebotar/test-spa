@@ -49,7 +49,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.issue.owner,
               repo: context.issue.repo,
-              body: `#### WIP commits: ${[1, 2, 3].map(c => c)}`
+              body: `#### WIP commits: ${commits.map(({sha, html_url}) => `\n- [${sha}](${html_url})`)}`
             })
             
             
