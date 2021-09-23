@@ -48,7 +48,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.issue.owner,
               repo: context.issue.repo,
-              body: `#### WIP commits:${WIP_COMMITS.forEach(({sha, html_url}) => `\n\n- [${sha}](${html_url})`)}`
+              body: `#### WIP commits:${[...WIP_COMMITS].forEach(({sha, html_url}) => `\n\n- [${sha}](${html_url})`)}`
             })
             
       #.map(({commit}) => commit.html_url));
