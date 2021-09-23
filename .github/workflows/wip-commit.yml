@@ -1,0 +1,33 @@
+name: WIP commits
+
+on:
+  pull_request:
+    types: [ready_for_review]
+
+jobs:
+  wip-commits:
+    runs-on: ubuntu-latest
+    steps:
+       - name: Edit comment
+         uses: actions/github-script@v4
+         with:
+          script: |
+            console.log(context)
+            console.log("================================")
+            console.log(github.issues)
+        
+        #         env:
+#           COMMENT_ID: ${{ steps.add-comment.outputs.result }}
+#           RESULT: ${{ steps.run-tests.outputs.workflow-conclusion }}
+#           URL: ${{ steps.run-tests.outputs.workflow-url }}
+
+            # const { COMMENT_ID, RESULT, URL, STATUS } = process.env
+            # github.issues.updateComment({
+            #   issue_number: context.issue.number,
+            #   owner: context.repo.owner,
+            #   repo: context.repo.repo,
+            #   comment_id: COMMENT_ID,
+            #   body: RESULT === 'success'
+            #     ? `#### Tests completed! :tada:\n\n>Result: ${RESULT}\n>Log: ${URL}`
+            #     : `#### Tests failed! :angry:\n\n>Result: ${RESULT}\n>Log: ${URL}`
+            # })
