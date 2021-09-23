@@ -8,12 +8,6 @@ jobs:
   wip-commits:
     runs-on: ubuntu-latest
     steps:
-#        - name: Convert to Draft
-#          run: |
-#           echo ${{github.event.action}}
-#           echo ${{github.event.type}}
-#           echo ${{github.pull_request.action}}
-#           echo ${{github.pull_request.type}}
        - name: Get WIP-commits
          id: get-wip-commits
          if: ${{!github.event.pull_request.draft}}
@@ -41,6 +35,18 @@ jobs:
          with:
           script: |
             const commits = JSON.parse(process.env.WIP_COMMITS)
+            const comments = github.issues.listComments({
+              issue_number: context.issue.number,
+              owner: context.issue.owner,
+              repo: context.issue.repo,
+            })
+            const oldComment = comments.find(({body}) => body.includes("#### WIP-commits are found"))
+            console.log(oldComment)
+            await github.issues.deleteComment({
+              owner: context.issue.owner,
+              repo: context.issue.repo,
+              comment_id,
+            })
             console.log("+++++++")
             console.log(commits)
             console.log("=======")
@@ -49,16 +55,6 @@ jobs:
               issue_number: context.issue.number,
               owner: context.issue.owner,
               repo: context.issue.repo,
-              body: `#### WIP-commits are found: ${commits.map(({sha, html_url}) => `\n- [${sha}](${html_url})`)}\n\nPlease remove them before merging.`
-            })
-            
-            
-      # body: `#### WIP commits:${commits.forEach(({sha, html_url}) => "13")}`
-      #.map(({commit}) => commit.html_url));
-            
-    #    console.log(context)
-     #       console.log("================================")
-     
-     
-     
+              body: `#### WIP-commits are found: ${commits.each(({sha, html_url}) => `\n- [${sha}](${html_url})`)}\n\nPlease remove them before merging.`,
+            })   
 
