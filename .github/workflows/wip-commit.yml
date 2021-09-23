@@ -36,7 +36,7 @@ jobs:
            exit 1
            
        - name: Convert to Draft
-         if: error()
+         if: fail()
          env:
             WIP_COMMENTS: ${{ steps.add-comment.outputs.result }}
             RESULT: ${{ steps.run-tests.outputs.workflow-conclusion }}
