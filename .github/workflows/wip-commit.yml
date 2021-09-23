@@ -19,7 +19,7 @@ jobs:
               repo: context.issue.repo,
               pull_number: context.issue.number,
             }).then(({data) => {
-              data.filter(({commit}) => commit.message === 'WIP').map(({commit: {url}) => url)
+              data.filter(({commit}) => commit.message === 'WIP').map(({commit}) => commit.url)
             });
             console.log(wipCommits)
             
