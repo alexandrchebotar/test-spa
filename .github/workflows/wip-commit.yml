@@ -25,7 +25,7 @@ jobs:
               repo: context.issue.repo,
               pull_number: context.issue.number,
             }).then(({data}) => data.filter(({commit}) => commit.message === 'WIP'))
-            return wipCommits.length ? wipCommits : false
+            return wipCommits.length ? wipCommits : null
           
        - name: Set failure
          if: ${{steps.get-wip-commits.outputs.result}}
@@ -36,11 +36,14 @@ jobs:
        - name: Convert to Draft
          if: failure()
          env:
-            WIP_COMMITS: ${{ steps.get-wip-commits.outputs.result }}
+            WIP_COMMITS: ${{steps.get-wip-commits.outputs.result}}
          uses: actions/github-script@v4
          with:
           script: |
-            const { WIP_COMMITS } = process.env            
+            const { WIP_COMMITS } = process.env    
+            console.log("+++++++")
+            console.log(WIP_COMMITS)
+            console.log("=======")
             github.issues.createComment({
               issue_number: context.issue.number,
               owner: context.issue.owner,
