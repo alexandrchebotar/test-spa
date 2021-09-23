@@ -25,7 +25,7 @@ jobs:
               repo: context.issue.repo,
               pull_number: context.issue.number,
             }).then(({data}) => data.filter(({commit}) => commit.message === 'WIP'))
-            return wipCommits.length ? wipCommits : null
+            return wipCommits.length ? wipCommits : false
           
        - name: Set failure
          if: steps.get-wip-commits.outputs.result 
