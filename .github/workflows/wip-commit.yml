@@ -28,7 +28,7 @@ jobs:
             return wipCommits.length ? wipCommits : false
           
        - name: Set failure
-         if: steps.get-wip-commits.outputs.result 
+         if: ${{steps.get-wip-commits.outputs.result}}
          run: |
            echo "WIP-commits found"
            exit 1
