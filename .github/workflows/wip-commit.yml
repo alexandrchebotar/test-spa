@@ -25,9 +25,7 @@ jobs:
               repo: context.issue.repo,
               pull_number: context.issue.number,
             }).then(({data}) => data.filter(({commit}) => commit.message === 'WIP'))
-  
-            console.log(wipCommits)
-            return wipCommits
+            return wipCommits.length ? wipCommits : null
           
        - name: Set failure
          if: steps.get-wip-commits.outputs.result 
@@ -44,6 +42,7 @@ jobs:
           script: |
             const { WIP_COMMITS } = process.env
             console.log(WIP_COMMITS)
+            
 #     github.issues.createComment({
 #       issue_number: context.issue.number,
 #       owner: context.issue.owner,
