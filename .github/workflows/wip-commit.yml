@@ -44,6 +44,7 @@ jobs:
             console.log("+++++++")
             console.log(WIP_COMMITS)
             console.log("=======")
+            console.log(WIP_COMMITS[0])
             github.issues.createComment({
               issue_number: context.issue.number,
               owner: context.issue.owner,
