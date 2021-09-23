@@ -4,18 +4,28 @@ on:
   pull_request:
     types: [opened, ready_for_review]
 
+
 jobs:
   wip-commits:
     runs-on: ubuntu-latest
     steps:
-       - name: Edit comment
+       - name: Convert to Draft
+         if: ${{!github.event.pull_request.draft}}
          uses: actions/github-script@v4
          with:
           script: |
-            console.log(context)
-            console.log("================================")
-            console.log(github.issues)
-        
+            const commits = github.pulls.listCommits({
+              owner: context.issue.owner,
+              repo: context.issue.repo,
+              pull_number: context.issue.number,
+            });
+            console.log(commits)
+            
+    #    console.log(context)
+     #       console.log("================================")
+     
+     
+     
         #         env:
 #           COMMENT_ID: ${{ steps.add-comment.outputs.result }}
 #           RESULT: ${{ steps.run-tests.outputs.workflow-conclusion }}
