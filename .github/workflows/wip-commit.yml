@@ -1,4 +1,4 @@
-name: WIP commits
+name: WIP-commits
 
 on:
   pull_request:
@@ -14,7 +14,7 @@ jobs:
 #           echo ${{github.event.type}}
 #           echo ${{github.pull_request.action}}
 #           echo ${{github.pull_request.type}}
-       - name: Convert to Draft
+       - name: Get WIP-commits
          id: get-wip-commits
          if: ${{!github.event.pull_request.draft}}
          uses: actions/github-script@v4
@@ -29,18 +29,16 @@ jobs:
             console.log(wipCommits)
             return wipCommits
           
-       - name: Convert to Draft
+       - name: Set failure
          if: steps.get-wip-commits.outputs.result 
          run: |
-           echo "There are WIP commits"
+           echo "WIP-commits found"
            exit 1
            
        - name: Convert to Draft
          if: failure()
          env:
             WIP_COMMENTS: ${{ steps.add-comment.outputs.result }}
-            RESULT: ${{ steps.run-tests.outputs.workflow-conclusion }}
-            URL: ${{ steps.run-tests.outputs.workflow-url }}
          uses: actions/github-script@v4
          with:
           script: |
@@ -49,7 +47,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.issue.owner,
               repo: context.issue.repo,
-              body: `#### WIP commits:${WIP_COMMENTS.forEach(({sha, html_url}) => `\n\n- [${}](${URL})`}`
+              body: `#### WIP commits:${WIP_COMMENTS.forEach(({sha, html_url}) => `\n\n- [${sha}](${html_url})`)}`
             })
             
       #.map(({commit}) => commit.html_url));
