@@ -36,7 +36,7 @@ jobs:
        - name: Convert to Draft
          if: failure()
          env:
-            WIP_COMMITS: ${{ steps.add-comment.outputs.result }}
+            WIP_COMMITS: ${{ steps.get-wip-commits.outputs.result }}
          uses: actions/github-script@v4
          with:
           script: |
