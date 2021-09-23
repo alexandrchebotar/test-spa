@@ -35,20 +35,20 @@ jobs:
          with:
           script: |
             const commits = JSON.parse(process.env.WIP_COMMITS)
-            const oldComments = github.issues.listComments({
+            const prevComments = github.issues.listComments({
               issue_number: context.issue.number,
               owner: context.issue.owner,
               repo: context.issue.repo,
             }).then(({data}) => data.filter(({body}) => body.includes("#### WIP-commits are found")))
               
-            console.log("oldComments")
-            console.log(oldComments)
+            console.log("prevComments")
+            console.log(prevComments)
             
-            for (let i = 0; i < oldComments.length; i++) {
+            for (let i = 0; i < prevComments.length; i++) {
               await github.issues.deleteComment({
                 owner: context.issue.owner,
                 repo: context.issue.repo,
-                comment_id: oldComments[i].id,
+                comment_id: prevComments[i].id,
               })
             }
             
