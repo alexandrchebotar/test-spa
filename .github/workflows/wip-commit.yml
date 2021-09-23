@@ -14,12 +14,14 @@ jobs:
          uses: actions/github-script@v4
          with:
           script: |
-            const commits = await github.pulls.listCommits({
+            const wipCommits = await github.pulls.listCommits({
               owner: context.issue.owner,
               repo: context.issue.repo,
               pull_number: context.issue.number,
+            }).then(({data) => {
+              data.filter(({commit}) => commit.message === 'WIP').map(({commit: {url}) => url)
             });
-            console.log(commits)
+            console.log(wipCommits)
             
     #    console.log(context)
      #       console.log("================================")
