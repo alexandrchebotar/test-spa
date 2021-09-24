@@ -2,8 +2,6 @@ name: WIP-commits
 
 on:
   pull_request:
-    branches:
-      - '*/fe/*'
     types: [opened, reopened, ready_for_review, synchronize]
 
 jobs:
