@@ -25,7 +25,8 @@ jobs:
        - name: Set failure
          if: ${{steps.get-wip-commits.outputs.result}}
          run: |
-          echo "WIP-commits found"
+           echo "WIP-commits are found:"
+           echo ${{steps.get-wip-commits.outputs.result}}
            exit 1
            
        - name: Delete old comments
