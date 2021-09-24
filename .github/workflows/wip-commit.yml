@@ -47,7 +47,7 @@ jobs:
               })
             }   
             
-       - name: Convert to Draft
+       - name: Add new comment
          if: failure()
          env:
             WIP_COMMITS: ${{steps.get-wip-commits.outputs.result}}
