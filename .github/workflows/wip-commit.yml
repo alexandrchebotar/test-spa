@@ -39,16 +39,15 @@ jobs:
               issue_number: context.issue.number,
               owner: context.issue.owner,
               repo: context.issue.repo,
-            }).then(({data}) => data.filter(({body}) => body.includes("#### WIP-commits are found")))
+            }).then(({data}) => data.filter(({body, user}) => user.type === "Bot" && body.includes("#### WIP-commits are found:")))
             
-            for (let i = 0; i < prevComments.length; i++) {
-              console.log("message: " + i)
-              console.log(prevComments[i])
-              console.log(prevComments[i].id)
+            for (comment in prevComments) {
+              console.log(comment)
+              console.log(comment.id)
               const del = await github.issues.deleteComment({
                 owner: context.issue.owner,
                 repo: context.issue.repo,
-                comment_id: prevComments[i].id,
+                comment_id: comment.id,
               })
               console.log(del)
             }
@@ -57,6 +56,6 @@ jobs:
               issue_number: context.issue.number,
               owner: context.issue.owner,
               repo: context.issue.repo,
-              body: `#### WIP-commits are found: ${commits.map(({sha, html_url}) => `\n- [${sha}](${html_url})`)}\n\nPlease remove them before merging.`,
+              body: `#### WIP-commits are found:${commits.map(({sha, html_url}) => `\n- [${sha}](${html_url})`)}\n\nPlease remove them before merging.`,
             })   
 
