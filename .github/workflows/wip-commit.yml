@@ -41,7 +41,7 @@ jobs:
               repo: context.issue.repo,
             }).then(({data}) => data.filter(({body, user}) => user.type === "Bot" && body.includes("#### WIP-commits are found:")))
             
-            for (comment in prevComments) {
+            for (comment of prevComments) {
               console.log(comment)
               console.log(comment.id)
               const del = await github.issues.deleteComment({
