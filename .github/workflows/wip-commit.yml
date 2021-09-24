@@ -52,10 +52,6 @@ jobs:
               })
             }
             
-            console.log("+++++++")
-            console.log(commits)
-            console.log("=======")
-            console.log(commits[0])
             github.issues.createComment({
               issue_number: context.issue.number,
               owner: context.issue.owner,
