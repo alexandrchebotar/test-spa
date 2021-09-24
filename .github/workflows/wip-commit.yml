@@ -5,8 +5,8 @@ on:
     types: [opened, reopened, ready_for_review, synchronize]
 
 jobs:
-  if: ${{!github.event.pull_request.draft}}
   wip-commits:
+    if: ${{!github.event.pull_request.draft}}
     runs-on: ubuntu-latest
     steps:
        - name: Get WIP-commits
