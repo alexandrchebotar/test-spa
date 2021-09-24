@@ -25,7 +25,7 @@ jobs:
        - name: Set failure
          if: ${{steps.get-wip-commits.outputs.result}}
          run: |
-           echo "WIP-commits found"
+          echo "WIP-commits found"
            exit 1
            
        - name: Delete old comments
@@ -50,7 +50,7 @@ jobs:
        - name: Add new comment
          if: failure()
          env:
-            WIP_COMMITS: ${{steps.get-wip-commits.outputs.result}}
+          WIP_COMMITS: ${{steps.get-wip-commits.outputs.result}}
          uses: actions/github-script@v4
          with:
           script: |
