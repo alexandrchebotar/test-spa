@@ -43,6 +43,7 @@ jobs:
             
             for (let i = 0; i < prevComments.length; i++) {
               console.log("message: " + i)
+              console.log(prevComments[i])
               console.log(prevComments[i].id)
               const del = await github.issues.deleteComment({
                 owner: context.issue.owner,
