@@ -19,6 +19,7 @@ jobs:
               repo: context.issue.repo,
               pull_number: context.issue.number,
             }).then(({data}) => data.filter(({commit}) => commit.message === 'WIP'))
+            
             return wipCommits.length ? wipCommits : null
           
        - name: Set failure
@@ -27,6 +28,25 @@ jobs:
            echo "WIP-commits found"
            exit 1
            
+       - name: Delete old comments
+         if: always()
+         uses: actions/github-script@v4
+         with:
+          script: |
+            const prevComments = await github.issues.listComments({
+              issue_number: context.issue.number,
+              owner: context.issue.owner,
+              repo: context.issue.repo,
+            }).then(({data}) => data.filter(({body, user}) => user.type === "Bot" && body.includes("#### WIP-commits are found:")))
+            
+            for (comment of prevComments) {
+              await github.issues.deleteComment({
+                owner: context.issue.owner,
+                repo: context.issue.repo,
+                comment_id: comment.id,
+              })
+            }   
+            
        - name: Convert to Draft
          if: failure()
          env:
@@ -35,22 +55,6 @@ jobs:
          with:
           script: |
             const commits = JSON.parse(process.env.WIP_COMMITS)
-            const prevComments = await github.issues.listComments({
-              issue_number: context.issue.number,
-              owner: context.issue.owner,
-              repo: context.issue.repo,
-            }).then(({data}) => data.filter(({body, user}) => user.type === "Bot" && body.includes("#### WIP-commits are found:")))
-            
-            for (comment of prevComments) {
-              console.log(comment)
-              console.log(comment.id)
-              const del = await github.issues.deleteComment({
-                owner: context.issue.owner,
-                repo: context.issue.repo,
-                comment_id: comment.id,
-              })
-              console.log(del)
-            }
             
             github.issues.createComment({
               issue_number: context.issue.number,
