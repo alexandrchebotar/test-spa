@@ -40,16 +40,16 @@ jobs:
               owner: context.issue.owner,
               repo: context.issue.repo,
             }).then(({data}) => data.filter(({body}) => body.includes("#### WIP-commits are found")))
-              
-            console.log("prevComments")
-            console.log(prevComments)
             
             for (let i = 0; i < prevComments.length; i++) {
-              await github.issues.deleteComment({
+              console.log("message: " + i)
+              console.log(prevComments[i].id)
+              const del = await github.issues.deleteComment({
                 owner: context.issue.owner,
                 repo: context.issue.repo,
                 comment_id: prevComments[i].id,
               })
+              console.log(del)
             }
             
             github.issues.createComment({
