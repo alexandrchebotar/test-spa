@@ -5,12 +5,12 @@ on:
     types: [opened, reopened, ready_for_review, synchronize]
 
 jobs:
+  if: ${{!github.event.pull_request.draft}}
   wip-commits:
     runs-on: ubuntu-latest
     steps:
        - name: Get WIP-commits
          id: get-wip-commits
-         if: ${{!github.event.pull_request.draft}}
          uses: actions/github-script@v4
          with:
           script: |
@@ -20,7 +20,7 @@ jobs:
               pull_number: context.issue.number,
             }).then(({data}) => data.filter(({commit}) => commit.message === 'WIP'))
             
-            return wipCommits.length ? wipCommits : null
+            return wipCommits.length ? wipCommits : false
           
        - name: Set failure
          if: ${{steps.get-wip-commits.outputs.result}}
