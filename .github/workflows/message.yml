@@ -30,5 +30,9 @@ jobs:
 #               body: process.env.RUN_ID
 #             })
 
+      - uses: actions/checkout@v2
       - name: Do nothing
-        run: echo ${{sdcs}}
+        run: |
+          echo ${{github.ref}}
+          echo ${{github.event.pull_request.head.ref}}
+          echo ${{github.event.inputs.issue_number}}
