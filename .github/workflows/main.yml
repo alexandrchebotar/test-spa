@@ -40,7 +40,7 @@ jobs:
         id: run-tests
         uses: aurelien-baudet/workflow-dispatch@v2
         with:
-          workflow: Post_message
+          workflow: Post message
           token: ${{ secrets.PERSONAL_TOKEN }}
           ref: ${{ steps.comment-branch.outputs.head_ref }}
           inputs: '{ "issue_number": "${{github.event.issue.number}}", "run_id": "${{github.run_id}}"}'
