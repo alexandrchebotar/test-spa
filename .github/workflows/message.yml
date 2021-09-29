@@ -1,7 +1,7 @@
 name: Post_message
 
 on:
-  pull_request:
+  push:
   workflow_dispatch:
     inputs:
       issue_number:
