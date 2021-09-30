@@ -74,9 +74,11 @@ jobs:
         id: run-tests
         uses: aurelien-baudet/workflow-dispatch@v2
         with:
-          workflow: Post message
+          workflow: Integration tests
           token: ${{ secrets.PERSONAL_TOKEN }}
-          ref: ${{ steps.comment-branch.outputs.head_ref }}
+          repo: turnhub/engage
+          ref: tmp/test-workflow
+#           ref: ${{ steps.comment-branch.outputs.head_ref }}
 
       - name: Edit comment
         if: always()
