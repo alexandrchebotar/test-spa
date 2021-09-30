@@ -5,10 +5,17 @@ on:
     types: [created]
 
 jobs:
-  check_comments:
-    name: Run integration tests on "/ci cypress" or "/ci integration-tests" 
-    if: github.event.issue.pull_request && startsWith(github.event.comment.body, '/ci cypress') || startsWith(github.event.comment.body, '/ci integration-tests')
+  parse_command:
+    name: Parse slash command
+    if: |
+      github.event.issue.pull_request 
+      && (github.event.comment.body == '/softfix'
+      || github.event.comment.body == '/ci integration-tests'
+      || github.event.comment.body == '/ci cypress')
     runs-on: ubuntu-latest
+    outputs:
+      command: ${{ steps.command.outputs.command-name }}
+      arguments: ${{ steps.command.outputs.command-arguments }}
     steps:
       - name: Check for Command
         id: command
@@ -17,9 +24,27 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           command: ci
           reaction-type: "eyes"
-        
+
+  softfix:
+    name: Softfix
+    needs: parse_command
+    if: needs.parse_command.command == 'softfix' 
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: dekvall/softfix@v1.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
+  run_integration_tests:
+    name: Run integration tests 
+    needs: parse_command
+    if: |
+      needs.parse_command.command == 'ci' 
+      && (needs.parse_command.arguments == 'cypress' || needs.parse_command.arguments == 'integration-tests')
+    runs-on: ubuntu-latest
+    steps:       
       - name: Add comment
-        if: ${{steps.command.outputs.command-arguments == 'cypress' || steps.command.outputs.command-arguments == 'integration-tests'}}
         id: add-comment
         uses: actions/github-script@v4
         with:
@@ -32,7 +57,7 @@ jobs:
             })
             return result.data.id
             
-      - name: Get brunch ref
+      - name: Get branch ref
         uses: xt0rted/pull-request-comment-branch@v1
         id: comment-branch
         
@@ -40,12 +65,9 @@ jobs:
         id: run-tests
         uses: aurelien-baudet/workflow-dispatch@v2
         with:
-          workflow: Integration tests
-          repo: turnhub/engage
+          workflow: Post message
           token: ${{ secrets.PERSONAL_TOKEN }}
-          ref: tmp/test-workflow
-#     ref: ${{ steps.comment-branch.outputs.head_ref }}
-#           inputs: '{ "issue_number": "${{github.event.issue.number}}", "run_id": "${{github.run_id}}"}'
+          ref: ${{ steps.comment-branch.outputs.head_ref }}
 
       - name: Edit comment
         if: always()
