@@ -57,8 +57,8 @@ jobs:
       - name: Run tests
         id: run-tests
         if: |
-          steps.command.outputs.command-arguments == '/ci integration-tests'
-          || steps.command.outputs.command-arguments == '/ci cypress'
+          steps.command.outputs.command-arguments == 'integration-tests'
+          || steps.command.outputs.command-arguments == 'cypress'
         uses: aurelien-baudet/workflow-dispatch@v2
         with:
           workflow: Post_message
