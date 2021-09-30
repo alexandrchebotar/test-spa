@@ -45,7 +45,7 @@ jobs:
           token: ${{ secrets.PERSONAL_TOKEN }}
           ref: tmp/test-workflow
 #     ref: ${{ steps.comment-branch.outputs.head_ref }}
-          inputs: '{ "issue_number": "${{github.event.issue.number}}", "run_id": "${{github.run_id}}"}'
+#           inputs: '{ "issue_number": "${{github.event.issue.number}}", "run_id": "${{github.run_id}}"}'
 
       - name: Edit comment
         if: always()
