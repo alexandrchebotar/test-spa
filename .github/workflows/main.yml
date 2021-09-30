@@ -31,13 +31,13 @@ jobs:
     steps:
       - name: Print needs
         run: |
-          echo ${{ needs.parse_command.command }}
-          echo ${{ needs.parse_command.arguments }}
+          echo ${{ needs.parse_command.outputs.command }}
+          echo ${{ needs.parse_command.outputs.arguments }}
 
   softfix:
     name: Softfix
     needs: parse_command
-    if: needs.parse_command.command == 'softfix' 
+    if: needs.parse_command.outputs.command == 'softfix' 
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -49,8 +49,8 @@ jobs:
     name: Run integration tests 
     needs: parse_command
     if: |
-      needs.parse_command.command == 'ci' 
-      && (needs.parse_command.arguments == 'cypress' || needs.parse_command.arguments == 'integration-tests')
+      needs.parse_command.outputs.command == 'ci' 
+      && (needs.parse_command.outputs.arguments == 'cypress' || needs.parse_command.outputs.arguments == 'integration-tests')
     runs-on: ubuntu-latest
     steps:       
       - name: Add comment
