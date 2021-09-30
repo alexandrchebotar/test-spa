@@ -5,54 +5,38 @@ on:
     types: [created]
 
 jobs:
-  parse_command:
-    name: Parse slash command
-    if: |
-      github.event.issue.pull_request 
-      && (startsWith(github.event.comment.body, '/softfix')
-      || github.event.comment.body == '/ci integration-tests'
-      || github.event.comment.body == '/ci cypress')
+  softfix:
+    name: Softfix
+    if: github.event.issue.pull_request && startsWith(github.event.comment.body, '/softfix')
     runs-on: ubuntu-latest
-    outputs:
-      command: ${{ steps.command.outputs.command-name }}
-      arguments: ${{ steps.command.outputs.command-arguments }}
     steps:
-      - name: Check for Command
+      - name: Parse command
         id: command
         uses: xt0rted/slash-command-action@v1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          command: softfix|ci
+          command: softfix
           reaction-type: "eyes"
-
-  check:
-    runs-on: ubuntu-latest
-    needs: parse_command
-    steps:
-      - name: Print needs
-        run: |
-          echo ${{ needs.parse_command.outputs.command }}
-          echo ${{ needs.parse_command.outputs.arguments }}
-
-  softfix:
-    name: Softfix
-    needs: parse_command
-    if: needs.parse_command.outputs.command == 'softfix' 
-    runs-on: ubuntu-latest
-    steps:
       - uses: actions/checkout@v2
       - uses: dekvall/softfix@v1.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  
+
   run_integration_tests:
-    name: Run integration tests 
-    needs: parse_command
+    name: Run integration tests
     if: |
-      needs.parse_command.outputs.command == 'ci' 
-      && (needs.parse_command.outputs.arguments == 'cypress' || needs.parse_command.outputs.arguments == 'integration-tests')
+      github.event.issue.pull_request 
+      && (github.event.comment.body == '/ci integration-tests' || github.event.comment.body == '/ci cypress')
     runs-on: ubuntu-latest
-    steps:       
+    steps:
+      - name: Parse command
+        id: command
+        uses: xt0rted/slash-command-action@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          command: ci
+          reaction-type: "eyes"
+    
       - name: Add comment
         id: add-comment
         uses: actions/github-script@v4
@@ -72,13 +56,14 @@ jobs:
         
       - name: Run tests
         id: run-tests
+        if: |
+          steps.command.outputs.command-arguments == '/ci integration-tests'
+          || steps.command.outputs.command-arguments == '/ci cypress'
         uses: aurelien-baudet/workflow-dispatch@v2
         with:
           workflow: Integration tests
           token: ${{ secrets.PERSONAL_TOKEN }}
-          repo: turnhub/engage
-          ref: tmp/test-workflow
-#           ref: ${{ steps.comment-branch.outputs.head_ref }}
+          ref: ${{ steps.comment-branch.outputs.head_ref }}
 
       - name: Edit comment
         if: always()
