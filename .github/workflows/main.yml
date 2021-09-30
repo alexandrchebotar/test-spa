@@ -61,7 +61,7 @@ jobs:
           || steps.command.outputs.command-arguments == '/ci cypress'
         uses: aurelien-baudet/workflow-dispatch@v2
         with:
-          workflow: Integration tests
+          workflow: Post_message
           token: ${{ secrets.PERSONAL_TOKEN }}
           ref: ${{ steps.comment-branch.outputs.head_ref }}
 
