@@ -9,7 +9,7 @@ jobs:
     name: Parse slash command
     if: |
       github.event.issue.pull_request 
-      && (github.event.comment.body == '/softfix'
+      && (startsWith(github.event.comment.body, '/softfix')
       || github.event.comment.body == '/ci integration-tests'
       || github.event.comment.body == '/ci cypress')
     runs-on: ubuntu-latest
