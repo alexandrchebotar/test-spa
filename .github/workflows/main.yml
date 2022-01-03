@@ -51,14 +51,14 @@ jobs:
         with:
          script: |
            if (!!process.env.MESSAGE) {
-             return process.env.MESSAGE
+             return "1"
            } else {
              const message = await github.pulls.listCommits({
                owner: context.issue.owner,
                repo: context.issue.repo,
                pull_number: context.issue.number,
              }).then(({data}) => data[0].message)
-             return message
+             return "2"
            }
 
       - name: Merge base branch
