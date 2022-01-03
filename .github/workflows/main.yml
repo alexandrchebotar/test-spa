@@ -51,6 +51,7 @@ jobs:
         with:
          script: |
            if (process.env.MESSAGE) {
+             return process.env.MESSAGE
              const matchResult = process.env.MESSAGE.match(/`(.|\n)*`/)
              if (matchResult) {
                const message = matchResult[0]
