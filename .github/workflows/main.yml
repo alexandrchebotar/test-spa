@@ -38,11 +38,17 @@ jobs:
         with:
             fetch-depth: 0
       - run: |
-          echo "issue #${{ toJson(github.event.issue) }}"
+          echo "issue: #${{ toJson(github.event.issue) }}"
       - run: |
-          echo "pull_request #${{ toJson(github.event) }}"
+          echo "event: #${{ toJson(github.event) }}"
       - run: |
-          echo "pull_request #${{ toJson(github) }}"
+          echo "github: #${{ toJson(github) }}"
+      - name: Get branch ref
+        uses: xt0rted/pull-request-comment-branch@v1
+        id: comment-branch
+      - run: |
+          echo "ref: ${{ steps.comment-branch.outputs.head_ref }}"
+       
       - name: pull
         run: |
           git status
