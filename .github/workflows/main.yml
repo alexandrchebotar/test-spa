@@ -82,7 +82,7 @@ jobs:
           
       - name: squash and push
         run: |
-          echo "commit-message: ${{ toJson(steps.commit-message.outputs) }}"
+          echo "commit-message: ${{ toJson(steps.commit-message.outputs.result) }}"
           git reset --soft origin/${{ steps.comment-branch.outputs.base_ref }}
           git commit -m ${{ steps.commit-message.outputs.result }}
           git push -f
