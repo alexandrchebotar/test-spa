@@ -57,7 +57,7 @@ jobs:
                owner: context.issue.owner,
                repo: context.issue.repo,
                pull_number: context.issue.number,
-             }).then(({data}) => data)
+             }).then(({data}) => data.commit)
              return message
            }
 
