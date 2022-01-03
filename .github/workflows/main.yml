@@ -37,34 +37,59 @@ jobs:
       - uses: actions/checkout@v2
         with:
             fetch-depth: 0
-      - run: |
-          echo "issue: #${{ toJson(github.event.issue) }}"
-      - run: |
-          echo "event: #${{ toJson(github.event) }}"
-      - run: |
-          echo "github: #${{ toJson(github) }}"
+#       - run: |
+#           echo "issue: #${{ toJson(github.event.issue) }}"
+#       - run: |
+#           echo "event: #${{ toJson(github.event) }}"
+#       - run: |
+#           echo "github: #${{ toJson(github) }}"
       - name: Get branch ref
         uses: xt0rted/pull-request-comment-branch@v1
         id: comment-branch
-      - run: |
-          echo "head: ${{ steps.comment-branch.outputs.head_ref }}"
-          echo "base: ${{ steps.comment-branch.outputs.base_ref }}"
-          echo "actor: ${{github.actor}}"
+#       - run: |
+#           echo "head: ${{ steps.comment-branch.outputs.head_ref }}"
+#           echo "base: ${{ steps.comment-branch.outputs.base_ref }}"
+#           echo "actor: ${{github.actor}}"
        
-      - name: pull
+#       - name: pull
+#         run: |
+#           git config --global user.email "${{github.actor}}"
+#           git config --global user.name "${{github.actor}}@users.noreply.github.com"
+#           git status
+#           git pull
+#       - name: chech default
+#         run: |
+#           git checkout  ${{ steps.comment-branch.outputs.base_ref }}
+#           git status
+#       - name: perform merge
+#         run: |
+#           git checkout ${{ steps.comment-branch.outputs.head_ref }}
+#           git merge  ${{ steps.comment-branch.outputs.base_ref }} --no-edit
+#           git push
+#           git status
+
+      - name: Merge base branch
         run: |
           git config --global user.email "${{github.actor}}"
           git config --global user.name "${{github.actor}}@users.noreply.github.com"
-          git status
-          git pull
-      - name: chech default
-        run: |
           git checkout  ${{ steps.comment-branch.outputs.base_ref }}
-          git status
-      - name: perform merge
-        run: |
           git checkout ${{ steps.comment-branch.outputs.head_ref }}
           git merge  ${{ steps.comment-branch.outputs.base_ref }} --no-edit
+          
+      - name: Add comment on failure
+        if: ${{ failure() }}
+        uses: actions/github-script@v4
+        with:
+          script: |
+            const result = await github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'Can't merge base branch. Please resolve all conflicts first.'
+            })
+          
+      - name: push
+        run: |
           git push
           git status
 
