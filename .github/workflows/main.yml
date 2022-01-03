@@ -42,14 +42,27 @@ jobs:
       - name: Get branch ref
         uses: xt0rted/pull-request-comment-branch@v1
         id: comment-branch
+        
+      - name: Get commit message
+        id: commit-message
+        uses: actions/github-script@v4
+        with:
+         script: |
+           const message = steps.command.outputs.command-arguments ?? await github.pulls.listCommits({
+             owner: context.issue.owner,
+             repo: context.issue.repo,
+             pull_number: context.issue.number,
+           }).then(({data}) => data[0].message)
+           
+           return message
 
       - name: Merge base branch
         run: |
           git config --global user.email "${{github.actor}}"
           git config --global user.name "${{github.actor}}@users.noreply.github.com"
-          git checkout  ${{ steps.comment-branch.outputs.base_ref }}
+          git checkout ${{ steps.comment-branch.outputs.base_ref }}
           git checkout ${{ steps.comment-branch.outputs.head_ref }}
-          git merge  ${{ steps.comment-branch.outputs.base_ref }} --no-edit
+          git merge ${{ steps.comment-branch.outputs.base_ref }} --no-edit
           
       - name: Add comment on failure
         if: ${{ failure() }}
@@ -63,8 +76,10 @@ jobs:
               body: ":warning: Can't merge base branch. Please resolve all conflicts first."
             })
           
-      - name: push
+      - name: squash and push
         run: |
+          git reset --soft develop
+          git commit -m ${{ steps.commit-message.outputs.result }}
           git push
           git status
 
