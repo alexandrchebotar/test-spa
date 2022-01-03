@@ -57,7 +57,7 @@ jobs:
                owner: context.issue.owner,
                repo: context.issue.repo,
                pull_number: context.issue.number,
-             }).then(({data}) => data[0])
+             }).then(({data}) => data[0].commit)
              return message
            }
 
@@ -82,7 +82,7 @@ jobs:
           
       - name: squash and push
         run: |
-          echo "commit-message: ${{ toJson(steps.commit-message.outputs.result) }}"
+          echo "${{ toJson(steps.commit-message.outputs.result) }}"
           git reset --soft origin/${{ steps.comment-branch.outputs.base_ref }}
           git commit -m ${{ steps.commit-message.outputs.result }}
           git push -f
