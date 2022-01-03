@@ -60,7 +60,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: "Can't merge base branch. Please resolve all conflicts first."
+              body: ":warning: Can't merge base branch. Please resolve all conflicts first."
             })
           
       - name: push
