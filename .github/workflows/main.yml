@@ -37,12 +37,16 @@ jobs:
       - uses: actions/checkout@v2
         with:
             fetch-depth: 0
-      - name: perform merge
+      - name: pull
         run: |
           git status
           git pull
+      - name: chech default
+        run: |
           git checkout "$DEFAULT_BRANCH"
           git status
+      - name: perform merge
+        run: |
           git checkout "$GITHUB_HEAD_REF"
           git merge "$DEFAULT_BRANCH" --no-edit
           git push
