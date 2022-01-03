@@ -49,12 +49,12 @@ jobs:
       - run: |
           echo "head: ${{ steps.comment-branch.outputs.head_ref }}"
           echo "base: ${{ steps.comment-branch.outputs.base_ref }}"
-          echo "actor: ${GITHUB_ACTOR}"
+          echo "actor: ${github.actor}"
        
       - name: pull
         run: |
-          git config --global user.email "${GITHUB_ACTOR}"
-          git config --global user.name "${GITHUB_ACTOR}@users.noreply.github.com"
+          git config --global user.email "${{github.actor}}"
+          git config --global user.name "${{github.actor}}@users.noreply.github.com"
           git status
           git pull
       - name: chech default
