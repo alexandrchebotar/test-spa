@@ -50,8 +50,8 @@ jobs:
           MESSAGE: ${{ steps.command.outputs.command-arguments }}
         with:
          script: |
-           if (MESSAGE) {
-             return MESSAGE
+           if (process.env.MESSAGE) {
+             return process.env.MESSAGE
            } else {
              const message = await github.pulls.listCommits({
                owner: context.issue.owner,
