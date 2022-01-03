@@ -47,7 +47,7 @@ jobs:
         id: commit-message
         uses: actions/github-script@v4
         env:
-          MESSAGE: ${{ steps.command.outputs.command-arguments }}
+          MESSAGE: ${{ github.event.comment.body }}
         with:
          script: |
            if (process.env.MESSAGE) {
