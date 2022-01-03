@@ -44,7 +44,7 @@ jobs:
         id: comment-branch
         
       - run: |
-          echo "${{toJson(steps.commit-message.outputs.result)}}" 
+          echo "${{github.event.comment.body}}" 
         
       - name: Get commit message
         id: commit-message
@@ -54,7 +54,6 @@ jobs:
         with:
          script: |
            if (process.env.MESSAGE) {
-             return process.env.MESSAGE
              const matchResult = process.env.MESSAGE.match(/```(.|\n)*```/)
              if (matchResult) {
                const message = matchResult[0].trim()
@@ -71,7 +70,7 @@ jobs:
            return message
            
       - run: |
-          echo "${{toJson(steps.commit-message.outputs.result)}}"
+          echo "${{steps.commit-message.outputs.result}}"
           
       - name: Merge base branch
         run: |
