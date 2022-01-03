@@ -46,10 +46,12 @@ jobs:
       - name: Get commit message
         id: commit-message
         uses: actions/github-script@v4
+        env:
+          MESSAGE: ${{ steps.command.outputs.command-arguments }}
         with:
          script: |
-           if (steps.command.outputs.command-arguments) {
-             return steps.command.outputs.command-arguments
+           if (MESSAGE) {
+             return MESSAGE
            } else {
              const message = await github.pulls.listCommits({
                owner: context.issue.owner,
