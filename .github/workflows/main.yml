@@ -51,15 +51,20 @@ jobs:
         with:
          script: |
            if (process.env.MESSAGE) {
-             return "1"
-           } else {
-             const message = await github.pulls.listCommits({
-               owner: context.issue.owner,
-               repo: context.issue.repo,
-               pull_number: context.issue.number,
-             }).then(({data}) => data[0].commit.message)
-             return message
+             const matchResult = process.env.MESSAGE.match(/`(.|\n)*`/)
+             if (matchResult) {
+               const message = matchResult[0]
+               if (message) {
+                 return message
+               }
+             }
            }
+           const message = await github.pulls.listCommits({
+             owner: context.issue.owner,
+             repo: context.issue.repo,
+             pull_number: context.issue.number,
+           }).then(({data}) => data[0].commit.message)
+           return message
 
       - name: Merge base branch
         run: |
