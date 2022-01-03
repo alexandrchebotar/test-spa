@@ -48,13 +48,16 @@ jobs:
         uses: actions/github-script@v4
         with:
          script: |
-           const message = steps.command.outputs.command-arguments ?? await github.pulls.listCommits({
-             owner: context.issue.owner,
-             repo: context.issue.repo,
-             pull_number: context.issue.number,
-           }).then(({data}) => data[0].message)
-           
-           return message
+           if (steps.command.outputs.command-arguments) {
+             return steps.command.outputs.command-arguments
+           } else {
+             const message = await github.pulls.listCommits({
+               owner: context.issue.owner,
+               repo: context.issue.repo,
+               pull_number: context.issue.number,
+             }).then(({data}) => data[0].message)
+             return message
+           }
 
       - name: Merge base branch
         run: |
