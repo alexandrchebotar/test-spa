@@ -37,13 +37,16 @@ jobs:
       - uses: actions/checkout@v2
         with:
             fetch-depth: 0
+      - run: |
+          echo "issue #${{ github.event.issue }}"
+          echo "pull_request #${{ github.event.issue.pull_request }}"
       - name: pull
         run: |
           git status
           git pull
       - name: chech default
         run: |
-          git checkout "$DEFAULT_BRANCH"
+          git checkout master
           git status
       - name: perform merge
         run: |
