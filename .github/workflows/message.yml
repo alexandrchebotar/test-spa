@@ -1,7 +1,7 @@
-name: Post_message
+name: Post message
 
 on:
-  pull_request:
+  push:
   workflow_dispatch:
     inputs:
       issue_number:
@@ -10,28 +10,29 @@ on:
 jobs:
   post_message:
     runs-on: ubuntu-latest
-    outputs: |
-      output1: ${{ steps.step3.outputs.test }}
-      output2: "123"
     steps:
-      - name: View context attributes
-        uses: actions/github-script@v4
-        with:
-          script: console.log(context)
+#       - name: View context attributes
+#         uses: actions/github-script@v4
+#         with:
+#           script: console.log(context)
              
-      - name: Post a comment
-        uses: actions/github-script@v4
-        env:
-          RUN_ID: ${{ github.event.inputs.run_id }}
-          ISSUE_NUMBER: ${{ github.event.inputs.issue_number }}
-        with:
-          script: |
-            github.issues.createComment({
-              issue_number: process.env.ISSUE_NUMBER,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: _process.env.RUN_ID
-            })
-            
-      - name: Result
-        run: echo "${{github.event.inputs.runId}}"
+#       - name: Post a comment
+#         uses: actions/github-script@v4
+#         env:
+#           RUN_ID: ${{ github.event.inputs.run_id }}
+#           ISSUE_NUMBER: ${{ github.event.inputs.issue_number }}
+#         with:
+#           script: |
+#             github.issues.createComment({
+#               issue_number: process.env.ISSUE_NUMBER,
+#               owner: context.repo.owner,
+#               repo: context.repo.repo,
+#               body: process.env.RUN_ID
+#             })
+
+      - uses: actions/checkout@v2
+      - name: Do nothing
+        run: |
+          echo ${{github.ref}}
+          echo ${{github.event.pull_request.head.ref}}
+          echo ${{github.event.inputs.issue_number}}

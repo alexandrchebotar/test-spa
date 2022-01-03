@@ -5,21 +5,85 @@ on:
     types: [created]
 
 jobs:
-  check_comments:
-    name: Run integration tests on /ci
-    if: github.event.issue.pull_request && startsWith(github.event.comment.body, '/')
+  softfix:
+    name: Softfix
+    if: github.event.issue.pull_request && startsWith(github.event.comment.body, '/softfix')
     runs-on: ubuntu-latest
     steps:
-      - name: Check for Command
+      - name: Parse command
+        id: command
+        uses: xt0rted/slash-command-action@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          command: softfix
+          reaction-type: "eyes"
+      - uses: actions/checkout@v2
+      - uses: dekvall/softfix@v1.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+  squash:
+    name: Squash
+    if: github.event.issue.pull_request && startsWith(github.event.comment.body, '/squash')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Parse command
+        id: command
+        uses: xt0rted/slash-command-action@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          command: squash
+          reaction-type: "eyes"
+          
+      - uses: actions/checkout@v2
+        with:
+            fetch-depth: 0
+            
+      - name: Get branch ref
+        uses: xt0rted/pull-request-comment-branch@v1
+        id: comment-branch
+
+      - name: Merge base branch
+        run: |
+          git config --global user.email "${{github.actor}}"
+          git config --global user.name "${{github.actor}}@users.noreply.github.com"
+          git checkout  ${{ steps.comment-branch.outputs.base_ref }}
+          git checkout ${{ steps.comment-branch.outputs.head_ref }}
+          git merge  ${{ steps.comment-branch.outputs.base_ref }} --no-edit
+          
+      - name: Add comment on failure
+        if: ${{ failure() }}
+        uses: actions/github-script@v4
+        with:
+          script: |
+            const result = await github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: ":warning: Can't merge base branch. Please resolve all conflicts first."
+            })
+          
+      - name: push
+        run: |
+          git push
+          git status
+
+  run_integration_tests:
+    name: Run integration tests
+    if: |
+      github.event.issue.pull_request 
+      && (github.event.comment.body == '/ci integration-tests' || github.event.comment.body == '/ci cypress')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Parse command
         id: command
         uses: xt0rted/slash-command-action@v1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           command: ci
           reaction-type: "eyes"
-        
+    
       - name: Add comment
-        if: ${{steps.command.outputs.command-arguments == 'cypress' || steps.command.outputs.command-arguments == 'integration-tests'}}
         id: add-comment
         uses: actions/github-script@v4
         with:
@@ -32,18 +96,20 @@ jobs:
             })
             return result.data.id
             
-      - name: Get brunch ref
+      - name: Get branch ref
         uses: xt0rted/pull-request-comment-branch@v1
         id: comment-branch
         
       - name: Run tests
         id: run-tests
+        if: |
+          steps.command.outputs.command-arguments == 'integration-tests'
+          || steps.command.outputs.command-arguments == 'cypress'
         uses: aurelien-baudet/workflow-dispatch@v2
         with:
-          workflow: Post_message
+          workflow: Post message
           token: ${{ secrets.PERSONAL_TOKEN }}
           ref: ${{ steps.comment-branch.outputs.head_ref }}
-          inputs: '{ "issue_number": "${{github.event.issue.number}}", "run_id": "${{github.run_id}}"}'
 
       - name: Edit comment
         if: always()
@@ -52,7 +118,6 @@ jobs:
           COMMENT_ID: ${{ steps.add-comment.outputs.result }}
           RESULT: ${{ steps.run-tests.outputs.workflow-conclusion }}
           URL: ${{ steps.run-tests.outputs.workflow-url }}
-          STATUS: ${{ job.status }}
         with:
           script: |
             const { COMMENT_ID, RESULT, URL, STATUS } = process.env
@@ -61,8 +126,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               comment_id: COMMENT_ID,
-              body: STATUS === 'success'
+              body: RESULT === 'success'
                 ? `#### Tests completed! :tada:\n\n>Result: ${RESULT}\n>Log: ${URL}`
                 : `#### Tests failed! :angry:\n\n>Result: ${RESULT}\n>Log: ${URL}`
             })
-

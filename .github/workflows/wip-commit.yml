@@ -1,0 +1,65 @@
+name: WIP-commits
+
+on:
+  pull_request:
+    types: [opened, reopened, ready_for_review, synchronize]
+
+jobs:
+  wip-commits:
+    if: ${{!github.event.pull_request.draft}}
+    runs-on: ubuntu-latest
+    steps:
+       - name: Get WIP-commits
+         id: get-wip-commits
+         uses: actions/github-script@v4
+         with:
+          script: |
+            const wipCommits = await github.pulls.listCommits({
+              owner: context.issue.owner,
+              repo: context.issue.repo,
+              pull_number: context.issue.number,
+            }).then(({data}) => data.filter(({commit}) => commit.message === 'WIP'))
+            
+            return wipCommits.length ? wipCommits : undefined
+          
+       - name: Set failure
+         if: ${{steps.get-wip-commits.outputs.result}}
+         run: |
+           echo "WIP-commits are found"
+           exit 1
+           
+       - name: Delete old comments
+         if: always()
+         uses: actions/github-script@v4
+         with:
+          script: |
+            const prevComments = await github.issues.listComments({
+              issue_number: context.issue.number,
+              owner: context.issue.owner,
+              repo: context.issue.repo,
+            }).then(({data}) => data.filter(({body, user}) => user.type === "Bot" && body.includes("#### WIP-commits are found:")))
+            
+            for (comment of prevComments) {
+              await github.issues.deleteComment({
+                owner: context.issue.owner,
+                repo: context.issue.repo,
+                comment_id: comment.id,
+              })
+            }   
+            
+       - name: Add new comment
+         if: failure()
+         env:
+          WIP_COMMITS: ${{steps.get-wip-commits.outputs.result}}
+         uses: actions/github-script@v4
+         with:
+          script: |
+            const commits = JSON.parse(process.env.WIP_COMMITS)
+            
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.issue.owner,
+              repo: context.issue.repo,
+              body: `#### WIP-commits are found:${commits.map(({sha, html_url}) => `\n- [${sha}](${html_url})`)}\n\nPlease remove them before merging.`,
+            })   
+
