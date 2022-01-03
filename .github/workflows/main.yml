@@ -43,6 +43,9 @@ jobs:
         uses: xt0rted/pull-request-comment-branch@v1
         id: comment-branch
         
+      - run: |
+          echo "${{toJson(steps.commit-message.outputs.result)}}" 
+        
       - name: Get commit message
         id: commit-message
         uses: actions/github-script@v4
@@ -52,9 +55,9 @@ jobs:
          script: |
            if (process.env.MESSAGE) {
              return process.env.MESSAGE
-             const matchResult = process.env.MESSAGE.match(/`(.|\n)*`/)
+             const matchResult = process.env.MESSAGE.match(/```(.|\n)*```/)
              if (matchResult) {
-               const message = matchResult[0]
+               const message = matchResult[0].trim()
                if (message) {
                  return message
                }
@@ -66,8 +69,10 @@ jobs:
              pull_number: context.issue.number,
            }).then(({data}) => data[0].commit.message)
            return message
-      - run |
-          echo "${{toJson(steps.commit-message.outputs.result )}}"
+           
+      - run: |
+          echo "${{toJson(steps.commit-message.outputs.result)}}"
+          
       - name: Merge base branch
         run: |
           git config --global user.email "${{github.actor}}"
