@@ -39,7 +39,10 @@ jobs:
             fetch-depth: 0
       - run: |
           echo "issue #${{ toJson(github.event.issue) }}"
-          echo "pull_request #${{ toJson(github.event.issue.pull_request) }}"
+      - run: |
+          echo "pull_request #${{ toJson(github.event) }}"
+      - run: |
+          echo "pull_request #${{ toJson(github) }}"
       - name: pull
         run: |
           git status
