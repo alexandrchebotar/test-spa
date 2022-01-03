@@ -65,7 +65,6 @@ jobs:
         run: |
           git config --global user.email "${{github.actor}}"
           git config --global user.name "${{github.actor}}@users.noreply.github.com"
-          git checkout ${{ steps.comment-branch.outputs.base_ref }}
           git checkout ${{ steps.comment-branch.outputs.head_ref }}
           git merge ${{ steps.comment-branch.outputs.base_ref }} --no-edit
           
@@ -83,7 +82,7 @@ jobs:
           
       - name: squash and push
         run: |
-          git reset --soft develop
+          git reset --soft origin/${{ steps.comment-branch.outputs.base_ref }}
           git commit -m ${{ steps.commit-message.outputs.result }}
           git push
           git status
