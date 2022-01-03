@@ -49,7 +49,7 @@ jobs:
       - run: |
           echo "head: ${{ steps.comment-branch.outputs.head_ref }}"
           echo "base: ${{ steps.comment-branch.outputs.base_ref }}"
-          echo "actor: ${github.actor}"
+          echo "actor: ${{github.actor}}"
        
       - name: pull
         run: |
