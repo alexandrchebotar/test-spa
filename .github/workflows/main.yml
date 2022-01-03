@@ -21,6 +21,32 @@ jobs:
       - uses: dekvall/softfix@v1.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+  squash:
+    name: Squash
+    if: github.event.issue.pull_request && startsWith(github.event.comment.body, '/squash')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Parse command
+        id: command
+        uses: xt0rted/slash-command-action@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          command: squash
+          reaction-type: "eyes"
+      - uses: actions/checkout@v2
+        with:
+            fetch-depth: 0
+      - name: perform merge
+        run: |
+          git status
+          git pull
+          git checkout "$DEFAULT_BRANCH"
+          git status
+          git checkout "$GITHUB_HEAD_REF"
+          git merge "$DEFAULT_BRANCH" --no-edit
+          git push
+          git status
 
   run_integration_tests:
     name: Run integration tests
