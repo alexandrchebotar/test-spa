@@ -47,7 +47,8 @@ jobs:
         uses: xt0rted/pull-request-comment-branch@v1
         id: comment-branch
       - run: |
-          echo "ref: ${{ steps.comment-branch.outputs.head_ref }}"
+          echo "head: ${{ steps.comment-branch.outputs.head_ref }}"
+          echo "base: ${{ steps.comment-branch.outputs.base_ref }}"
        
       - name: pull
         run: |
@@ -55,12 +56,12 @@ jobs:
           git pull
       - name: chech default
         run: |
-          git checkout master
+          git checkout  ${{ steps.comment-branch.outputs.base_ref }}
           git status
       - name: perform merge
         run: |
-          git checkout "$GITHUB_HEAD_REF"
-          git merge "$DEFAULT_BRANCH" --no-edit
+          git checkout ${{ steps.comment-branch.outputs.head_ref }}
+          git merge  ${{ steps.comment-branch.outputs.base_ref }} --no-edit
           git push
           git status
 
