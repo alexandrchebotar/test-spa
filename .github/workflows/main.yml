@@ -56,7 +56,7 @@ jobs:
            if (process.env.MESSAGE) {
              const matchResult = process.env.MESSAGE.match(/(?<=```)(?:.|\r|\n)*(?=```)/)
              if (matchResult) {
-               const message = matchResult[0].trim().split("\r\n").join(" -m ")
+               const message = matchResult[0].trim().split("\r\n").map(m => `"${m}"`).join(" -m ")
                if (message) {
                  return message
                }
