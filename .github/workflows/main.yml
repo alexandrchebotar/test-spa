@@ -74,8 +74,8 @@ jobs:
           
       - name: Merge base branch
         run: |
-          git config --global user.email "${{github.actor}}"
-          git config --global user.name "${{github.actor}}@users.noreply.github.com"
+          git config --global user.name "${{github.actor}}"
+          git config --global user.email "${{github.actor}}@users.noreply.github.com"
           git checkout ${{ steps.comment-branch.outputs.head_ref }}
           git merge ${{ steps.comment-branch.outputs.base_ref }} --no-edit
           
