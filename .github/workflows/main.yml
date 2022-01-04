@@ -56,7 +56,7 @@ jobs:
            if (process.env.MESSAGE) {
              const matchResult = process.env.MESSAGE.match(/(?<=```)(?:.|\r|\n)*(?=```)/)
              if (matchResult) {
-               const message = matchResult[0].trim()
+               const message = matchResult[0].trim().split("\r\n").join(" -m ")
                if (message) {
                  return message
                }
@@ -94,7 +94,7 @@ jobs:
       - name: squash and push
         run: |
           git reset --soft origin/${{ steps.comment-branch.outputs.base_ref }}
-          git commit -m $(echo -e ${{ steps.commit-message.outputs.result }})"
+          git commit -m ${{ steps.commit-message.outputs.result }}
           git push -f
           git status
 
