@@ -5,7 +5,7 @@ on:
     types: [opened, reopened, synchronize]
 
 env:
-  PR_MAX_SIZE: "400"
+  PR_MAX_SIZE: "4"
 
 jobs:
   pr-size:
