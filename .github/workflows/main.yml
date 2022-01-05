@@ -27,7 +27,7 @@ jobs:
         uses: aurelien-baudet/workflow-dispatch@v2
         with:
           workflow: Pull request size
-          token: ${{ secrets.CI_CYPRESS_TOKEN }}
+          token: ${{ secrets.PERSONAL_TOKEN }}
           ref: ${{ steps.comment-branch.outputs.head_ref }}
           
   softfix:
