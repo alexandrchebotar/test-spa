@@ -5,6 +5,31 @@ on:
     types: [created]
 
 jobs:
+  ignore:
+    name: Re-run workflow on ignore command
+    if: github.event.issue.pull_request && startsWith(github.event.comment.body, '/ignore')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Parse command
+        id: command
+        uses: xt0rted/slash-command-action@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          command: ignore
+          reaction-type: "eyes"
+
+      - name: Get branch ref
+        uses: xt0rted/pull-request-comment-branch@v1
+        id: comment-branch
+
+      - name: Re-run Pull request size workflow
+        if: steps.command.outputs.command-arguments == 'pr-size'
+        uses: aurelien-baudet/workflow-dispatch@v2
+        with:
+          workflow: Pull request size
+          token: ${{ secrets.CI_CYPRESS_TOKEN }}
+          ref: ${{ steps.comment-branch.outputs.head_ref }}
+          
   softfix:
     name: Softfix
     if: github.event.issue.pull_request && startsWith(github.event.comment.body, '/softfix')
