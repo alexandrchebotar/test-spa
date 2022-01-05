@@ -16,7 +16,7 @@ jobs:
         uses: actions/github-script@v4
         with:
           script: |
-            const comments = await github.issues.listComments({
+            const comments = await github.rest.issues.listComments({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
