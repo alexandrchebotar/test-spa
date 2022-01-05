@@ -20,7 +20,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-            })
+            }).then(({data}) => data)
             return comments.some(({body}) => body === "/ignore pr-size")
 
       - name: Set failure
