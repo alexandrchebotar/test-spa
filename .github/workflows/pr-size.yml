@@ -1,0 +1,32 @@
+name: Pull request size
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+env:
+  PR_MAX_SIZE: "400"
+
+jobs:
+  pr-size:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for ignore comment
+        id: ignore
+        uses: actions/github-script@v4
+        with:
+          script: |
+            const comments = await github.issues.listComments({
+              issue_number: context.event.pull_request.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            })
+            return comments.some(({body}) => body === "/ignore pr-size")
+
+      - name: Set failure
+        if: |
+          !steps.ignore.outputs.result 
+          && (github.event.pull_request.additions > env.PR_MAX_SIZE || github.event.pull_request.deletions > env.PR_MAX_SIZE)
+        run: |
+          echo "PR size more than ${{ env.PR_MAX_SIZE }}"
+          exit 1
