@@ -23,6 +23,9 @@ jobs:
             }).then(({data}) => data)
             return comments.some(({body}) => body === "/ignore pr-size")
 
+      - run: |
+          echo "${{ steps.ignore.outputs.result}}"
+          
       - name: Set failure
         if: |
           steps.ignore.outputs.result == "false"
