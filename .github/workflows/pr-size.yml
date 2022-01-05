@@ -26,7 +26,7 @@ jobs:
       - name: Set failure
         if: |
           !steps.ignore.outputs.result 
-          && (github.event.pull_request.additions > env.PR_MAX_SIZE || github.event.pull_request.deletions > env.PR_MAX_SIZE)
+
         run: |
           echo "PR size more than ${{ env.PR_MAX_SIZE }}"
           exit 1
