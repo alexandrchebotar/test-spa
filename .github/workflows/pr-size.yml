@@ -3,6 +3,7 @@ name: Pull request size
 on:
   pull_request:
     types: [opened, reopened, synchronize]
+  workflow_dispatch: {}
 
 env:
   PR_MAX_SIZE: "4"
