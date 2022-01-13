@@ -1,9 +1,12 @@
 name: Pull request size
 
 on:
-  - pull_request
-  - workflow_dispatch
-
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      issue_numper:
+        required: true
+        
 env:
   PR_MAX_SIZE: "4"
 
@@ -17,7 +20,7 @@ jobs:
         with:
           script: |
             const comments = await github.rest.issues.listComments({
-              issue_number: context.issue.number,
+              issue_number: context.issue.number || context.inputs.issue_number,
               owner: context.repo.owner,
               repo: context.repo.repo,
             }).then(({data}) => data)
