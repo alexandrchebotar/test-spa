@@ -23,6 +23,7 @@ jobs:
         uses: aurelien-baudet/workflow-dispatch@v2
         with:
           workflow: Pull request size
+          wait-for-completion: false
           token: ${{ secrets.PERSONAL_TOKEN }}
           inputs: '{ "pr_number": "${{ github.event.issue.number }}" }'
           
