@@ -17,6 +17,10 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           command: ignore
           reaction-type: "eyes"
+          
+      - name: Get branch ref
+        uses: xt0rted/pull-request-comment-branch@v1
+        id: comment-branch
 
       - name: Re-run Pull request size workflow
         if: steps.command.outputs.command-arguments == 'pr-size'
@@ -25,6 +29,7 @@ jobs:
           workflow: Pull request size
           wait-for-completion: false
           token: ${{ secrets.PERSONAL_TOKEN }}
+          ref: ${{ steps.comment-branch.outputs.head_ref }}
           inputs: '{ "pr_number": "${{ github.event.issue.number }}" }'
           
   softfix:
