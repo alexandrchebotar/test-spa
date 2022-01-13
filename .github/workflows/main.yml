@@ -24,7 +24,7 @@ jobs:
         with:
           workflow: Pull request size
           token: ${{ secrets.PERSONAL_TOKEN }}
-          inputs: '{ "issue_number": "${{ github.event.issue.number }}" }'
+          inputs: '{ "pr_number": "${{ github.event.issue.number }}" }'
           
   softfix:
     name: Softfix
