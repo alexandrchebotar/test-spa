@@ -109,10 +109,10 @@ jobs:
           
       - name: Add comment on failure
         if: ${{ failure() }}
-        uses: actions/github-script@v4
+        uses: actions/github-script@v5
         with:
           script: |
-            const result = await github.issues.createComment({
+            const result = await github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -143,10 +143,10 @@ jobs:
     
       - name: Add comment
         id: add-comment
-        uses: actions/github-script@v4
+        uses: actions/github-script@v5
         with:
           script: |
-            const result = await github.issues.createComment({
+            const result = await github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -171,7 +171,7 @@ jobs:
 
       - name: Edit comment
         if: always()
-        uses: actions/github-script@v4
+        uses: actions/github-script@v5
         env:
           COMMENT_ID: ${{ steps.add-comment.outputs.result }}
           RESULT: ${{ steps.run-tests.outputs.workflow-conclusion }}
@@ -179,7 +179,7 @@ jobs:
         with:
           script: |
             const { COMMENT_ID, RESULT, URL, STATUS } = process.env
-            github.issues.updateComment({
+            github.issues.rest.updateComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
