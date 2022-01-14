@@ -31,6 +31,7 @@ jobs:
         uses: actions/github-script@v5
         env:
           REF: ${{steps.comment-branch.outputs.head_ref}}
+          HEAD_SHA: ${{steps.comment-branch.outputs.head_sha}}
         with:
           script: |
             const check_run_id = await github.rest.checks.listForRef({
@@ -40,10 +41,11 @@ jobs:
               check_name: "pr-size"
             }).then(({data}) => data.check_runs[0].id);
             if (check_run_id) {
-              github.rest.checks.rerequestRun({
+              github.rest.checks.create({
                 owner: context.issue.owner,
                 repo: context.issue.repo,
-                check_run_id,
+                name: "pr-size",
+                head_sha: process.env.HEAD_SHA
               })
             }
             return check_run_id
