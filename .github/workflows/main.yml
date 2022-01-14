@@ -37,7 +37,7 @@ jobs:
               owner: context.issue.owner,
               repo: context.issue.repo,
               ref: process.env.REF,
-            }).then(({data}) => data.check_suites.filter(({conclusion}) => conclusion === 'failure'));
+            }).then(({data}) => data.check_suites);
              console.log({check_suites})
             return check_suites
            
