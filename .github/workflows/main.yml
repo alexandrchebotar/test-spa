@@ -38,7 +38,7 @@ jobs:
               repo: context.issue.repo,
               ref: process.env.REF,
               check_name: "pr-size"
-            }).then(({data}) => data.check_suites[1].id);
+            }).then(({data}) => data.check_suites[0].id);
             if (check_suite_id) {
               github.rest.checks.rerequestSuite({
                 owner: context.issue.owner,
@@ -61,7 +61,6 @@ jobs:
               owner: context.issue.owner,
               repo: context.issue.repo,
               ref: process.env.REF,
-              check_name: "pr-size"
             }).then(({data}) => data.check_suites.map(({id, status, conclusion}) => ({id, status, conclusion})));
             return check_suites
            
