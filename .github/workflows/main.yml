@@ -60,6 +60,7 @@ jobs:
               owner: context.issue.owner,
               repo: context.issue.repo,
               ref: process.env.REF,
+              check_name: "pr-size"
             }).then(({data}) => data.check_runs);
             return check_run_id
            
