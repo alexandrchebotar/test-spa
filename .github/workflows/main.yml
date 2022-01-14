@@ -39,7 +39,7 @@ jobs:
               ref: process.env.REF,
               check_name: 'Post message / post_message',
             }).then(({data}) => data.check_suites);
-             console.log({check_suites})
+             console.log({check_suites: check_suites.map(s => s.app)})
             return check_suites
            
       - name: Get result
