@@ -76,7 +76,7 @@ jobs:
         
       - name: Get commit message
         id: commit-message
-        uses: actions/github-script@v4
+        uses: actions/github-script@v5
         env:
           MESSAGE: ${{ github.event.comment.body }}
         with:
@@ -90,7 +90,7 @@ jobs:
                }
              }
            }
-           const message = await github.pulls.listCommits({
+           const message = await github.rest.pulls.listCommits({
              owner: context.issue.owner,
              repo: context.issue.repo,
              pull_number: context.issue.number,
@@ -179,7 +179,7 @@ jobs:
         with:
           script: |
             const { COMMENT_ID, RESULT, URL, STATUS } = process.env
-            github.issues.rest.updateComment({
+            github.rest.issues.updateComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
