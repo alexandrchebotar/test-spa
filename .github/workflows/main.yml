@@ -31,9 +31,9 @@ jobs:
             const check_id = await github.rest.checks.listForRef({
               owner: context.issue.owner,
               repo: context.issue.repo,
-              ref: context.steps.comment-branch.outputs.head_ref,
+              ref: context.payload.steps.comment-branch.outputs.head_ref,
               check_name: "Pull request size"
-            }).then(({check_runs}) => check_runs[0]);
+            }).then(({data}) => data.check_runs[0]);
             return check_id
            
       - name: Get result
