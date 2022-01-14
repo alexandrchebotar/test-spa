@@ -57,11 +57,10 @@ jobs:
               ref: process.env.REF,
               check_name: "pr-size"
             }).then(({data}) => data.check_suites.filter(({conclusion}) => conclusion === 'failure'));
-            if (check_suite_id) {
+            if (check_suites) {
               github.rest.checks.rerequestSuite({
                 owner: context.issue.owner,
                 repo: context.issue.repo,
-                name: "pr-size",
                 check_suite_id: check_suites[0].id,
               })
             }
