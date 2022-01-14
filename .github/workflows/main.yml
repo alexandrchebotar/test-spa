@@ -25,28 +25,28 @@ jobs:
       - name: Head ref
         run: echo "${{steps.comment-branch.outputs.head_ref}}"
         
-#       - name: Re-run Pull request size check
-#         id: script
-#         if: steps.command.outputs.command-arguments == 'pr-size'
-#         uses: actions/github-script@v5
-#         env:
-#           REF: ${{steps.comment-branch.outputs.head_ref}}
-#         with:
-#           script: |
-#             const check_run_id = await github.rest.checks.listForRef({
-#               owner: context.issue.owner,
-#               repo: context.issue.repo,
-#               ref: process.env.REF,
-#               check_name: "pr-size"
-#             }).then(({data}) => data.check_runs[0].id);
-#             if (check_run_id) {
-#               github.rest.checks.rerequestRun({
-#                 owner: context.issue.owner,
-#                 repo: context.issue.repo,
-#                 check_run_id,
-#               })
-#             }
-#             return check_run_id
+      - name: Re-run Pull request size check
+        id: script2
+        if: steps.command.outputs.command-arguments == 'pr-size'
+        uses: actions/github-script@v5
+        env:
+          REF: ${{steps.comment-branch.outputs.head_ref}}
+        with:
+          script: |
+            const check_run_id = await github.rest.checks.listForRef({
+              owner: context.issue.owner,
+              repo: context.issue.repo,
+              ref: process.env.REF,
+              check_name: "pr-size"
+            }).then(({data}) => data.check_runs[0].id);
+            if (check_run_id) {
+              github.rest.checks.rerequestRun({
+                owner: context.issue.owner,
+                repo: context.issue.repo,
+                check_run_id,
+              })
+            }
+            return check_run_id
 
       - name: Re-run Pull request size check
         id: script
