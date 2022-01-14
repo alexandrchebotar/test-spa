@@ -34,7 +34,7 @@ jobs:
               owner: context.issue.owner,
               repo: context.issue.repo,
               ref: process.env.MESSAGE,
-              check_name: "Pull request size"
+              check_name: "pr-size"
             }).then(({data}) => data.check_runs[0]);
             return check_id
            
