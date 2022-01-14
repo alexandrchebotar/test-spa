@@ -37,6 +37,7 @@ jobs:
               owner: context.issue.owner,
               repo: context.issue.repo,
               ref: process.env.REF,
+              check_name: 'Post message / post_message',
             }).then(({data}) => data.check_suites);
              console.log({check_suites})
             return check_suites
