@@ -21,16 +21,23 @@ jobs:
       - name: Get branch ref
         uses: xt0rted/pull-request-comment-branch@v1
         id: comment-branch
-
+        
       - name: Re-run Pull request size workflow
+        id: script
         if: steps.command.outputs.command-arguments == 'pr-size'
-        uses: aurelien-baudet/workflow-dispatch@v2
+        uses: actions/github-script@v5
         with:
-          workflow: Pull request size
-          wait-for-completion: false
-          token: ${{ secrets.PERSONAL_TOKEN }}
-          ref: ${{ steps.comment-branch.outputs.head_ref }}
-          inputs: '{ "pr_number": "${{ github.event.issue.number }}" }'
+          script: |
+            const check_id = await github.rest.checks.listForRef({
+              owner: context.issue.owner,
+              repo: context.issue.repo,
+              ref: context.steps.comment-branch.outputs.head_ref,
+              check_name: "Pull request size"
+            }).then(({check_runs}) => check_runs[0]);
+            return check_id
+           
+      - name: Get result
+        run: echo "${{steps.script.outputs.result}}"
           
   softfix:
     name: Softfix
