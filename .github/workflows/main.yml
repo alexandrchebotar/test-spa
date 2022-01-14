@@ -56,7 +56,7 @@ jobs:
               owner: context.issue.owner,
               repo: context.issue.repo,
               ref: process.env.REF,
-              check_name: "pr-size"
+              check_name: "Pull request size"
             }).then(({data}) => data.check_suites.filter(({conclusion}) => conclusion === 'failure'));
             console.log({check_suites})
             if (check_suites) {
