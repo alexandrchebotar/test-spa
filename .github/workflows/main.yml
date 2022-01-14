@@ -34,14 +34,14 @@ jobs:
           HEAD_SHA: ${{steps.comment-branch.outputs.head_sha}}
         with:
           script: |
-            const check_run_id = await github.rest.checks.listForRef({
+            const check_run_id = await github.rest.checks.listSuitesForRef({
               owner: context.issue.owner,
               repo: context.issue.repo,
               ref: process.env.REF,
               check_name: "pr-size"
             }).then(({data}) => data.check_runs[0].id);
             if (check_run_id) {
-              github.rest.checks.create({
+              github.rest.checks.rerequestSuite({
                 owner: context.issue.owner,
                 repo: context.issue.repo,
                 name: "pr-size",
@@ -58,7 +58,7 @@ jobs:
           REF: ${{steps.comment-branch.outputs.head_ref}}
         with:
           script: |
-            const check_run_id = await github.rest.checks.listForRef({
+            const check_run_id = await github.rest.checks.listSuitesForRef({
               owner: context.issue.owner,
               repo: context.issue.repo,
               ref: process.env.REF,
