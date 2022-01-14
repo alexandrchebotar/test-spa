@@ -39,14 +39,14 @@ jobs:
               ref: process.env.REF,
               check_name: "pr-size"
             }).then(({data}) => data.check_runs[0].id);
-            if (check_id) {
+            if (check_run_id) {
               github.rest.checks.rerequestRun({
                 owner: context.issue.owner,
                 repo: context.issue.repo,
                 check_run_id,
               })
             }
-            return check_id
+            return check_run_id
            
       - name: Get result
         run: echo "${{steps.script.outputs.result}}"
