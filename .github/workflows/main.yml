@@ -38,6 +38,7 @@ jobs:
               repo: context.issue.repo,
               ref: process.env.REF,
             }).then(({data}) => data.check_suites.filter(({conclusion}) => conclusion === 'failure'));
+             console.log({check_suites})
             return check_suites
            
       - name: Get result
