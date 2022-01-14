@@ -33,7 +33,7 @@ jobs:
             const check_id = await github.rest.checks.listForRef({
               owner: context.issue.owner,
               repo: context.issue.repo,
-              ref: process.env.MESSAGE,
+              ref: process.env.REF,
               check_name: "pr-size"
             }).then(({data}) => data.check_runs[0]);
             return check_id
