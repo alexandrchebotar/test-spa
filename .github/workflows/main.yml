@@ -37,7 +37,7 @@ jobs:
               owner: context.issue.owner,
               repo: context.issue.repo,
               ref: process.env.REF,
-            }).then(({data}) => data.check_suites.map(({id, status, conclusion}) => ({id, status, conclusion})));
+            }).then(({data}) => data.check_suites.filer(({conclusion}) => conclusion === 'failure'));
             return check_suites
            
       - name: Get result
@@ -56,7 +56,7 @@ jobs:
               repo: context.issue.repo,
               ref: process.env.REF,
               check_name: "pr-size"
-            }).then(({data}) => data.check_suites[0].id);
+            }).then(({data}) => data.check_suites.filer(({conclusion}) => conclusion === 'failure').id);
             if (check_suite_id) {
               github.rest.checks.rerequestSuite({
                 owner: context.issue.owner,
