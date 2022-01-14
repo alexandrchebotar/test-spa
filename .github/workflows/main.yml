@@ -56,16 +56,15 @@ jobs:
               owner: context.issue.owner,
               repo: context.issue.repo,
               ref: process.env.REF,
-              check_name: "Pull request size"
             }).then(({data}) => data.check_suites.filter(({conclusion}) => conclusion === 'failure'));
             console.log({check_suites})
-            if (check_suites) {
+            check_suites.forEach(({id}) => {
               github.rest.checks.rerequestSuite({
                 owner: context.issue.owner,
                 repo: context.issue.repo,
-                check_suite_id: check_suites[0].id,
+                check_suite_id: id,
               })
-            }
+            })
 
 
           
