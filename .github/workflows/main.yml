@@ -31,7 +31,6 @@ jobs:
         uses: actions/github-script@v5
         env:
           REF: ${{steps.comment-branch.outputs.head_ref}}
-          HEAD_SHA: ${{steps.comment-branch.outputs.head_sha}}
         with:
           script: |
             const check_suite_id = await github.rest.checks.listSuitesForRef({
@@ -63,7 +62,7 @@ jobs:
               repo: context.issue.repo,
               ref: process.env.REF,
               check_name: "pr-size"
-            }).then(({data}) => data.check_suites);
+            }).then(({data}) => data.check_suites.map(({id, status, conclusion}) => ({id, status, conclusion})));
             return check_suites
            
       - name: Get result
