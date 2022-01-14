@@ -34,21 +34,21 @@ jobs:
           HEAD_SHA: ${{steps.comment-branch.outputs.head_sha}}
         with:
           script: |
-            const check_run_id = await github.rest.checks.listSuitesForRef({
+            const check_suite_id = await github.rest.checks.listSuitesForRef({
               owner: context.issue.owner,
               repo: context.issue.repo,
               ref: process.env.REF,
               check_name: "pr-size"
-            }).then(({data}) => data.check_runs[0].id);
+            }).then(({data}) => data.check_suites[0].id);
             if (check_run_id) {
               github.rest.checks.rerequestSuite({
                 owner: context.issue.owner,
                 repo: context.issue.repo,
                 name: "pr-size",
-                head_sha: process.env.HEAD_SHA
+                check_suite_id,
               })
             }
-            return check_run_id
+            return check_suite_id
 
       - name: Re-run Pull request size check
         id: script
@@ -63,8 +63,8 @@ jobs:
               repo: context.issue.repo,
               ref: process.env.REF,
               check_name: "pr-size"
-            }).then(({data}) => data.check_runs);
-            return check_run_id
+            }).then(({data}) => data.check_suites);
+            return check_suites
            
       - name: Get result
         run: echo "${{steps.script.outputs.result}}"
