@@ -22,7 +22,7 @@ jobs:
         uses: xt0rted/pull-request-comment-branch@v1
         id: comment-branch
         
-      - name: Re-run Pull request size workflow
+      - name: Re-run Pull request size check
         id: script
         if: steps.command.outputs.command-arguments == 'pr-size'
         uses: actions/github-script@v5
