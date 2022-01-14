@@ -40,7 +40,7 @@ jobs:
               ref: process.env.REF,
               check_name: "pr-size"
             }).then(({data}) => data.check_suites[0].id);
-            if (check_run_id) {
+            if (check_suite_id) {
               github.rest.checks.rerequestSuite({
                 owner: context.issue.owner,
                 repo: context.issue.repo,
@@ -58,7 +58,7 @@ jobs:
           REF: ${{steps.comment-branch.outputs.head_ref}}
         with:
           script: |
-            const check_run_id = await github.rest.checks.listSuitesForRef({
+            const check_suites = await github.rest.checks.listSuitesForRef({
               owner: context.issue.owner,
               repo: context.issue.repo,
               ref: process.env.REF,
