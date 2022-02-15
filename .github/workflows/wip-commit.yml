@@ -18,8 +18,8 @@ jobs:
               owner: context.issue.owner,
               repo: context.issue.repo,
               pull_number: context.issue.number,
-            }).then(({data}) => data.filter(({commit}) => commit.message === 'WIP'))
-            
+
+            }).then(({data}) => data.filter(({commit}) => commit.message.startsWith('WIP')))
             return wipCommits.length ? wipCommits : undefined
           
        - name: Set failure

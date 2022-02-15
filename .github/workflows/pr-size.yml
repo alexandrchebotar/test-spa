@@ -6,7 +6,7 @@ on:
     inputs:
       pr_number:
         required: true
-        
+
 env:
   PR_MAX_SIZE: "4"
 
